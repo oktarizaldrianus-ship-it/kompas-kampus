@@ -10,15 +10,22 @@ if (!admin.apps.length) {
 const db = admin.firestore();
 
 exports.handler = async (event) => {
-    // Proteksi dengan password
+    // Proteksi password
     const password = event.headers['x-admin-password'];
     if (password !== process.env.ADMIN_PASSWORD) {
         return { statusCode: 401, body: 'Unauthorized' };
     }
 
     try {
-        // Ambil semua data
-        const snapshot = await db.collection('responses').get();
+        // Ambil parameter query: ?sekolah=...
+        const { sekolah } = event.queryStringParameters || {};
+        
+        let query = db.collection('responses');
+        if (sekolah && sekolah !== 'all') {
+            query = query.where('sekolah', '==', sekolah);
+        }
+        
+        const snapshot = await query.get();
         if (snapshot.empty) {
             return {
                 statusCode: 200,
@@ -53,21 +60,16 @@ exports.handler = async (event) => {
             const entry = schoolMap.get(school);
             entry.total++;
 
-            // Profil
             const prof = d.profileId || 'THE_DRIFTER';
             if (entry.profiles[prof] !== undefined) entry.profiles[prof]++;
 
-            // Attention Check
             if (d.attentionCheckPassed === true) entry.attentionPassed++;
             else if (d.attentionCheckPassed === false) entry.attentionFailed++;
-            // Jika tidak ada nilai, diabaikan
 
-            // Kesediaan
             if (d.q6 === 'Ya') entry.bersedia++;
             else if (d.q6 === 'Tidak') entry.tidakBersedia++;
         });
 
-        // Ubah Map ke array untuk frontend
         const reportData = Array.from(schoolMap.entries()).map(([school, stats]) => ({
             sekolah: school,
             total: stats.total,
@@ -78,7 +80,6 @@ exports.handler = async (event) => {
             tidakBersedia: stats.tidakBersedia
         }));
 
-        // Urutkan berdasarkan total terbanyak
         reportData.sort((a, b) => b.total - a.total);
 
         return {
