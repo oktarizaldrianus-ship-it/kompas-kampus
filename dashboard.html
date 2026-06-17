@@ -17,7 +17,6 @@
             max-width: 1400px;
             margin: 0 auto;
         }
-        /* Header */
         .header-dash {
             display: flex;
             justify-content: space-between;
@@ -46,8 +45,6 @@
             background: #d4c5b0;
             color: #fff;
         }
-
-        /* Kartu Statistik */
         .stat-card {
             background: #ffffff;
             border-radius: 24px;
@@ -78,8 +75,6 @@
             color: #d4c5b0;
             opacity: 0.4;
         }
-
-        /* Panel Tabel */
         .table-panel {
             background: #ffffff;
             border-radius: 28px;
@@ -122,8 +117,15 @@
             background: #c5b49c;
             border-color: #c5b49c;
         }
-
-        /* Tabel */
+        .btn-csv {
+            background: #28a745;
+            color: white;
+            border: none;
+        }
+        .btn-csv:hover {
+            background: #1e7e34;
+            color: white;
+        }
         #studentTable {
             font-size: 0.9rem;
         }
@@ -145,8 +147,6 @@
             display: inline-block;
             white-space: nowrap;
         }
-
-        /* Login Overlay (cozy) */
         .login-overlay {
             position: fixed;
             top:0; left:0; width:100%; height:100%;
@@ -191,8 +191,6 @@
         .login-card .btn-primary:hover {
             background: #c5b49c;
         }
-
-        /* Modal */
         .modal-content {
             border-radius: 30px;
             border: none;
@@ -229,16 +227,6 @@
         #loginError {
             color: #c0392b;
             font-size: 0.9rem;
-        }
-        /* Tombol CSV hijau */
-        .btn-csv {
-            background: #28a745;
-            color: white;
-            border: none;
-        }
-        .btn-csv:hover {
-            background: #1e7e34;
-            color: white;
         }
     </style>
 </head>
@@ -318,21 +306,14 @@
                         <i class="fas fa-chart-bar"></i> Laporan Sekolah
                     </button>
                     <a href="/report.html" target="_blank" class="btn" style="background:#e74c3c; color:white; border:none;">
-                    <i class="fas fa-file-pdf"></i> PDF Laporan
+                        <i class="fas fa-file-pdf"></i> PDF Laporan
                     </a>
                     <button id="refreshBtn" class="btn"><i class="fas fa-sync-alt"></i> Refresh</button>
                     <button id="exportCsvBtn" class="btn btn-csv"><i class="fas fa-file-csv"></i> Download CSV</button>
                     <button id="sendSelectedBtn" class="btn btn-success"><i class="fas fa-paper-plane"></i> Kirim WA</button>
                 </div>
             </div>
-            <!-- AREA LAPORAN SEKOLAH -->
-            <div id="reportArea" style="display:none; margin-top:30px; padding-top:20px; border-top:2px dashed #e5ddd0;">
-            <h5><i class="fas fa-school"></i> Laporan Per Sekolah</h5>
-            <div id="reportContent" class="table-responsive">
-            <!-- Isi akan diisi oleh JavaScript -->
-            </div>
-                <button id="closeReportBtn" class="btn btn-outline-secondary mt-2" style="border-radius:40px;">Tutup Laporan</button>
-                </div>
+
             <table id="studentTable" class="table table-striped table-hover" style="width:100%">
                 <thead>
                     <tr>
@@ -350,6 +331,15 @@
                 </thead>
                 <tbody id="tableBody"></tbody>
             </table>
+
+            <!-- AREA LAPORAN SEKOLAH (di bawah tabel) -->
+            <div id="reportArea" style="display:none; margin-top:30px; padding-top:20px; border-top:2px dashed #e5ddd0;">
+                <h5><i class="fas fa-school"></i> Laporan Per Sekolah</h5>
+                <div id="reportContent" class="table-responsive">
+                    <!-- Isi akan diisi oleh JavaScript -->
+                </div>
+                <button id="closeReportBtn" class="btn btn-outline-secondary mt-2" style="border-radius:40px;">Tutup Laporan</button>
+            </div>
         </div>
     </div>
 </div>
@@ -390,103 +380,8 @@
 <script>
     (function() {
         'use strict';
-        // Tampilkan Laporan Sekolah
-document.getElementById('reportBtn').addEventListener('click', async function() {
-    const password = window._password;
-    if (!password) {
-        alert('Silakan login ulang.');
-        return;
-    }
 
-    const reportArea = document.getElementById('reportArea');
-    const reportContent = document.getElementById('reportContent');
-
-    // Tampilkan loading
-    reportArea.style.display = 'block';
-    reportContent.innerHTML = '<div class="text-center"><i class="fas fa-spinner fa-spin"></i> Memuat laporan...</div>';
-
-    try {
-        const response = await fetch(`${API_URL}/report`, {
-            headers: { 'x-admin-password': password }
-        });
-
-        if (response.status === 401) {
-            alert('Sesi habis, silakan login ulang.');
-            reportArea.style.display = 'none';
-            return;
-        }
-
-        const data = await response.json();
-
-        if (!data || data.length === 0) {
-            reportContent.innerHTML = '<div class="alert alert-info">Belum ada data responden.</div>';
-            return;
-        }
-
-        // Bangun tabel laporan
-        let html = `
-            <table class="table table-bordered table-hover" style="background:white; border-radius:12px; overflow:hidden;">
-                <thead class="table-light">
-                    <tr>
-                        <th>#</th>
-                        <th>Sekolah</th>
-                        <th>Total</th>
-                        <th>🚀 Siap</th>
-                        <th>💰 Potensial</th>
-                        <th>👨‍👩‍👧 Restu</th>
-                        <th>🔍 Pemilih</th>
-                        <th>🌊 Drifter</th>
-                        <th>✅ Valid</th>
-                        <th>❌ Tidak Valid</th>
-                        <th>📞 Bersedia</th>
-                        <th>🔇 Tidak</th>
-                    </tr>
-                </thead>
-                <tbody>
-        `;
-
-        data.forEach((row, idx) => {
-            const p = row.profiles;
-            html += `
-                <tr>
-                    <td>${idx+1}</td>
-                    <td><strong>${row.sekolah}</strong></td>
-                    <td>${row.total}</td>
-                    <td>${p.SIAP_MELUNCUR || 0}</td>
-                    <td>${p.PEJUANG_POTENSIAL || 0}</td>
-                    <td>${p.PEJUANG_RESTU || 0}</td>
-                    <td>${p.PEMILIH_BERKUALITAS || 0}</td>
-                    <td>${p.THE_DRIFTER || 0}</td>
-                    <td>${row.attentionPassed || 0}</td>
-                    <td>${row.attentionFailed || 0}</td>
-                    <td>${row.bersedia || 0}</td>
-                    <td>${row.tidakBersedia || 0}</td>
-                </tr>
-            `;
-        });
-
-        html += `
-                </tbody>
-            </table>
-            <div class="text-muted small mt-2">
-                <i class="fas fa-info-circle"></i> Valid = siswa menjawab 3 pada pertanyaan perhatian (q8). Tidak Valid = jawaban selain 3.
-            </div>
-        `;
-
-        reportContent.innerHTML = html;
-
-        // Scroll ke laporan
-        reportArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-    } catch (error) {
-        reportContent.innerHTML = `<div class="alert alert-danger">Gagal memuat laporan: ${error.message}</div>`;
-    }
-});
-
-// Tombol tutup laporan
-document.getElementById('closeReportBtn').addEventListener('click', function() {
-    document.getElementById('reportArea').style.display = 'none';
-});
+        // ---------- DEKLARASI GLOBAL ----------
         const API_URL = '/.netlify/functions';
         let table;
         let allData = [];
@@ -504,22 +399,22 @@ document.getElementById('closeReportBtn').addEventListener('click', function() {
                 document.getElementById('loginOverlay').style.display = 'none';
                 document.getElementById('mainContent').style.display = 'block';
                 window._password = pwd;
-                window._password = pwd;
-                localStorage.setItem('kompas_password', pwd); // <-- TAMBAHKAN BARIS INI
-                loadData(pwd);
+                localStorage.setItem('kompas_password', pwd);
                 loadData(pwd);
             }
         });
-        // Enter key untuk login
+
         document.getElementById('loginPassword').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') document.getElementById('loginBtn').click();
         });
 
+        // ---------- LOGOUT ----------
         document.getElementById('logoutBtn').addEventListener('click', function() {
             document.getElementById('loginOverlay').style.display = 'flex';
             document.getElementById('mainContent').style.display = 'none';
             document.getElementById('loginPassword').value = '';
             window._password = null;
+            localStorage.removeItem('kompas_password');
         });
 
         // ---------- LOAD DATA ----------
@@ -591,29 +486,25 @@ document.getElementById('closeReportBtn').addEventListener('click', function() {
             if (window._password) loadData(window._password);
         });
 
-        // ---------- EXPORT CSV (sudah di dalam IIFE, jadi API_URL terdefinisi) ----------
+        // ---------- EXPORT CSV ----------
         document.getElementById('exportCsvBtn').addEventListener('click', async function() {
             const password = window._password;
             if (!password) {
                 alert('Silakan login ulang.');
                 return;
             }
-
             try {
                 const response = await fetch(`${API_URL}/export-csv`, {
                     headers: { 'x-admin-password': password }
                 });
-
                 if (response.status === 401) {
                     alert('Sesi habis, silakan login ulang.');
                     return;
                 }
-
                 if (response.status === 404) {
                     alert('Belum ada data responden.');
                     return;
                 }
-
                 const blob = await response.blob();
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
@@ -628,11 +519,93 @@ document.getElementById('closeReportBtn').addEventListener('click', function() {
             }
         });
 
-        // ---------- SEND SELECTED ----------
+        // ---------- LAPORAN SEKOLAH ----------
+        document.getElementById('reportBtn').addEventListener('click', async function() {
+            const password = window._password;
+            if (!password) {
+                alert('Silakan login ulang.');
+                return;
+            }
+            const reportArea = document.getElementById('reportArea');
+            const reportContent = document.getElementById('reportContent');
+            reportArea.style.display = 'block';
+            reportContent.innerHTML = '<div class="text-center"><i class="fas fa-spinner fa-spin"></i> Memuat laporan...</div>';
+
+            try {
+                const response = await fetch(`${API_URL}/report`, {
+                    headers: { 'x-admin-password': password }
+                });
+                if (response.status === 401) {
+                    alert('Sesi habis, silakan login ulang.');
+                    reportArea.style.display = 'none';
+                    return;
+                }
+                const data = await response.json();
+                if (!data || data.length === 0) {
+                    reportContent.innerHTML = '<div class="alert alert-info">Belum ada data responden.</div>';
+                    return;
+                }
+                let html = `
+                    <table class="table table-bordered table-hover" style="background:white; border-radius:12px; overflow:hidden;">
+                        <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Sekolah</th>
+                                <th>Total</th>
+                                <th>🚀 Siap</th>
+                                <th>💰 Potensial</th>
+                                <th>👨‍👩‍👧 Restu</th>
+                                <th>🔍 Pemilih</th>
+                                <th>🌊 Drifter</th>
+                                <th>✅ Valid</th>
+                                <th>❌ Tidak Valid</th>
+                                <th>📞 Bersedia</th>
+                                <th>🔇 Tidak</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+                data.forEach((row, idx) => {
+                    const p = row.profiles;
+                    html += `
+                        <tr>
+                            <td>${idx+1}</td>
+                            <td><strong>${row.sekolah}</strong></td>
+                            <td>${row.total}</td>
+                            <td>${p.SIAP_MELUNCUR || 0}</td>
+                            <td>${p.PEJUANG_POTENSIAL || 0}</td>
+                            <td>${p.PEJUANG_RESTU || 0}</td>
+                            <td>${p.PEMILIH_BERKUALITAS || 0}</td>
+                            <td>${p.THE_DRIFTER || 0}</td>
+                            <td>${row.attentionPassed || 0}</td>
+                            <td>${row.attentionFailed || 0}</td>
+                            <td>${row.bersedia || 0}</td>
+                            <td>${row.tidakBersedia || 0}</td>
+                        </tr>
+                    `;
+                });
+                html += `
+                        </tbody>
+                    </table>
+                    <div class="text-muted small mt-2">
+                        <i class="fas fa-info-circle"></i> Valid = siswa menjawab 3 pada pertanyaan perhatian (q8). Tidak Valid = jawaban selain 3.
+                    </div>
+                `;
+                reportContent.innerHTML = html;
+                reportArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } catch (error) {
+                reportContent.innerHTML = `<div class="alert alert-danger">Gagal memuat laporan: ${error.message}</div>`;
+            }
+        });
+
+        document.getElementById('closeReportBtn').addEventListener('click', function() {
+            document.getElementById('reportArea').style.display = 'none';
+        });
+
+        // ---------- SEND WA (BULK) ----------
         document.getElementById('sendSelectedBtn').addEventListener('click', function() {
             const checked = document.querySelectorAll('.row-checkbox:checked');
             if (checked.length === 0) return alert('Pilih minimal 1 siswa.');
-            // Filter yang bersedia dihubungi
             const willing = Array.from(checked).filter(cb => {
                 const idx = parseInt(cb.dataset.idx);
                 return allData[idx] && allData[idx].q6 === 'Ya';
@@ -647,16 +620,13 @@ document.getElementById('closeReportBtn').addEventListener('click', function() {
             const selectedIndices = Array.from(checked).map(cb => parseInt(cb.dataset.idx));
             const selectedData = selectedIndices.map(i => allData[i]).filter(d => d && d.q6 === 'Ya');
             if (selectedData.length === 0) return alert('Tidak ada siswa bersedia.');
-
             const message = document.getElementById('messageText').value;
             const schedule = document.getElementById('scheduleTime').value;
-
             const payload = {
                 students: selectedData.map(d => ({ nama: d.nama, wa: d.wa })),
                 message: message,
                 schedule: schedule || null
             };
-
             const pwd = window._password;
             const res = await fetch(`${API_URL}/send-bulk`, {
                 method: 'POST',
@@ -675,9 +645,8 @@ document.getElementById('closeReportBtn').addEventListener('click', function() {
             }
         });
 
-        // ---------- GLOBAL PASSWORD HANDLER ----------
+        // ---------- INIT ----------
         window._password = null;
-
     })();
 </script>
 </body>
