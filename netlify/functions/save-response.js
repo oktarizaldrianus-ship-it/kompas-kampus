@@ -31,7 +31,7 @@ exports.handler = async (event) => {
             
             // Template pesan berdasarkan profil (santuy untuk siswa)
             const templateMap = {
-                'SIAP_MELUNCUR': '🚀 Halo {nama}, kamu masuk kategori SIAP MELUNCUR! Langsung daftar, kami bantu proses sampai dapat NIM. Klik link pendaftaran: [link-pendaftaran]',
+                'SIAP_MELUNCUR': '🚀 Halo {nama}, kamu masuk kategori SIAP MELUNCUR! Langsung daftar aja, kami Guru BK bantu proses sampai dapat NIM. Buka dan klik web pendaftaran kampus favoritmu',
                 'PEJUANG_POTENSIAL': '💰 Halo {nama}, semangatmu tinggi! Yuk cek info beasiswa KIP-K dan bantuan biaya di sini: [link-beasiswa]. Kami siap bantu berkas!',
                 'PEJUANG_RESTU': '👨‍👩‍👧‍👦 Halo {nama}, kami siap bantu kamu meyakinkan orang tua. Cek brosur khusus untuk orang tua di WA ini. Yuk diskusi!',
                 'PEMILIH_BERKUALITAS': '🔍 Halo {nama}, kamu teliti! Lihat fasilitas dan prestasi kampus kami di sini: [link-fasilitas]. Kami tunggu kamu!',
