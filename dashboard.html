@@ -306,42 +306,6 @@
                 <div class="btn-group-cozy">
     <button id="refreshBtn" class="btn"><i class="fas fa-sync-alt"></i> Refresh</button>
     <button id="exportCsvBtn" class="btn" style="background:#28a745; color:white; border:none;"><i class="fas fa-file-csv"></i> Download CSV</button>
-        // Tombol Export CSV
-    document.getElementById('exportCsvBtn').addEventListener('click', async function() {
-        const password = window._password;
-        if (!password) {
-            alert('Silakan login ulang.');
-            return;
-        }
-
-        try {
-            const response = await fetch(`${API_URL}/export-csv`, {
-                headers: { 'x-admin-password': password }
-            });
-
-            if (response.status === 401) {
-                alert('Sesi habis, silakan login ulang.');
-                return;
-            }
-
-            if (response.status === 404) {
-                alert('Belum ada data responden.');
-                return;
-            }
-
-            const blob = await response.blob();
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `laporan_kompas_kampus_${new Date().toISOString().slice(0,10)}.csv`;
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-            window.URL.revokeObjectURL(url);
-        } catch (error) {
-            alert('Gagal download CSV: ' + error.message);
-        }
-    });
     <button id="sendSelectedBtn" class="btn btn-success"><i class="fas fa-paper-plane"></i> Kirim WA</button>
 </div>
             </div>
@@ -401,6 +365,42 @@
 
 <script>
     (function() {
+            // Tombol Export CSV
+    document.getElementById('exportCsvBtn').addEventListener('click', async function() {
+        const password = window._password;
+        if (!password) {
+            alert('Silakan login ulang.');
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_URL}/export-csv`, {
+                headers: { 'x-admin-password': password }
+            });
+
+            if (response.status === 401) {
+                alert('Sesi habis, silakan login ulang.');
+                return;
+            }
+
+            if (response.status === 404) {
+                alert('Belum ada data responden.');
+                return;
+            }
+
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `laporan_kompas_kampus_${new Date().toISOString().slice(0,10)}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            alert('Gagal download CSV: ' + error.message);
+        }
+    });
         const API_URL = '/.netlify/functions';
         let table;
         let allData = [];
