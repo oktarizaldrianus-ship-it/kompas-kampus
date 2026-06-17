@@ -300,14 +300,20 @@
         <!-- TABEL -->
         <div class="table-panel">
             <div class="panel-header">
+                <select id="filterSekolah" class="form-select" style="width:200px; border-radius:30px; border:1px solid #e5ddd0; padding:6px 14px;">
+                <option value="all">📚 Semua Sekolah</option>
+                </select>
                 <h5><i class="fas fa-list-ul"></i> Daftar Siswa</h5>
                 <div class="btn-group-cozy">
                     <button id="reportBtn" class="btn" style="background:#6f42c1; color:white; border:none;">
                         <i class="fas fa-chart-bar"></i> Laporan Sekolah
                     </button>
-                    <a href="/report.html" target="_blank" class="btn" style="background:#e74c3c; color:white; border:none;">
+                    <select id="filterSekolah" class="form-select" style="width:200px; border-radius:30px; border:1px solid #e5ddd0; padding:6px 14px; margin-right:8px;">
+                    <option value="all">📚 Semua Sekolah</option>
+                    </select>
+                    <button id="pdfReportBtn" class="btn" style="background:#e74c3c; color:white; border:none;">
                         <i class="fas fa-file-pdf"></i> PDF Laporan
-                    </a>
+                    </button>
                     <button id="refreshBtn" class="btn"><i class="fas fa-sync-alt"></i> Refresh</button>
                     <button id="exportCsvBtn" class="btn btn-csv"><i class="fas fa-file-csv"></i> Download CSV</button>
                     <button id="sendSelectedBtn" class="btn btn-success"><i class="fas fa-paper-plane"></i> Kirim WA</button>
@@ -416,6 +422,17 @@
             window._password = null;
             localStorage.removeItem('kompas_password');
         });
+            document.getElementById('closeReportBtn').addEventListener('click', function() {
+            document.getElementById('reportArea').style.display = 'none';
+        });
+
+        // ---------- PDF LAPORAN (DENGAN FILTER SEKOLAH) ----------
+        document.getElementById('pdfReportBtn').addEventListener('click', function() {
+            const sekolah = document.getElementById('filterSekolah').value;
+            let url = '/report.html';
+            if (sekolah !== 'all') url += `?sekolah=${encodeURIComponent(sekolah)}`;
+            window.open(url, '_blank');
+        });
 
         // ---------- LOAD DATA ----------
         async function loadData(password) {
@@ -427,6 +444,14 @@
             allData = data;
             renderTable(data);
             updateStats(data);
+        }
+        function populateSchoolFilter(data) {
+        const select = document.getElementById('filterSekolah');
+        const schools = [...new Set(data.map(d => d.sekolah).filter(Boolean))];
+        select.innerHTML = '<option value="all">📚 Semua Sekolah</option>';
+        schools.forEach(s => {
+        select.innerHTML += `<option value="${s}">${s}</option>`;
+        });
         }
 
         function renderTable(data) {
