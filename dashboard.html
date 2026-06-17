@@ -504,6 +504,9 @@ document.getElementById('closeReportBtn').addEventListener('click', function() {
                 document.getElementById('loginOverlay').style.display = 'none';
                 document.getElementById('mainContent').style.display = 'block';
                 window._password = pwd;
+                window._password = pwd;
+                localStorage.setItem('kompas_password', pwd); // <-- TAMBAHKAN BARIS INI
+                loadData(pwd);
                 loadData(pwd);
             }
         });
