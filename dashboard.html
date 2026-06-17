@@ -87,11 +87,18 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
+            gap: 10px;
             margin-bottom: 20px;
         }
         .table-panel .panel-header h5 {
             font-weight: 600;
             color: #2c3e4f;
+        }
+        .table-panel .panel-header .btn-group-cozy {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            align-items: center;
         }
         .table-panel .panel-header .btn-group-cozy .btn {
             border-radius: 40px;
@@ -125,6 +132,13 @@
         .btn-csv:hover {
             background: #1e7e34;
             color: white;
+        }
+        #filterSekolah {
+            border-radius: 30px;
+            border: 1px solid #e5ddd0;
+            padding: 6px 14px;
+            background: white;
+            font-size: 0.85rem;
         }
         #studentTable {
             font-size: 0.9rem;
@@ -300,16 +314,13 @@
         <!-- TABEL -->
         <div class="table-panel">
             <div class="panel-header">
-                <select id="filterSekolah" class="form-select" style="width:200px; border-radius:30px; border:1px solid #e5ddd0; padding:6px 14px;">
-                <option value="all">📚 Semua Sekolah</option>
-                </select>
                 <h5><i class="fas fa-list-ul"></i> Daftar Siswa</h5>
                 <div class="btn-group-cozy">
                     <button id="reportBtn" class="btn" style="background:#6f42c1; color:white; border:none;">
                         <i class="fas fa-chart-bar"></i> Laporan Sekolah
                     </button>
-                    <select id="filterSekolah" class="form-select" style="width:200px; border-radius:30px; border:1px solid #e5ddd0; padding:6px 14px; margin-right:8px;">
-                    <option value="all">📚 Semua Sekolah</option>
+                    <select id="filterSekolah" class="form-select">
+                        <option value="all">📚 Semua Sekolah</option>
                     </select>
                     <button id="pdfReportBtn" class="btn" style="background:#e74c3c; color:white; border:none;">
                         <i class="fas fa-file-pdf"></i> PDF Laporan
@@ -338,7 +349,7 @@
                 <tbody id="tableBody"></tbody>
             </table>
 
-            <!-- AREA LAPORAN SEKOLAH (di bawah tabel) -->
+            <!-- AREA LAPORAN SEKOLAH -->
             <div id="reportArea" style="display:none; margin-top:30px; padding-top:20px; border-top:2px dashed #e5ddd0;">
                 <h5><i class="fas fa-school"></i> Laporan Per Sekolah</h5>
                 <div id="reportContent" class="table-responsive">
@@ -422,17 +433,6 @@
             window._password = null;
             localStorage.removeItem('kompas_password');
         });
-            document.getElementById('closeReportBtn').addEventListener('click', function() {
-            document.getElementById('reportArea').style.display = 'none';
-        });
-
-        // ---------- PDF LAPORAN (DENGAN FILTER SEKOLAH) ----------
-        document.getElementById('pdfReportBtn').addEventListener('click', function() {
-            const sekolah = document.getElementById('filterSekolah').value;
-            let url = '/report.html';
-            if (sekolah !== 'all') url += `?sekolah=${encodeURIComponent(sekolah)}`;
-            window.open(url, '_blank');
-        });
 
         // ---------- LOAD DATA ----------
         async function loadData(password) {
@@ -444,14 +444,7 @@
             allData = data;
             renderTable(data);
             updateStats(data);
-        }
-        function populateSchoolFilter(data) {
-        const select = document.getElementById('filterSekolah');
-        const schools = [...new Set(data.map(d => d.sekolah).filter(Boolean))];
-        select.innerHTML = '<option value="all">📚 Semua Sekolah</option>';
-        schools.forEach(s => {
-        select.innerHTML += `<option value="${s}">${s}</option>`;
-        });
+            populateSchoolFilter(data);
         }
 
         function renderTable(data) {
@@ -499,6 +492,16 @@
             document.getElementById('countSiap').innerText = counts.SIAP_MELUNCUR || 0;
             document.getElementById('countPotensial').innerText = counts.PEJUANG_POTENSIAL || 0;
             document.getElementById('countRestu').innerText = counts.PEJUANG_RESTU || 0;
+        }
+
+        // ---------- POPULATE SCHOOL FILTER ----------
+        function populateSchoolFilter(data) {
+            const select = document.getElementById('filterSekolah');
+            const schools = [...new Set(data.map(d => d.sekolah).filter(Boolean))];
+            select.innerHTML = '<option value="all">📚 Semua Sekolah</option>';
+            schools.forEach(s => {
+                select.innerHTML += `<option value="${s}">${s}</option>`;
+            });
         }
 
         // ---------- SELECT ALL ----------
@@ -625,6 +628,14 @@
 
         document.getElementById('closeReportBtn').addEventListener('click', function() {
             document.getElementById('reportArea').style.display = 'none';
+        });
+
+        // ---------- PDF LAPORAN (DENGAN FILTER SEKOLAH) ----------
+        document.getElementById('pdfReportBtn').addEventListener('click', function() {
+            const sekolah = document.getElementById('filterSekolah').value;
+            let url = '/report.html';
+            if (sekolah !== 'all') url += `?sekolah=${encodeURIComponent(sekolah)}`;
+            window.open(url, '_blank');
         });
 
         // ---------- SEND WA (BULK) ----------
