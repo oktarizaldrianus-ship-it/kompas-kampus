@@ -1,0 +1,10 @@
+kompas-kampus/
+├── netlify.toml
+├── package.json
+├── .env.example
+├── .gitignore
+└── netlify/
+    └── functions/
+        ├── save-response.js
+        ├── get-responses.js
+        └── send-bulk.js
