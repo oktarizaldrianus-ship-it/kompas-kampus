@@ -495,9 +495,12 @@
         }
 
         // ---------- POPULATE SCHOOL FILTER ----------
-        function populateSchoolFilter(data) {
+                function populateSchoolFilter(data) {
             const select = document.getElementById('filterSekolah');
+            // Ambil daftar sekolah unik, lalu urutkan
             const schools = [...new Set(data.map(d => d.sekolah).filter(Boolean))];
+            schools.sort((a, b) => a.localeCompare(b)); // <-- URUTKAN ALFABETIS
+
             select.innerHTML = '<option value="all">📚 Semua Sekolah</option>';
             schools.forEach(s => {
                 select.innerHTML += `<option value="${s}">${s}</option>`;
