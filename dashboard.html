@@ -322,9 +322,6 @@
                     <select id="filterSekolah" class="form-select">
                         <option value="all">📚 Semua Sekolah</option>
                     </select>
-                    <button id="pdfReportBtn" class="btn" style="background:#e74c3c; color:white; border:none;">
-                        <i class="fas fa-file-pdf"></i> PDF Laporan
-                    </button>
                     <button id="refreshBtn" class="btn"><i class="fas fa-sync-alt"></i> Refresh</button>
                     <button id="exportCsvBtn" class="btn btn-csv"><i class="fas fa-file-csv"></i> Download CSV</button>
                     <button id="sendSelectedBtn" class="btn btn-success"><i class="fas fa-paper-plane"></i> Kirim WA</button>
@@ -633,14 +630,7 @@
             document.getElementById('reportArea').style.display = 'none';
         });
 
-        // ---------- PDF LAPORAN (DENGAN FILTER SEKOLAH) ----------
-        document.getElementById('pdfReportBtn').addEventListener('click', function() {
-            const sekolah = document.getElementById('filterSekolah').value;
-            let url = '/report.html';
-            if (sekolah !== 'all') url += `?sekolah=${encodeURIComponent(sekolah)}`;
-            window.open(url, '_blank');
-        });
-
+      
         // ---------- SEND WA (BULK) ----------
         document.getElementById('sendSelectedBtn').addEventListener('click', function() {
             const checked = document.querySelectorAll('.row-checkbox:checked');
