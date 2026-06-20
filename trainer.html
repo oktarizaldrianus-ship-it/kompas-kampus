@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📊 Trainer Panel — Kompas Kampus</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background: #fbf8f0;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            padding: 24px;
+        }
+        .trainer-wrapper { max-width: 1400px; margin: 0 auto; }
+        .stat-card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 18px 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            border-left: 6px solid #d4c5b0;
+            height: 100%;
+        }
+        .stat-number { font-size: 2rem; font-weight: 700; color: #2c3e4f; }
+        .login-overlay {
+            position: fixed; top:0; left:0; width:100%; height:100%;
+            background: #fbf8f0; z-index:9999; display: flex; align-items: center; justify-content: center;
+        }
+        .login-card {
+            background: #ffffff; border-radius: 40px; padding: 40px 36px;
+            max-width: 400px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.05);
+            border: 1px solid #f0ebe1;
+        }
+        .btn-primary {
+            background: #d4c5b0; border: none; border-radius: 60px; padding: 12px; font-weight: 600; color: #1f2a33; width:100%;
+        }
+        .btn-primary:hover { background: #c5b49c; }
+    </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginOverlay" class="login-overlay">
+    <div class="login-card text-center">
+        <i class="fas fa-chart-line" style="font-size:2.5rem; color:#d4c5b0;"></i>
+        <h3 class="mt-2">Trainer Panel</h3>
+        <p class="text-muted">Masukkan kata sandi trainer</p>
+        <input type="password" id="loginPassword" class="form-control" placeholder="Kata Sandi" style="border-radius:30px;">
+        <button id="loginBtn" class="btn-primary mt-3">Masuk</button>
+        <div id="loginError" class="mt-2 text-danger" style="display:none;">❌ Password salah.</div>
+    </div>
+</div>
+
+<!-- MAIN -->
+<div id="mainContent" style="display:none;">
+    <div class="trainer-wrapper">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2><i class="fas fa-chart-bar"></i> Trainer Panel — Hasil Tes Guru BK</h2>
+            <div>
+                <button class="btn-outline-cozy" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Keluar</button>
+            </div>
+        </div>
+
+        <!-- Statistik -->
+        <div class="row g-3 mb-4">
+            <div class="col-6 col-md-3">
+                <div class="stat-card"><div class="stat-label">Total Peserta</div><div class="stat-number" id="totalPeserta">0</div></div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card" style="border-left-color:#28a745;"><div class="stat-label">Rata-rata Pre-Test</div><div class="stat-number" id="avgPre">0</div></div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card" style="border-left-color:#17a2b8;"><div class="stat-label">Rata-rata Post-Test</div><div class="stat-number" id="avgPost">0</div></div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card" style="border-left-color:#ffc107;"><div class="stat-label">Peningkatan</div><div class="stat-number" id="peningkatan">0%</div></div>
+            </div>
+        </div>
+
+        <!-- Grafik -->
+        <div class="row g-3 mb-4">
+            <div class="col-lg-8">
+                <div class="card p-3" style="border-radius:28px; border:1px solid #f0ebe1;">
+                    <canvas id="scoreChart" height="250"></canvas>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card p-3" style="border-radius:28px; border:1px solid #f0ebe1;">
+                    <canvas id="distChart" height="250"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabel -->
+        <div class="card p-3" style="border-radius:28px; border:1px solid #f0ebe1; background:white;">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5><i class="fas fa-list-ul"></i> Detail Skor</h5>
+                <button id="exportCsvBtn" class="btn btn-sm btn-success" style="border-radius:40px;"><i class="fas fa-file-csv"></i> Download CSV</button>
+            </div>
+            <table id="scoreTable" class="table table-striped" style="width:100%">
+                <thead><tr><th>Guru</th><th>Jenis</th><th>Skor</th><th>Waktu</th></tr></thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+<script>
+    (function() {
+        const API_URL = '/.netlify/functions';
+        let allData = [];
+        let table;
+
+        // ---------- LOGIN ----------
+        document.getElementById('loginBtn').addEventListener('click', async function() {
+            const pwd = document.getElementById('loginPassword').value;
+            const res = await fetch(`${API_URL}/get-test-results`, {
+                headers: { 'x-admin-password': pwd }
+            });
+            if (res.status === 401) {
+                document.getElementById('loginError').style.display = 'block';
+            } else {
+                document.getElementById('loginError').style.display = 'none';
+                document.getElementById('loginOverlay').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+                window._password = pwd;
+                loadData(pwd);
+            }
+        });
+        document.getElementById('loginPassword').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') document.getElementById('loginBtn').click();
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            document.getElementById('loginOverlay').style.display = 'flex';
+            document.getElementById('mainContent').style.display = 'none';
+            document.getElementById('loginPassword').value = '';
+            window._password = null;
+        });
+
+        // ---------- LOAD DATA ----------
+        async function loadData(password) {
+            const res = await fetch(`${API_URL}/get-test-results`, {
+                headers: { 'x-admin-password': password }
+            });
+            if (!res.ok) return alert('Gagal memuat data.');
+            const data = await res.json();
+            allData = data;
+            renderTable(data);
+            updateStats(data);
+            updateCharts(data);
+        }
+
+        function renderTable(data) {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+            data.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${row.teacherName || 'Anonim'}</td>
+                    <td><span class="badge ${row.testType === 'pre' ? 'bg-secondary' : 'bg-primary'}">${row.testType === 'pre' ? 'Pre-Test' : 'Post-Test'}</span></td>
+                    <td><strong>${row.score}</strong></td>
+                    <td>${new Date(row.timestamp).toLocaleString('id-ID')}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+            if (table) table.destroy();
+            table = $('#scoreTable').DataTable({ pageLength: 10, order: [[3, 'desc']] });
+        }
+
+        function updateStats(data) {
+            const teachers = [...new Set(data.map(d => d.teacherName))];
+            document.getElementById('totalPeserta').innerText = teachers.length;
+
+            const preScores = data.filter(d => d.testType === 'pre').map(d => d.score);
+            const postScores = data.filter(d => d.testType === 'post').map(d => d.score);
+            const avgPre = preScores.length ? (preScores.reduce((a,b)=>a+b,0)/preScores.length) : 0;
+            const avgPost = postScores.length ? (postScores.reduce((a,b)=>a+b,0)/postScores.length) : 0;
+
+            document.getElementById('avgPre').innerText = Math.round(avgPre);
+            document.getElementById('avgPost').innerText = Math.round(avgPost);
+            const pct = avgPre > 0 ? ((avgPost - avgPre) / avgPre * 100) : 0;
+            document.getElementById('peningkatan').innerText = (pct > 0 ? '+' : '') + Math.round(pct) + '%';
+        }
+
+        function updateCharts(data) {
+            // Perbandingan Skor
+            const preScores = data.filter(d => d.testType === 'pre').map(d => d.score);
+            const postScores = data.filter(d => d.testType === 'post').map(d => d.score);
+            const avgPre = preScores.length ? (preScores.reduce((a,b)=>a+b,0)/preScores.length) : 0;
+            const avgPost = postScores.length ? (postScores.reduce((a,b)=>a+b,0)/postScores.length) : 0;
+
+            const ctx1 = document.getElementById('scoreChart').getContext('2d');
+            new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: ['Pre-Test', 'Post-Test'],
+                    datasets: [{
+                        label: 'Rata-rata Skor',
+                        data: [Math.round(avgPre), Math.round(avgPost)],
+                        backgroundColor: ['#6c757d', '#17a2b8'],
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true, max: 100 } }
+                }
+            });
+
+            // Distribusi Peningkatan (count per skor range)
+            const ctx2 = document.getElementById('distChart').getContext('2d');
+            const labels = ['0-20', '21-40', '41-60', '61-80', '81-100'];
+            const counts = labels.map(() => 0);
+            data.forEach(d => {
+                const idx = Math.min(Math.floor(d.score / 20), 4);
+                counts[idx]++;
+            });
+            new Chart(ctx2, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: counts,
+                        backgroundColor: ['#e74c3c', '#f39c12', '#f1c40f', '#2ecc71', '#28a745']
+                    }]
+                },
+                options: { plugins: { legend: { position: 'bottom' } } }
+            });
+        }
+
+        // ---------- EXPORT CSV ----------
+        document.getElementById('exportCsvBtn').addEventListener('click', function() {
+            const rows = [['Guru','Jenis Tes','Skor','Waktu']];
+            allData.forEach(d => {
+                rows.push([
+                    d.teacherName || 'Anonim',
+                    d.testType === 'pre' ? 'Pre-Test' : 'Post-Test',
+                    d.score,
+                    new Date(d.timestamp).toLocaleString('id-ID')
+                ]);
+            });
+            const csv = rows.map(row => row.join(',')).join('\n');
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `hasil_tes_${new Date().toISOString().slice(0,10)}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+
+        window._password = null;
+    })();
+</script>
+</body>
+</html>
