@@ -24,6 +24,7 @@
             height: 100%;
         }
         .stat-number { font-size: 2rem; font-weight: 700; color: #2c3e4f; }
+        .stat-label { font-size: 0.85rem; color: #7e8c9e; font-weight: 500; }
         .login-overlay {
             position: fixed; top:0; left:0; width:100%; height:100%;
             background: #fbf8f0; z-index:9999; display: flex; align-items: center; justify-content: center;
@@ -37,6 +38,18 @@
             background: #d4c5b0; border: none; border-radius: 60px; padding: 12px; font-weight: 600; color: #1f2a33; width:100%;
         }
         .btn-primary:hover { background: #c5b49c; }
+        .btn-outline-cozy {
+            border: 1.5px solid #d4c5b0;
+            color: #5a4f3e;
+            border-radius: 40px;
+            padding: 6px 20px;
+            transition: 0.2s;
+            background: transparent;
+            text-decoration: none;
+        }
+        .btn-outline-cozy:hover { background: #d4c5b0; color: #fff; }
+        .filter-btn-group .btn { border-radius: 30px; padding: 4px 16px; font-size: 0.8rem; margin-right: 4px; }
+        .filter-btn-group .btn.active { background: #d4c5b0; color: #1f2a33; border-color: #d4c5b0; }
     </style>
 </head>
 <body>
@@ -79,6 +92,14 @@
             </div>
         </div>
 
+        <!-- Filter Cepat -->
+        <div class="mb-3 filter-btn-group">
+            <button class="btn btn-outline-secondary active" id="filterAll">📋 Semua</button>
+            <button class="btn btn-outline-danger" id="filterBelumPre">⚠️ Belum Pre-Test</button>
+            <button class="btn btn-outline-warning" id="filterSkorRendah">📉 Skor Pre < 60</button>
+            <button class="btn btn-outline-info" id="filterSudahPreBelumPost">🔄 Sudah Pre, Belum Post</button>
+        </div>
+
         <!-- Grafik -->
         <div class="row g-3 mb-4">
             <div class="col-lg-8">
@@ -100,7 +121,17 @@
                 <button id="exportCsvBtn" class="btn btn-sm btn-success" style="border-radius:40px;"><i class="fas fa-file-csv"></i> Download CSV</button>
             </div>
             <table id="scoreTable" class="table table-striped" style="width:100%">
-                <thead><tr><th>Guru</th><th>Jenis</th><th>Skor</th><th>Waktu</th></tr></thead>
+                <thead>
+                    <tr>
+                        <th>Nama</th>
+                        <th>Sekolah</th>
+                        <th>WA</th>
+                        <th>JK</th>
+                        <th>Jenis Tes</th>
+                        <th>Skor</th>
+                        <th>Waktu</th>
+                    </tr>
+                </thead>
                 <tbody id="tableBody"></tbody>
             </table>
         </div>
@@ -115,6 +146,7 @@
     (function() {
         const API_URL = '/.netlify/functions';
         let allData = [];
+        let filteredData = [];
         let table;
 
         // ---------- LOGIN ----------
@@ -152,18 +184,23 @@
             if (!res.ok) return alert('Gagal memuat data.');
             const data = await res.json();
             allData = data;
+            filteredData = data;
             renderTable(data);
             updateStats(data);
             updateCharts(data);
         }
 
+        // ---------- RENDER TABLE ----------
         function renderTable(data) {
             const tbody = document.getElementById('tableBody');
             tbody.innerHTML = '';
             data.forEach(row => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td>${row.teacherName || 'Anonim'}</td>
+                    <td>${row.teacherName || '-'}</td>
+                    <td>${row.teacherSchool || '-'}</td>
+                    <td>${row.teacherWa || '-'}</td>
+                    <td>${row.teacherGender || '-'}</td>
                     <td><span class="badge ${row.testType === 'pre' ? 'bg-secondary' : 'bg-primary'}">${row.testType === 'pre' ? 'Pre-Test' : 'Post-Test'}</span></td>
                     <td><strong>${row.score}</strong></td>
                     <td>${new Date(row.timestamp).toLocaleString('id-ID')}</td>
@@ -171,9 +208,10 @@
                 tbody.appendChild(tr);
             });
             if (table) table.destroy();
-            table = $('#scoreTable').DataTable({ pageLength: 10, order: [[3, 'desc']] });
+            table = $('#scoreTable').DataTable({ pageLength: 10, order: [[6, 'desc']] });
         }
 
+        // ---------- UPDATE STATS ----------
         function updateStats(data) {
             const teachers = [...new Set(data.map(d => d.teacherName))];
             document.getElementById('totalPeserta').innerText = teachers.length;
@@ -189,8 +227,8 @@
             document.getElementById('peningkatan').innerText = (pct > 0 ? '+' : '') + Math.round(pct) + '%';
         }
 
+        // ---------- UPDATE CHARTS ----------
         function updateCharts(data) {
-            // Perbandingan Skor
             const preScores = data.filter(d => d.testType === 'pre').map(d => d.score);
             const postScores = data.filter(d => d.testType === 'post').map(d => d.score);
             const avgPre = preScores.length ? (preScores.reduce((a,b)=>a+b,0)/preScores.length) : 0;
@@ -215,7 +253,6 @@
                 }
             });
 
-            // Distribusi Peningkatan (count per skor range)
             const ctx2 = document.getElementById('distChart').getContext('2d');
             const labels = ['0-20', '21-40', '41-60', '61-80', '81-100'];
             const counts = labels.map(() => 0);
@@ -236,12 +273,52 @@
             });
         }
 
+        // ---------- FILTER ----------
+        function applyFilter(filterFn) {
+            const filtered = allData.filter(filterFn);
+            filteredData = filtered;
+            renderTable(filtered);
+            updateStats(filtered);
+            updateCharts(filtered);
+        }
+
+        document.getElementById('filterAll').addEventListener('click', function() {
+            document.querySelectorAll('.filter-btn-group .btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            applyFilter(() => true);
+        });
+
+        document.getElementById('filterBelumPre').addEventListener('click', function() {
+            document.querySelectorAll('.filter-btn-group .btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            const sudahPre = new Set(allData.filter(d => d.testType === 'pre').map(d => d.teacherName));
+            applyFilter(d => d.testType === 'pre' || !sudahPre.has(d.teacherName));
+        });
+
+        document.getElementById('filterSkorRendah').addEventListener('click', function() {
+            document.querySelectorAll('.filter-btn-group .btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            applyFilter(d => d.testType === 'pre' && d.score < 60);
+        });
+
+        document.getElementById('filterSudahPreBelumPost').addEventListener('click', function() {
+            document.querySelectorAll('.filter-btn-group .btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            const sudahPre = new Set(allData.filter(d => d.testType === 'pre').map(d => d.teacherName));
+            const sudahPost = new Set(allData.filter(d => d.testType === 'post').map(d => d.teacherName));
+            const butuhPost = [...sudahPre].filter(n => !sudahPost.has(n));
+            applyFilter(d => butuhPost.includes(d.teacherName));
+        });
+
         // ---------- EXPORT CSV ----------
         document.getElementById('exportCsvBtn').addEventListener('click', function() {
-            const rows = [['Guru','Jenis Tes','Skor','Waktu']];
+            const rows = [['Nama','Sekolah','WA','JK','Jenis Tes','Skor','Waktu']];
             allData.forEach(d => {
                 rows.push([
                     d.teacherName || 'Anonim',
+                    d.teacherSchool || '',
+                    d.teacherWa || '',
+                    d.teacherGender || '',
                     d.testType === 'pre' ? 'Pre-Test' : 'Post-Test',
                     d.score,
                     new Date(d.timestamp).toLocaleString('id-ID')
