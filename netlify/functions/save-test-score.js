@@ -68,3 +68,12 @@ exports.handler = async (event) => {
         };
     }
 };
+await db.collection('teacher_tests').add({
+    teacherName: data.teacherName || 'Anonim',
+    teacherSchool: data.teacherSchool || '',
+    teacherWa: data.teacherWa || '',
+    teacherGender: data.teacherGender || '',
+    testType: data.testType,
+    score: data.score,
+    timestamp: data.timestamp || new Date().toISOString()
+});
