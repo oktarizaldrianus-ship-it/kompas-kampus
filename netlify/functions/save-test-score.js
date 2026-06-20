@@ -41,12 +41,15 @@ exports.handler = async (event) => {
         }
 
         // 5. Simpan ke Firestore (koleksi: teacher_tests)
-        const docRef = await db.collection('teacher_tests').add({
-            teacherName: data.teacherName || 'Anonim',
-            testType: data.testType, // 'pre' atau 'post'
-            score: data.score,       // 0-100
-            timestamp: data.timestamp || new Date().toISOString()
-        });
+       await db.collection('teacher_tests').add({
+    teacherName: data.teacherName || 'Anonim',
+    teacherSchool: data.teacherSchool || '',
+    teacherWa: data.teacherWa || '',
+    teacherGender: data.teacherGender || '',
+    testType: data.testType,
+    score: data.score,
+    timestamp: data.timestamp || new Date().toISOString()
+});
 
         // 6. Kembalikan response sukses
         return {
