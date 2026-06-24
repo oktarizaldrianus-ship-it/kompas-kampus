@@ -1,0 +1,17 @@
+{
+  "name": "kompas-kampus",
+  "version": "1.0.0",
+  "description": "Kompas Kampus - Behavioral Audit for College Readiness",
+  "type": "module",
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "preview": "wrangler dev"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0",
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  }
+}
