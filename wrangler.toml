@@ -1,0 +1,8 @@
+# wrangler.toml - Konfigurasi Cloudflare Pages
+name = "kompas-kampus"
+compatibility_date = "2024-06-24"
+
+[pages]
+  build_command = "echo 'No build required'"
+  deploy_command = "exit 0"
+  publish_directory = "."
