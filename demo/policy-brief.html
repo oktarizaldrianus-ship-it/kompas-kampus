@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Policy Brief: Intention-Behavior Gap & Rekayasa Perilaku PMB</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-canvas: #f4f6f9;
+            --card-bg: #ffffff;
+            --neon-pink: #ff2a85;
+            --neon-purple: #7928ca;
+            --neon-blue: #00dfd8;
+            --neon-yellow: #ffb800;
+            --dark-main: #111827;
+            --text-muted: #4b5563;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-canvas);
+            color: var(--dark-main);
+            min-height: 100vh;
+            margin: 0;
+            padding: 40px 15px 120px;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(121, 40, 202, 0.08) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(255, 42, 133, 0.08) 0px, transparent 50%);
+        }
+
+        .postmodern-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border: 4px solid var(--dark-main);
+            border-radius: 36px;
+            padding: 3rem;
+            box-shadow: 14px 14px 0px var(--dark-main);
+            position: relative;
+        }
+
+        .tag-pill {
+            display: inline-block;
+            background: var(--neon-yellow);
+            color: var(--dark-main);
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            padding: 6px 18px;
+            border-radius: 50px;
+            border: 2px solid var(--dark-main);
+            box-shadow: 3px 3px 0px var(--dark-main);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 2.6rem;
+            letter-spacing: -1px;
+            color: var(--dark-main);
+            margin-top: 1rem;
+            line-height: 1.1;
+        }
+
+        .meta-box {
+            background: #fffbeb;
+            border: 3px solid var(--dark-main);
+            border-radius: 20px;
+            padding: 1rem 1.5rem;
+            box-shadow: 4px 4px 0px var(--dark-main);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        h2, h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            color: var(--dark-main);
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px dashed var(--dark-main);
+            padding-bottom: 0.5rem;
+        }
+
+        /* Post-modern Salience Cards */
+        .post-card {
+            background: #ffffff;
+            border: 3px solid var(--dark-main);
+            border-radius: 24px;
+            padding: 1.8rem;
+            box-shadow: 6px 6px 0px var(--dark-main);
+            transition: transform 0.2s;
+            height: 100%;
+        }
+        .post-card:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 9px 9px 0px var(--dark-main);
+        }
+        .post-card.pink { background: #ffe4e6; border-color: #e11d48; box-shadow: 6px 6px 0px #e11d48; }
+        .post-card.purple { background: #ede9fe; border-color: #7c3aed; box-shadow: 6px 6px 0px #7c3aed; }
+        .post-card.cyan { background: #ccfbf1; border-color: #0d9488; box-shadow: 6px 6px 0px #0d9488; }
+        .post-card.yellow { background: #fef9c3; border-color: #ca8a04; box-shadow: 6px 6px 0px #ca8a04; }
+        .post-card.orange { background: #ffedd5; border-color: #c2410c; box-shadow: 6px 6px 0px #c2410c; }
+        .post-card.green { background: #dcfce7; border-color: #16a34a; box-shadow: 6px 6px 0px #16a34a; }
+
+        .stat-huge {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.3rem;
+            font-weight: 700;
+            margin: 0.4rem 0;
+        }
+
+        .funnel-visual-box {
+            background: #ffffff;
+            border: 3px solid var(--dark-main);
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 6px 6px 0px var(--dark-main);
+            text-align: center;
+        }
+
+        .table-pm {
+            border: 3px solid var(--dark-main) !important;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 6px 6px 0px var(--dark-main);
+        }
+        .table-pm th {
+            background: var(--dark-main) !important;
+            color: #ffffff !important;
+            font-family: 'Space Grotesk', sans-serif;
+            padding: 1rem;
+        }
+        .table-pm td {
+            padding: 1rem;
+            font-weight: 600;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .accordion-button:not(.collapsed) {
+            background-color: #fef08a !important;
+            color: var(--dark-main);
+            font-weight: bold;
+        }
+        .accordion-item {
+            border: 3px solid var(--dark-main) !important;
+            border-radius: 16px !important;
+            overflow: hidden;
+            margin-bottom: 1rem;
+            box-shadow: 4px 4px 0px var(--dark-main);
+        }
+
+        .action-banner {
+            background: #22c55e;
+            border: 3px solid var(--dark-main);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 8px 8px 0px var(--dark-main);
+            color: var(--dark-main);
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="postmodern-wrapper">
+        <!-- HEADER -->
+        <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 pb-4 mb-4 border-bottom border-3 border-dark">
+            <div>
+                <span class="tag-pill">⚡ Working Paper No. 01/2026</span>
+                <h1>Intention-Behavior Gap: Menutup Jurang Niat & Aksi PMB</h1>
+            </div>
+            <div class="meta-box">
+                <div class="text-danger fw-bold"><i class="fas fa-flask me-1"></i> Kolaborasi Riset:</div>
+                <div>• Psychosophia Behavioral Lab</div>
+                <div>• Tim Sosialisasi IAIN SAS Babel</div>
+            </div>
+        </div>
+
+        <!-- KEY MESSAGES -->
+        <div class="mb-5">
+            <h3><i class="fas fa-bolt text-warning"></i> Key Messages (Pesan Utama Eksekutif)</h3>
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="post-card cyan">
+                        <div class="fw-bold fs-5 text-dark mb-2">🏛️ Sinergi Hulu Sukses, Terhambat di Hilir</div>
+                        <p class="small text-muted mb-0">Tim Sosialisasi berhasil memengaruhi opini orang tua & guru (P=0.009). Namun, dukungan eksternal ini belum cukup menumbuhkan kepercayaan diri siswa dalam pendaftaran mandiri.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="post-card pink">
+                        <div class="fw-bold fs-5 text-dark mb-2">⚠️ Intention-Behavior Gap yang Kritikal</div>
+                        <p class="small text-muted mb-0">Meskipun niat siswa tinggi, jalur menuju komitmen pendaftaran tidak signifikan (P=0.541). Niat bersifat pasif dan mudah menguap tanpa pemicu eksternal (nudging).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TARGET STAKEHOLDERS -->
+        <div class="mb-5">
+            <h3><i class="fas fa-bullseye text-danger"></i> 1. Policy Brief Ini Ditujukan untuk Siapa Saja? (Target Stakeholders)</h3>
+            <p class="text-muted small">Dokumen rekomendasi berbasis bukti ini dirancang khusus bagi para pemangku kepentingan lintas sektoral:</p>
+            
+            <div class="row g-4">
+                <div class="col-md-3">
+                    <div class="post-card pink">
+                        <div class="fs-2">🏛️</div>
+                        <div class="fw-bold fs-6 mb-1 text-danger">Pimpinan & Manajemen Kampus</div>
+                        <p class="small text-muted mb-0">Rektorat & Biro Admisi sebagai dasar alokasi anggaran dan transformasi digital berbasis sains perilaku.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="post-card yellow">
+                        <div class="fs-2">📢</div>
+                        <div class="fw-bold fs-6 mb-1 text-warning">Tim Sosialisasi & Marketing PMB</div>
+                        <p class="small text-muted mb-0">Praktisi lapangan untuk micro-targeting wilayah dan eksekusi WhatsApp Nudging Blast.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="post-card cyan">
+                        <div class="fs-2">🏫</div>
+                        <div class="fw-bold fs-6 mb-1 text-teal" style="color:#0d9488">Guru BK & Pengurus ABKIN</div>
+                        <p class="small text-muted mb-0">Konselor sekolah sebagai mitra strategis menjembatani restu orang tua & memetakan hambatan siswa.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="post-card orange">
+                        <div class="fs-2">📜</div>
+                        <div class="fw-bold fs-6 mb-1 text-orange" style="color:#c2410c">Policy Maker / Dinas Pendidikan</div>
+                        <p class="small text-muted mb-0">Pemerintah daerah untuk merumuskan strategi peningkatan APK Perguruan Tinggi.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {/* NEW SECTION: URGENSI & MANFAAT LINTAS SEKTOR (GURU BK, ABKIN, PEMERINTAH & APK BABEL) */}
+        <div class="mb-5">
+            <h3><i class="fas fa-network-wired text-success"></i> 2. Urgensi Lintas Sektor: Lebih dari Sekadar Perekrutan Kampus</h3>
+            <p class="text-muted small">Model rekayasa perilaku (*behavioral intervention model*) ini dirancang sebagai kerangka makro yang memberikan dampak transformatif bagi ekosistem pendidikan di Provinsi Kepulauan Bangka Belitung:</p>
+
+            <div class="row g-4 mt-2">
+                <!-- Guru BK & ABKIN -->
+                <div class="col-md-4">
+                    <div class="post-card green">
+                        <div class="fs-2 mb-2">🤝</div>
+                        <div class="fw-bold fs-5 text-dark mb-2">Transformasi Peran Guru BK & ABKIN</div>
+                        <p class="small text-muted mb-2">
+                            Selama ini, guru Bimbingan Konseling (BK) di sekolah sering kali terkendala dalam membimbing siswa memilih jenjang pendidikan tinggi akibat hambatan psikologis (*perceived behavioral control*) dan minimnya data prediktif.
+                        </p>
+                        <hr class="my-2">
+                        <p class="small text-dark mb-0">
+                            <strong>Manfaat:</strong> Model ini memberikan instrumen diagnostik bagi ABKIN (Asosiasi Bimbingan dan Konseling Indonesia) untuk memetakan "Pejuang Restu" dan "Pejuang Potensial" secara dini, mengubah peran guru BK dari sekadar pencatat administrasi menjadi konselor karier berbasis bukti saintifik.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Pemerintah & Dinas Pendidikan -->
+                <div class="col-md-4">
+                    <div class="post-card cyan">
+                        <div class="fs-2 mb-2">📈</div>
+                        <div class="fw-bold fs-5 text-dark mb-2">Akselerasi APK (Angka Partisipasi Kasar) Babel</div>
+                        <p class="small text-muted mb-2">
+                            Provinsi Kepulauan Bangka Belitung membutuhkan akselerasi signifikan dalam meningkatkan Angka Partisipasi Kasar (APK) Perguruan Tinggi agar daya saing SDM daerah meningkat secara merata.
+                        </p>
+                        <hr class="my-2">
+                        <p class="small text-dark mb-0">
+                            <strong>Manfaat:</strong> Pemerintah daerah dan Dinas Pendidikan dapat menggunakan riset ini sebagai rujukan empiris untuk merumuskan kebijakan afirmatif, beasiswa tepat sasaran, serta intervensi kebijakan publik yang memotong hambatan finansial dan psikologis lulusan SMA/SMK/MA di wilayah kepulauan.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Ekosistem Sosial & Masa Depan Daerah -->
+                <div class="col-md-4">
+                    <div class="post-card purple">
+                        <div class="fs-2 mb-2">🌐</div>
+                        <div class="fw-bold fs-5 text-dark mb-2">Pemberdayaan Wilayah Lintas Kabupaten</div>
+                        <p class="small text-muted mb-2">
+                            Kesenjangan akses informasi antara perkotaan (Pangkalpinang) dan wilayah kabupaten (Bangka, Bangka Barat, Selatan, Tengah, Belitung) menciptakan ketimpangan aspirasi kuliah.
+                        </p>
+                        <hr class="my-2">
+                        <p class="small text-dark mb-0">
+                            <strong>Manfaat:</strong> Pendekatan nudging digital yang diuji coba dalam model ini dapat direplikasi oleh institusi pendidikan lain di Babel untuk menjangkau daerah 3T (Terdepan, Terluar, Tertinggal) secara efisien tanpa biaya operasional logistik yang tinggi.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- METODOLOGI, WILAYAH & SAMPEL -->
+        <div class="mb-5">
+            <h3><i class="fas fa-map-marked-alt text-primary"></i> 3. Metodologi Riset, Sampel & Cakupan Wilayah</h3>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="post-card yellow">
+                        <div class="fs-2">📍</div>
+                        <div class="fw-bold fs-5 mb-2">Wilayah Cakupan</div>
+                        <p class="small text-muted mb-0">Provinsi Kepulauan Bangka Belitung (Lintas Kabupaten/Kota: Pangkalpinang, Bangka, Bangka Tengah, Bangka Barat, Bangka Selatan, Belitung).</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="post-card cyan">
+                        <div class="fs-2">👥</div>
+                        <div class="fw-bold fs-5 mb-2">Sampel & Partisipan</div>
+                        <p class="small text-muted mb-0"><strong>n = 450+</strong> Siswa/i kelas XII SMA/SMK/MA sederajat yang menjadi target langsung penerimaan mahasiswa baru 2026.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="post-card purple">
+                        <div class="fs-2">📊</div>
+                        <div class="fw-bold fs-5 mb-2">Metode Analisis</div>
+                        <p class="small text-muted mb-0">Pendekatan <em>Behavioral Science</em> & <strong>PLS-SEM</strong> (SmartPLS 4) untuk menguji kausalitas Theory of Planned Behavior (TPB).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FREKUENSI PROFIL KESIAPAN -->
+        <div class="mb-5">
+            <h3><i class="fas fa-chart-pie text-success"></i> 4. Frekuensi Profil Kesiapan Calon Mahasiswa</h3>
+            <p class="text-muted small">Distribusi profil segmentasi psikologis calon mahasiswa baru berdasarkan kesiapan mental dan kendali diri (*perceived behavioral control*).</p>
+            
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-6">
+                    <div class="p-3 bg-white border border-3 border-dark rounded-4 shadow-sm">
+                        <canvas id="readinessPieChart" height="240"></canvas>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="d-flex flex-column gap-3">
+                        <div class="p-3 rounded-4 bg-light border border-2 border-dark d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="badge bg-success mb-1">22.4%</span>
+                                <div class="fw-bold text-dark">🚀 Siap Meluncur (Optimal)</div>
+                                <div class="small text-muted">Kesiapan mental, dukungan sosial & kendali diri matang.</div>
+                            </div>
+                            <span class="fs-4">🎯</span>
+                        </div>
+                        <div class="p-3 rounded-4 bg-light border border-2 border-dark d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="badge bg-warning text-dark mb-1">34.8%</span>
+                                <div class="fw-bold text-dark">💰 Pejuang Potensial</div>
+                                <div class="small text-muted">Niat kuat namun terkendala finansial/biaya/jarak.</div>
+                            </div>
+                            <span class="fs-4">💡</span>
+                        </div>
+                        <div class="p-3 rounded-4 bg-light border border-2 border-dark d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="badge bg-info text-dark mb-1">26.5%</span>
+                                <div class="fw-bold text-dark">👨‍👩‍👧‍👦 Pejuang Restu</div>
+                                <div class="small text-muted">Niat bulat namun bergantung pada restu orang tua/guru.</div>
+                            </div>
+                            <span class="fs-4">🤝</span>
+                        </div>
+                        <div class="p-3 rounded-4 bg-light border border-2 border-dark d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="badge bg-secondary mb-1">16.3%</span>
+                                <div class="fw-bold text-dark">🌊 Masih Eksplorasi</div>
+                                <div class="small text-muted">Pasif & menimbang opsi jalur karier lain.</div>
+                            </div>
+                            <span class="fs-4">🔍</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SALIENCE STAT CARDS -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
+                <div class="post-card cyan">
+                    <div class="fs-2">🌱</div>
+                    <div class="stat-huge" style="color: #0d9488;">P = 0.009</div>
+                    <div class="fw-bold text-uppercase text-xs" style="letter-spacing: 1px;">Branding & Norma Sosial</div>
+                    <p class="small text-muted mt-2 mb-0">Sukses mendongkrak dukungan orang tua & guru di hulu.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="post-card pink">
+                    <div class="fs-2">⚠️</div>
+                    <div class="stat-huge" style="color: #e11d48;">P = 0.541</div>
+                    <div class="fw-bold text-uppercase text-xs" style="letter-spacing: 1px;">Intention-Behavior Gap</div>
+                    <p class="small text-muted mt-2 mb-0">Niat siswa labil dan gagal berkonversi jadi pendaftaran riil.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="post-card purple">
+                    <div class="fs-2">🚀</div>
+                    <div class="stat-huge" style="color: #7c3aed;">89.5%</div>
+                    <div class="fw-bold text-uppercase text-xs" style="letter-spacing: 1px;">Potensi Konversi Niat</div>
+                    <p class="small text-muted mt-2 mb-0">Dapat diselamatkan via otomatisasi WhatsApp Nudging.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- GRAFIK & CORONG BOCOR -->
+        <div class="row g-4 mb-5">
+            <div class="col-lg-6">
+                <h3><i class="fas fa-chart-bar text-primary"></i> Koefisien Jalur (PLS-SEM)</h3>
+                <div class="p-3 bg-white border border-3 border-dark rounded-4 shadow-sm">
+                    <canvas id="pathBarChart" height="230"></canvas>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <h3><i class="fas fa-filter text-danger"></i> The Leaky Funnel (Corong Bocor)</h3>
+                <div class="funnel-visual-box">
+                    <svg viewBox="0 0 300 180" width="100%" height="140" class="mb-3">
+                        <path d="M50 20 L250 20 L180 110 L180 150 L120 150 L120 110 Z" fill="#fef08a" stroke="#111827" stroke-width="4" stroke-linejoin="round"/>
+                        <polygon points="65,35 235,35 210,80 90,80" fill="#0284c7" opacity="0.8"/>
+                        <polygon points="90,80 210,80 170,120 130,120" fill="#f43f5e" opacity="0.8"/>
+                        <circle cx="150" cy="135" r="7" fill="#f43f5e" stroke="#111827" stroke-width="3">
+                            <animate attributeName="cy" values="120;165" dur="1.2s" repeatCount="indefinite"/>
+                            <animate attributeName="opacity" values="1;0" dur="1.2s" repeatCount="indefinite"/>
+                        </circle>
+                        <text x="150" y="70" font-family="Space Grotesk" font-weight="bold" font-size="14" fill="#ffffff" text-anchor="middle">⚠️ BOCOR 89.5%</text>
+                    </svg>
+                    <div class="d-flex justify-content-between px-3 text-xs fw-bold text-muted">
+                        <span>Awareness: 100%</span>
+                        <span>Norma: 78%</span>
+                        <span>Niat: 65%</span>
+                        <span class="text-danger">Daftar: 12%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TABEL AUDIT JALUR KRITIS -->
+        <div class="mb-5">
+            <h3><i class="fas fa-table text-dark"></i> Tabel Audit Kausalitas & Rekomendasi Nudge</h3>
+            <div class="table-responsive">
+                <table class="table table-pm align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Prioritas & Jalur</th>
+                            <th>Koefisien</th>
+                            <th>P-Value</th>
+                            <th>Status Audit</th>
+                            <th>Rekomendasi Intervensi Nudge</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>P1: Awareness &rarr; Norma</strong></td>
+                            <td>0.358</td>
+                            <td>0.003</td>
+                            <td><span class="badge bg-success">Success</span></td>
+                            <td>Pertahankan intensitas sosialisasi tatap muka langsung.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>P2: PBC &rarr; Intention</strong></td>
+                            <td>0.256</td>
+                            <td>0.398</td>
+                            <td><span class="badge bg-warning text-dark">Friction</span></td>
+                            <td>Sederhanakan alur pendaftaran (Tutorial interaktif via WA).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>P3: Intention &rarr; Commitment</strong></td>
+                            <td>0.105</td>
+                            <td>0.020</td>
+                            <td><span class="badge bg-danger">Broken</span></td>
+                            <td><strong>Wajib Nudging Otomatis</strong> (WhatsApp Blast pengingat kuota).</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- LAMPIRAN TEKNIS & ANNEX (AKORDION POST-MODERN) -->
+        <div class="mb-5">
+            <h3><i class="fas fa-folder-open text-purple"></i> Lampiran Teknis & Data SmartPLS (Annex A-D)</h3>
+            <p class="text-muted small">Rincian statistik, validitas konstruk, multikolinieritas, serta profil demografis responden sebagai basis validasi ilmiah.</p>
+
+            <div class="accordion" id="annexAccordion">
+                
+                {/* Annex B.1 */}
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            📁 Annex B.1: Validitas & Reliabilitas Konstruk (Outer Model Quality)
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#annexAccordion">
+                        <div class="accordion-body bg-light">
+                            <div class="table-responsive">
+                                <table class="table table-sm table-bordered bg-white mb-2">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>Variabel</th>
+                                            <th>Cronbach's Alpha</th>
+                                            <th>Composite Reliability (rho_a)</th>
+                                            <th>AVE</th>
+                                            <th>Keterangan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td>Brand Awareness</td><td>0.892</td><td>0.895</td><td>0.750</td><td>Sangat Handal</td></tr>
+                                        <tr><td>Attitude</td><td>0.845</td><td>0.850</td><td>0.680</td><td>Handal</td></tr>
+                                        <tr><td>Subjective Norms</td><td>0.812</td><td>0.815</td><td>0.610</td><td>Handal</td></tr>
+                                        <tr><td>PBC</td><td>0.785</td><td>0.790</td><td>0.590</td><td>Memenuhi Syarat</td></tr>
+                                        <tr><td>Intention</td><td>0.905</td><td>0.910</td><td>0.780</td><td>Sangat Handal</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <p class="small text-muted mb-0"><em>Catatan Model:</em> Seluruh nilai Cronbach's Alpha dan Composite Reliability di atas 0.70, AVE di atas 0.50, membuktikan instrumen memiliki validitas konvergen yang kuat.</p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Annex B.2 */}
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            📁 Annex B.2 & B.4: R-Square & Ringkasan Gap Perilaku
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#annexAccordion">
+                        <div class="accordion-body bg-light">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <ul class="list-group small mb-3">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span>Intention (R-Square)</span>
+                                            <span class="badge bg-primary rounded-pill">42.8% (Moderat)</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span>Binary Commitment (R-Square)</span>
+                                            <span class="badge bg-danger rounded-pill">1.1% (Butuh Intervensi)</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <p class="small text-muted">
+                                        Model mampu menjelaskan 42.8% varians niat siswa. Namun nilai R-Square Binary Commitment yang sangat rendah ($1.1\%$) mengonfirmasi adanya kesenjangan nyata (*Intention-Behavior Gap*) yang menuntut intervensi *Nudging*.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Annex D */}
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingThree">
+                        <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            📁 Annex D: Profil Demografis Responden (Wilayah & Jenis Sekolah)
+                        </button>
+                    </h2>
+                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#annexAccordion">
+                        <div class="accordion-body bg-light">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="fw-bold small mb-1">Tabel D.1: Distribusi Wilayah Responden</div>
+                                    <ul class="list-group small">
+                                        <li class="list-group-item d-flex justify-content-between"><span>1. Kabupaten Bangka</span><span class="text-success fw-bold">Basis Utama</span></li>
+                                        <li class="list-group-item d-flex justify-content-between"><span>2. Bangka Tengah</span><span class="text-success fw-bold">Basis Utama</span></li>
+                                        <li class="list-group-item d-flex justify-content-between"><span>3. Bangka Barat & Selatan</span><span class="text-warning fw-bold">Wilayah Ekspansi</span></li>
+                                        <li class="list-group-item d-flex justify-content-between"><span>4. Pangkalpinang</span><span class="text-info fw-bold">Wilayah Penyangga</span></li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="fw-bold small mb-1">Tabel D.2: Karakteristik Latar Belakang Pendidikan</div>
+                                    <ul class="list-group small">
+                                        <li class="list-group-item d-flex justify-content-between"><span>Madrasah Aliyah (MA)</span><span>Religious Identity & Social Proof</span></li>
+                                        <li class="list-group-item d-flex justify-content-between"><span>SMA (Negeri/Swasta)</span><span>Academic Career & Achievement</span></li>
+                                        <li class="list-group-item d-flex justify-content-between"><span>SMK</span><span>Professional Skills & Job Readiness</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ACTION BANNER -->
+        <div class="action-banner">
+            <h3 class="text-dark mb-3" style="font-family:'Space Grotesk';"><i class="fas fa-bullhorn me-2"></i> Rekomendasi Manajerial & Rencana Aksi</h3>
+            <div class="row g-3 text-sm fw-bold">
+                <div class="col-md-4">
+                    <div class="p-3 bg-white border border-3 border-dark rounded-4 shadow-sm text-dark">
+                        <span class="text-success fs-5">01</span>
+                        <div class="mt-1">Segmentasi Database Wilayah berbasis Kabupaten/Kota untuk efisiensi pemasaran.</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 bg-white border border-3 border-dark rounded-4 shadow-sm text-dark">
+                        <span class="text-primary fs-5">02</span>
+                        <div class="mt-1">Reduksi Hambatan Teknis (PBC) menjadi narasi "Tutorial Pendaftaran 5 Menit".</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 bg-white border border-3 border-dark rounded-4 shadow-sm text-dark">
+                        <span class="text-danger fs-5">03</span>
+                        <div class="mt-1">Implementasi WhatsApp Nudging Berseri untuk mengonversi niat menjadi pendaftaran riil.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="mt-5 pt-3 border-top border-3 border-dark d-flex justify-content-between align-items-center flex-wrap gap-2 text-muted fw-bold small">
+            <div>Psychosophia Behavioral Lab &amp; Tim Sosialisasi IAIN SAS Babel — <em>Bridging Data to Human Behavior</em></div>
+            <div><button class="btn btn-dark fw-bold px-4 rounded-pill shadow-sm" onclick="window.print()"><i class="fas fa-print me-1"></i> Cetak Policy Brief</button></div>
+        </div>
+    </div>
+
+    {/* Chart.js Init */}
+    <script>
+        const ctxBar = document.getElementById('pathBarChart').getContext('2d');
+        new Chart(ctxBar, {
+            type: 'bar',
+            data: {
+                labels: ['Awareness->Norms', 'Norms->Intention', 'PBC->Intention', 'Intention->Commitment'],
+                datasets: [{
+                    label: 'Koefisien Jalur',
+                    data: [0.358, 0.331, 0.256, 0.105],
+                    backgroundColor: ['#0d9488', '#ffb800', '#ffb800', '#e11d48'],
+                    borderColor: '#111827',
+                    borderWidth: 2,
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { min: 0, max: 0.5, ticks: { font: { family: 'Plus Jakarta Sans', weight: 'bold' } } },
+                    x: { ticks: { font: { family: 'Plus Jakarta Sans', size: 10, weight: 'bold' } } }
+                },
+                plugins: { legend: { display: false } }
+            }
+        });
+
+        const ctxPie = document.getElementById('readinessPieChart').getContext('2d');
+        new Chart(ctxPie, {
+            type: 'doughnut',
+            data: {
+                labels: ['Siap Meluncur', 'Pejuang Potensial', 'Pejuang Restu', 'Masih Eksplorasi'],
+                datasets: [{
+                    data: [22.4, 34.8, 26.5, 16.3],
+                    backgroundColor: ['#22c55e', '#f59e0b', '#06b6d4', '#64748b'],
+                    borderColor: '#111827',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { font: { family: 'Plus Jakarta Sans', weight: 'bold', size: 11 } }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+

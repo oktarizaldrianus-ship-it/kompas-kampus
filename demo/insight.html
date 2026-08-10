@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Policy Brief: Intention-Behavior Gap & The Leaky Funnel</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-canvas: #f4f6f9;
+            --card-bg: #ffffff;
+            --neon-pink: #ff2a85;
+            --neon-purple: #7928ca;
+            --neon-blue: #00dfd8;
+            --neon-yellow: #ffb800;
+            --dark-main: #111827;
+            --text-muted: #4b5563;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-canvas);
+            color: var(--dark-main);
+            min-height: 100vh;
+            margin: 0;
+            padding: 40px 15px 120px;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(121, 40, 202, 0.08) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(255, 42, 133, 0.08) 0px, transparent 50%);
+        }
+
+        .postmodern-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border: 4px solid var(--dark-main);
+            border-radius: 36px;
+            padding: 3rem;
+            box-shadow: 14px 14px 0px var(--dark-main);
+            position: relative;
+        }
+
+        .tag-pill {
+            display: inline-block;
+            background: var(--neon-yellow);
+            color: var(--dark-main);
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            padding: 6px 18px;
+            border-radius: 50px;
+            border: 2px solid var(--dark-main);
+            box-shadow: 3px 3px 0px var(--dark-main);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 2.5rem;
+            letter-spacing: -1px;
+            color: var(--dark-main);
+            margin-top: 1rem;
+            line-height: 1.1;
+        }
+
+        .meta-box {
+            background: #fffbeb;
+            border: 3px solid var(--dark-main);
+            border-radius: 20px;
+            padding: 1rem 1.5rem;
+            box-shadow: 4px 4px 0px var(--dark-main);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        h2, h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            color: var(--dark-main);
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px dashed var(--dark-main);
+            padding-bottom: 0.5rem;
+        }
+
+        .post-card {
+            background: #ffffff;
+            border: 3px solid var(--dark-main);
+            border-radius: 24px;
+            padding: 1.8rem;
+            box-shadow: 6px 6px 0px var(--dark-main);
+            transition: transform 0.2s;
+            height: 100%;
+        }
+        .post-card:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 9px 9px 0px var(--dark-main);
+        }
+        .post-card.pink { background: #ffe4e6; border-color: #e11d48; box-shadow: 6px 6px 0px #e11d48; }
+        .post-card.purple { background: #ede9fe; border-color: #7c3aed; box-shadow: 6px 6px 0px #7c3aed; }
+        .post-card.cyan { background: #ccfbf1; border-color: #0d9488; box-shadow: 6px 6px 0px #0d9488; }
+        .post-card.yellow { background: #fef9c3; border-color: #ca8a04; box-shadow: 6px 6px 0px #ca8a04; }
+        .post-card.green { background: #dcfce7; border-color: #16a34a; box-shadow: 6px 6px 0px #16a34a; }
+
+        .stat-huge {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.3rem;
+            font-weight: 700;
+            margin: 0.4rem 0;
+        }
+
+        .funnel-visual-box {
+            background: #ffffff;
+            border: 3px solid var(--dark-main);
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 6px 6px 0px var(--dark-main);
+            text-align: center;
+        }
+
+        .table-pm {
+            border: 3px solid var(--dark-main) !important;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 6px 6px 0px var(--dark-main);
+        }
+        .table-pm th {
+            background: var(--dark-main) !important;
+            color: #ffffff !important;
+            font-family: 'Space Grotesk', sans-serif;
+            padding: 1rem;
+        }
+        .table-pm td {
+            padding: 1rem;
+            font-weight: 600;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .action-banner {
+            background: #0ea5e9;
+            border: 3px solid var(--dark-main);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 8px 8px 0px var(--dark-main);
+            color: #ffffff;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="postmodern-wrapper">
+        <!-- HEADER -->
+        <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 pb-4 mb-4 border-bottom border-3 border-dark">
+            <div>
+                <span class="tag-pill">Policy Brief ABKIN & Stakeholder No. 01/2026</span>
+                <h1>Analisis Transisi Studi Lanjut & Fenomena The Leaky Funnel</h1>
+            </div>
+            <div class="meta-box">
+                <div class="text-danger fw-bold"><i class="fas fa-graduation-cap me-1"></i> Fokus Kebijakan:</div>
+                <div>• Penguatan Bimbingan Karier Siswa</div>
+                <div>• Peningkatan APK Perguruan Tinggi Babel</div>
+            </div>
+        </div>
+
+        <!-- KEY INSIGHTS -->
+        <div class="mb-5">
+            <h3><i class="fas fa-lightbulb text-warning"></i> Temuan Utama (Key Insights) untuk ABKIN & Guru BK</h3>
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="post-card cyan">
+                        <div class="fw-bold fs-5 text-dark mb-2">Niat Siswa Tinggi, Namun Rapuh di Ujung</div>
+                        <p class="small text-muted mb-0">Siswa memiliki aspirasi kuliah yang tinggi di awal, tetapi tidak terkonversi menjadi tindakan nyata karena hambatan administratif dan minimnya pendampingan personal.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="post-card pink">
+                        <div class="fw-bold fs-5 text-dark mb-2">Fenomena The Leaky Funnel (Corong Bocor)</div>
+                        <p class="small text-muted mb-0">Data empiris membuktikan adanya jurang pemisah antara kesadaran atau niat dengan komitmen final pendaftaran institusi pendidikan tinggi.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SALIENCE STAT CARDS -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
+                <div class="post-card cyan">
+                    <div class="fs-2">🌱</div>
+                    <div class="stat-huge" style="color: #0d9488;">P = 0.003</div>
+                    <div class="fw-bold text-uppercase text-xs" style="letter-spacing: 1px;">Pengaruh Sosial / Guru</div>
+                    <p class="small text-muted mt-2 mb-0">Dukungan lingkungan sekolah efektif membangun aspirasi awal siswa.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="post-card pink">
+                    <div class="fs-2">⚠️</div>
+                    <div class="stat-huge" style="color: #e11d48;">P = 0.020</div>
+                    <div class="fw-bold text-uppercase text-xs" style="letter-spacing: 1px;">Intention-Behavior Gap</div>
+                    <p class="small text-muted mt-2 mb-0">Niat siswa sering menguap akibat hambatan prosedural (friction).</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="post-card purple">
+                    <div class="fs-2">🚀</div>
+                    <div class="stat-huge" style="color: #7c3aed;">89.5%</div>
+                    <div class="fw-bold text-uppercase text-xs" style="letter-spacing: 1px;">Potensi Penyelamatan Niat</div>
+                    <p class="small text-muted mt-2 mb-0">Dapat dicegah via pendampingan digital dan intervensi terstruktur.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION: ANIMASI & VISUALISASI THE LEAKY FUNNEL -->
+        <div class="row g-4 mb-5">
+            <div class="col-lg-6">
+                <h3><i class="fas fa-chart-bar text-primary"></i> Koefisien Jalur Transisi Siswa</h3>
+                <div class="p-3 bg-white border border-3 border-dark rounded-4 shadow-sm">
+                    <canvas id="pathBarChart" height="230"></canvas>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <h3><i class="fas fa-filter text-danger"></i> The Leaky Funnel (Corong Bocor)</h3>
+                <div class="funnel-visual-box">
+                    <svg viewBox="0 0 300 180" width="100%" height="140" class="mb-3">
+                        <path d="M50 20 L250 20 L180 110 L180 150 L120 150 L120 110 Z" fill="#fef08a" stroke="#111827" stroke-width="4" stroke-linejoin="round"/>
+                        <polygon points="65,35 235,35 210,80 90,80" fill="#0284c7" opacity="0.8"/>
+                        <polygon points="90,80 210,80 170,120 130,120" fill="#f43f5e" opacity="0.8"/>
+                        <circle cx="150" cy="135" r="7" fill="#f43f5e" stroke="#111827" stroke-width="3">
+                            <animate attributeName="cy" values="120;165" dur="1.2s" repeatCount="indefinite"/>
+                            <animate attributeName="opacity" values="1;0" dur="1.2s" repeatCount="indefinite"/>
+                        </circle>
+                        <circle cx="165" cy="140" r="5" fill="#f43f5e" stroke="#111827" stroke-width="3">
+                            <animate attributeName="cy" values="125;170" dur="0.9s" repeatCount="indefinite"/>
+                            <animate attributeName="opacity" values="1;0" dur="0.9s" repeatCount="indefinite"/>
+                        </circle>
+                        <text x="150" y="70" font-family="Space Grotesk" font-weight="bold" font-size="14" fill="#ffffff" text-anchor="middle">BOCOR 89.5%</text>
+                    </svg>
+
+                    <div class="d-flex justify-content-between px-3 text-xs fw-bold text-muted">
+                        <span>Aspirasi: 100%</span>
+                        <span>Norma: 78%</span>
+                        <span>Niat: 65%</span>
+                        <span class="text-danger">Aksi: 12%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- INTERPRETASI LEAKY FUNNEL -->
+        <div class="mb-5 p-4 bg-light border border-3 border-dark rounded-4">
+            <h4 class="font-space fw-bold text-danger mb-3"><i class="fas fa-search-dollar me-2"></i> Interpretasi Kritis Fenomena Corong Bocor</h4>
+            <p class="small text-muted mb-2">
+                Grafik corong di atas mengilustrasikan bagaimana antusiasme siswa di tingkat awal (fase informasi dan dorongan guru/orang tua) mengalami penurunan drastis saat memasuki fase aksi pendaftaran atau pengurusan administrasi studi lanjut.
+            </p>
+            <p class="small text-muted mb-0">
+                Hal ini menegaskan bahwa masalah utama rendahnya Angka Partisipasi Kasar (APK) bukan terletak pada kurangnya minat siswa untuk kuliah, melainkan karena adanya hambatan psikologis-prosedural yang tidak terfasilitasi dengan baik oleh sistem bimbingan konvensional.
+            </p>
+        </div>
+
+        <!-- TABEL AUDIT PSIKOLOGIS TRANSISI KARIER -->
+        <div class="mb-5">
+            <h3><i class="fas fa-table text-dark"></i> Tabel Audit Kausalitas Transisi Studi Lanjut</h3>
+            <div class="table-responsive">
+                <table class="table table-pm align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Jalur Variabel Psikologis</th>
+                            <th>Koefisien</th>
+                            <th>P-Value</th>
+                            <th>Status Analisis</th>
+                            <th>Rekomendasi Intervensi Konseling</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Informasi &rarr; Norma Sosial</strong></td>
+                            <td>0.358</td>
+                            <td>0.003</td>
+                            <td><span class="badge bg-success">Signifikan</span></td>
+                            <td>Perkuat sinergi sekolah dan orang tua dalam bimbingan karier.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Kendali Diri &rarr; Niat</strong></td>
+                            <td>0.256</td>
+                            <td>0.398</td>
+                            <td><span class="badge bg-warning text-dark">Hambatan</span></td>
+                            <td>Reduksi kecemasan administratif dengan panduan praktis.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Niat &rarr; Komitmen Aksi</strong></td>
+                            <td>0.105</td>
+                            <td>0.020</td>
+                            <td><span class="badge bg-danger">Gap Kritis</span></td>
+                            <td>Gunakan sistem pengingat otomatis dan pendampingan personal.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ACTION BANNER -->
+        <div class="action-banner">
+            <h3 class="text-white mb-3" style="font-family:'Space Grotesk';"><i class="fas fa-bullhorn me-2"></i> Rekomendasi Tindak Lanjut untuk ABKIN & Stakeholder Pendidikan</h3>
+            <div class="row g-3 text-sm fw-bold">
+                <div class="col-md-4">
+                    <div class="p-3 bg-white text-dark border border-3 border-dark rounded-4 shadow-sm">
+                        <span class="text-success fs-5">01</span>
+                        <div class="mt-1">Pelatihan asesmen kesiapan karier berbasis data bagi guru BK se-Babel.</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 bg-white text-dark border border-3 border-dark rounded-4 shadow-sm">
+                        <span class="text-primary fs-5">02</span>
+                        <div class="mt-1">Kolaborasi ABKIN dan Dinas Pendidikan dalam pemerataan akses informasi.</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 bg-white text-dark border border-3 border-dark rounded-4 shadow-sm">
+                        <span class="text-danger fs-5">03</span>
+                        <div class="mt-1">Implementasi program pendampingan untuk menutup jurang corong bocor.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="mt-5 pt-3 border-top border-3 border-dark d-flex justify-content-between align-items-center flex-wrap gap-2 text-muted fw-bold small">
+            <div>Psychosophia Behavioral Lab — <em>Bridging Data to Human Behavior</em></div>
+            <div><button class="btn btn-dark fw-bold px-4 rounded-pill shadow-sm" onclick="window.print()"><i class="fas fa-print me-1"></i> Cetak Policy Brief</button></div>
+        </div>
+    </div>
+
+    <!-- Chart.js Init -->
+    <script>
+        const ctxBar = document.getElementById('pathBarChart').getContext('2d');
+        new Chart(ctxBar, {
+            type: 'bar',
+            data: {
+                labels: ['Info->Norms', 'Norms->Intention', 'PBC->Intention', 'Intention->Commitment'],
+                datasets: [{
+                    label: 'Koefisien Jalur',
+                    data: [0.358, 0.331, 0.256, 0.105],
+                    backgroundColor: ['#0d9488', '#ffb800', '#ffb800', '#e11d48'],
+                    borderColor: '#111827',
+                    borderWidth: 2,
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { min: 0, max: 0.5, ticks: { font: { family: 'Plus Jakarta Sans', weight: 'bold' } } },
+                    x: { ticks: { font: { family: 'Plus Jakarta Sans', size: 10, weight: 'bold' } } }
+                },
+                plugins: { legend: { display: false } }
+            }
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,1935 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kompas Kampus 2026 - Platform Terpadu & Buku Saku ABKIN</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-game-dark: #050b14;
+            --bg-game-card: rgba(11, 19, 36, 0.96);
+            --neon-gold: #ffc700;
+            --neon-cyan: #00f0ff;
+            --neon-magenta: #ff007f;
+            --text-main: #ffffff;
+            --text-sub: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-game-dark);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255, 0, 127, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(0, 240, 255, 0.15) 0%, transparent 40%),
+                linear-gradient(135deg, #030712 0%, #0a1128 50%, #170d27 100%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px 0 100px;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: linear-gradient(rgba(0,240,255,0.03) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(0,240,255,0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .container-game {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Top Navigation Bar */
+        .platform-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(11, 19, 36, 0.95);
+            border: 1.5px solid rgba(0, 240, 255, 0.4);
+            padding: 14px 24px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .nav-brand {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: var(--neon-cyan);
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .nav-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .nav-buttons .btn-role {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: var(--text-sub);
+            padding: 6px 14px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .nav-buttons .btn-role:hover, .nav-buttons .btn-role.active {
+            background: var(--neon-cyan);
+            color: #030712;
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.6);
+            font-weight: 700;
+        }
+
+        /* App Panels */
+        .app-panel { display: none; }
+        .app-panel.active { display: block; animation: fadeInPanel 0.4s ease forwards; }
+        @keyframes fadeInPanel {
+            0% { opacity: 0; transform: translateY(15px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .game-hud-panel {
+            background: var(--bg-game-card);
+            backdrop-filter: blur(25px);
+            border: 2px solid rgba(0, 240, 255, 0.35);
+            border-radius: 28px;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.85);
+            padding: 2.5rem;
+        }
+
+        /* Compass Hero Animation */
+        .game-logo-container {
+            width: 85px;
+            height: 85px;
+            background: linear-gradient(135deg, rgba(0,240,255,0.25), rgba(255,199,0,0.25));
+            border: 2px solid var(--neon-cyan);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.6);
+            animation: pulseCompass 3s infinite ease-in-out;
+        }
+        .game-logo-container i {
+            font-size: 2.3rem;
+            color: var(--neon-gold);
+            filter: drop-shadow(0 0 12px var(--neon-gold));
+            animation: rotateIcon 10s linear infinite;
+        }
+        @keyframes pulseCompass {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(0,240,255,0.4); }
+            50% { transform: scale(1.08); box-shadow: 0 0 40px rgba(255,199,0,0.8); }
+        }
+        @keyframes rotateIcon {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .game-title {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 2.6rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: linear-gradient(to right, #ffffff, var(--neon-cyan), var(--neon-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(0,240,255,0.5);
+            margin-bottom: 5px;
+        }
+        .game-subtitle { color: var(--text-sub); font-size: 1.05rem; font-weight: 600; }
+
+        /* Form Controls */
+        .form-label {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            color: #ffffff;
+            font-size: 1.15rem;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+        .form-control, .form-select {
+            background: rgba(3, 7, 18, 0.95);
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            border-radius: 14px;
+            color: #ffffff;
+            padding: 0.8rem 1.2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .form-control:focus, .form-select:focus {
+            background: rgba(3, 7, 18, 1);
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+            color: #ffffff;
+        }
+        .form-control::placeholder { color: #94a3b8; font-weight: 400; }
+
+        .scale-group {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            margin-top: 10px;
+        }
+        @media(max-width: 576px) { .scale-group { grid-template-columns: repeat(5, 1fr); gap: 6px; } }
+        .scale-btn {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.95));
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            border-radius: 16px;
+            padding: 12px 0;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 6px 0 rgba(3, 7, 18, 0.9);
+            user-select: none;
+        }
+        .scale-btn:hover { border-color: var(--neon-gold); transform: translateY(-2px); }
+        .scale-btn.active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 rgba(3, 7, 18, 0.9), 0 0 20px var(--neon-cyan);
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.25), rgba(255, 199, 0, 0.25));
+            border-color: var(--neon-cyan);
+        }
+        .scale-btn input { display: none; }
+        .scale-number {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: #ffffff;
+            display: block;
+        }
+        .scale-label-desc {
+            font-size: 0.75rem;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            font-weight: 700;
+            display: block;
+            margin-top: 2px;
+        }
+
+        .choice-group { display: flex; gap: 15px; flex-wrap: wrap; margin-top: 10px; }
+        .choice-label {
+            flex: 1;
+            min-width: 140px;
+            background: rgba(15, 23, 42, 0.95);
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            border-radius: 14px;
+            padding: 12px 18px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 700;
+            color: #ffffff;
+        }
+        .choice-label input { display: none; }
+        .choice-label.active {
+            background: rgba(0, 240, 255, 0.25);
+            border-color: var(--neon-cyan);
+            color: var(--neon-cyan);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+        }
+
+        .catch-item-box {
+            background: rgba(255, 199, 0, 0.08);
+            border: 2px dashed rgba(255, 199, 0, 0.6);
+            border-radius: 20px;
+            padding: 1.4rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .btn-launch {
+            background: linear-gradient(135deg, var(--neon-gold), #ff9900, var(--neon-magenta));
+            border: 2px solid #ffffff;
+            border-radius: 18px;
+            padding: 16px 30px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: #030712;
+            width: 100%;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 10px 30px rgba(255, 153, 0, 0.5);
+            transition: 0.3s;
+        }
+        .btn-launch:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(255, 199, 0, 0.8); }
+
+        /* Salience Stat Cards */
+        .stat-card-salience {
+            background: rgba(15, 23, 42, 0.95);
+            border: 2px solid rgba(0, 240, 255, 0.4);
+            border-radius: 20px;
+            padding: 18px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.15);
+        }
+        .stat-card-salience .salience-number {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: var(--neon-gold);
+            line-height: 1.1;
+            text-shadow: 0 0 15px rgba(255, 199, 0, 0.4);
+        }
+        .stat-card-salience .salience-symbol {
+            font-size: 1.5rem;
+            margin-bottom: 2px;
+        }
+        .stat-card-salience .salience-label {
+            font-size: 0.85rem;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+
+        .table-dark-gaming {
+            background: rgba(3, 7, 18, 0.95) !important;
+            color: #ffffff !important;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        .table-dark-gaming th {
+            background: rgba(11, 19, 36, 0.98) !important;
+            color: var(--neon-gold) !important;
+            font-family: 'Rajdhani', sans-serif;
+            letter-spacing: 0.5px;
+        }
+        .table-dark-gaming td { color: #e2e8f0 !important; vertical-align: middle; }
+
+        /* Report Preview Modal Styling */
+        .pdf-preview-box {
+            background: #ffffff;
+            color: #1f2937;
+            border-radius: 16px;
+            padding: 2.5rem;
+            max-width: 920px;
+            width: 100%;
+            margin: 0 auto;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            max-height: 88vh;
+            overflow-y: auto;
+        }
+
+        /* Modal Custom */
+        .custom-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(3, 7, 18, 0.88);
+            backdrop-filter: blur(10px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .custom-modal.active { display: flex; animation: fadeInModal 0.3s ease forwards; }
+        @keyframes fadeInModal {
+            0% { opacity: 0; transform: scale(0.95); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        .modal-box {
+            background: #0b1324;
+            border: 2px solid var(--neon-cyan);
+            border-radius: 24px;
+            max-width: 680px;
+            width: 100%;
+            padding: 2.5rem;
+            box-shadow: 0 0 50px rgba(0,240,255,0.4);
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        footer {
+            margin-top: 4rem;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 2.5rem 0;
+            color: var(--text-sub);
+        }
+
+        @media print {
+            body { background: #ffffff !important; color: #000000 !important; margin: 0 !important; padding: 0 !important; }
+            .platform-nav, .custom-modal:not(.active), .app-panel:not(.active), footer, .btn, button { display: none !important; }
+            .custom-modal.active { position: absolute !important; top: 0 !important; left: 0 !important; width: 100% !important; height: auto !important; background: #ffffff !important; backdrop-filter: none !important; padding: 0 !important; display: block !important; }
+            .pdf-preview-box { box-shadow: none !important; max-height: none !important; overflow: visible !important; width: 100% !important; max-width: 100% !important; padding: 10mm !important; margin: 0 !important; background: #ffffff !important; color: #000000 !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container-game">
+        
+        <!-- PLATFORM NAVIGATION SWITCHER -->
+        <div class="platform-nav">
+            <div class="nav-brand">
+                <i class="fas fa-satellite-dish"></i> KOMPAS KAMPUS 2026 (ABKIN)
+            </div>
+            <div class="nav-buttons">
+                <button class="btn-role active" onclick="switchRole('student')"><i class="fas fa-user-graduate me-1"></i> Isian Siswa</button>
+                <button class="btn-role" onclick="switchRole('bk')"><i class="fas fa-chalkboard-teacher me-1"></i> Dashboard BK</button>
+                <button class="btn-role" onclick="switchRole('admin')"><i class="fas fa-user-shield me-1"></i> Dashboard Admin</button>
+                <button class="btn-role" onclick="switchRole('manual')"><i class="fas fa-book-open me-1"></i> Buku Saku ABKIN</button>
+                <button class="btn-role" onclick="openAboutModal()" style="border-color: var(--neon-gold); color: var(--neon-gold);"><i class="fas fa-info-circle me-1"></i> Tentang App</button>
+            </div>
+        </div>
+
+        <!-- ================= 1. HALAMAN SISWA ================= -->
+        <div id="panel-student" class="app-panel active">
+            <div class="game-hud-panel">
+                <div class="text-center mb-5">
+                    <div class="game-logo-container"><i class="fas fa-compass"></i></div>
+                    <h1 class="game-title">Kompas Kampus 2026</h1>
+                    <p class="game-subtitle">Eksplorasi Perilaku & Peta Strategi Menuju Gerbang Kampus Impianmu!</p>
+                </div>
+
+                <form id="diagnosticForm" novalidate>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label">Nama Lengkap <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="nama" placeholder="Contoh: Zaskia Aurelia" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Asal Sekolah / Madrasah (SMA/SMK/MA) <span class="text-danger">*</span></label>
+                            <!-- Search filter instan di atas dropdown select standar -->
+                            <div class="mb-2">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text bg-dark text-cyan border-secondary"><i class="fas fa-search"></i></span>
+                                    <input type="text" id="schoolSearchInput" class="form-control form-control-sm" placeholder="Ketik untuk memfilter nama sekolah..." oninput="filterSchoolDropdown()" autocomplete="off">
+                                    <button class="btn btn-outline-secondary btn-sm" type="button" onclick="clearSchoolSearch()"><i class="fas fa-times"></i></button>
+                                </div>
+                            </div>
+                            <select class="form-select" id="sekolah" required size="5" style="height: 120px;">
+                                <option value="">-- Pilih Asal Sekolah SMA/SMK/MA --</option>
+                            </select>
+                            <small class="text-muted d-block mt-1" style="color: #cbd5e1 !important;"><i class="fas fa-info-circle text-cyan me-1"></i> Anda bisa mengetik kata kunci sekolah di kotak atas atau langsung memilih dan melakukan scroll pada kotak di bawah.</small>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Nomor WhatsApp <span class="text-danger">*</span></label>
+                            <input type="tel" class="form-control" id="wa" placeholder="081234567890" required>
+                            <small class="text-muted d-block mt-1" style="color: #cbd5e1 !important;"><i class="fas fa-shield-alt text-success me-1"></i> Data dienkripsi aman untuk bimbingan konseling.</small>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Cita-cita 5 Tahun Lagi <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="cita" placeholder="Contoh: Software Engineer / Guru BK Profesional" required>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Kampus Tujuan Impian <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="kampusTujuan" placeholder="Contoh: IAIN SAS Bangka Belitung, UI, UGM" required>
+                        </div>
+                    </div>
+
+                    <hr style="border-color: rgba(255,255,255,0.2); margin: 2rem 0;">
+
+                    <!-- PERTANYAAN SKALA 1 - 5 -->
+                    <div class="mb-4">
+                        <label class="form-label">1. Kuliah di kampus tujuan saya sangat membantu merealisasikan cita-cita masa depan saya.</label>
+                        <div class="scale-group" data-q="q1">
+                            <label class="scale-btn"><input type="radio" name="q1" value="1" required><span class="scale-number">1</span><span class="scale-label-desc">Tidak Setuju</span></label>
+                            <label class="scale-btn"><input type="radio" name="q1" value="2"><span class="scale-number">2</span><span class="scale-label-desc">Kurang</span></label>
+                            <label class="scale-btn"><input type="radio" name="q1" value="3"><span class="scale-number">3</span><span class="scale-label-desc">Netral</span></label>
+                            <label class="scale-btn"><input type="radio" name="q1" value="4"><span class="scale-number">4</span><span class="scale-label-desc">Setuju</span></label>
+                            <label class="scale-btn"><input type="radio" name="q1" value="5"><span class="scale-number">5</span><span class="scale-label-desc">Sangat Setuju</span></label>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">2. Orang-orang terdekat memberikan dukungan penuh jika saya kuliah di kampus tujuan.</label>
+                        <div class="scale-group" data-q="q2">
+                            <label class="scale-btn"><input type="radio" name="q2" value="1" required><span class="scale-number">1</span><span class="scale-label-desc">Tidak Setuju</span></label>
+                            <label class="scale-btn"><input type="radio" name="q2" value="2"><span class="scale-number">2</span><span class="scale-label-desc">Kurang</span></label>
+                            <label class="scale-btn"><input type="radio" name="q2" value="3"><span class="scale-number">3</span><span class="scale-label-desc">Netral</span></label>
+                            <label class="scale-btn"><input type="radio" name="q2" value="4"><span class="scale-number">4</span><span class="scale-label-desc">Setuju</span></label>
+                            <label class="scale-btn"><input type="radio" name="q2" value="5"><span class="scale-number">5</span><span class="scale-label-desc">Sangat Setuju</span></label>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">3. Informasi dan prosedur pendaftaran di kampus tujuan terasa mudah untuk saya pahami.</label>
+                        <div class="scale-group" data-q="q3">
+                            <label class="scale-btn"><input type="radio" name="q3" value="1" required><span class="scale-number">1</span><span class="scale-label-desc">Sulit</span></label>
+                            <label class="scale-btn"><input type="radio" name="q3" value="2"><span class="scale-number">2</span><span class="scale-label-desc">Cukup Sulit</span></label>
+                            <label class="scale-btn"><input type="radio" name="q3" value="3"><span class="scale-number">3</span><span class="scale-label-desc">Biasa</span></label>
+                            <label class="scale-btn"><input type="radio" name="q3" value="4"><span class="scale-number">4</span><span class="scale-label-desc">Mudah</span></label>
+                            <label class="scale-btn"><input type="radio" name="q3" value="5"><span class="scale-number">5</span><span class="scale-label-desc">Sangat Mudah</span></label>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">4. Saya memiliki kendala finansial atau jarak tempuh yang terasa memberatkan untuk kuliah.</label>
+                        <div class="scale-group" data-q="q4">
+                            <label class="scale-btn"><input type="radio" name="q4" value="1" required><span class="scale-number">1</span><span class="scale-label-desc">Sangat Berat</span></label>
+                            <label class="scale-btn"><input type="radio" name="q4" value="2"><span class="scale-number">2</span><span class="scale-label-desc">Berat</span></label>
+                            <label class="scale-btn"><input type="radio" name="q4" value="3"><span class="scale-number">3</span><span class="scale-label-desc">Sedang</span></label>
+                            <label class="scale-btn"><input type="radio" name="q4" value="4"><span class="scale-number">4</span><span class="scale-label-desc">Ringan</span></label>
+                            <label class="scale-btn"><input type="radio" name="q4" value="5"><span class="scale-number">5</span><span class="scale-label-desc">Tidak Ada</span></label>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">5. Saya memiliki niat dan kesiapan bulat untuk segera memproses pendaftaran dalam waktu dekat.</label>
+                        <div class="scale-group" data-q="q5">
+                            <label class="scale-btn"><input type="radio" name="q5" value="1" required><span class="scale-number">1</span><span class="scale-label-desc">Tidak Niat</span></label>
+                            <label class="scale-btn"><input type="radio" name="q5" value="2"><span class="scale-number">2</span><span class="scale-label-desc">Ragu</span></label>
+                            <label class="scale-btn"><input type="radio" name="q5" value="3"><span class="scale-number">3</span><span class="scale-label-desc">Netral</span></label>
+                            <label class="scale-btn"><input type="radio" name="q5" value="4"><span class="scale-number">4</span><span class="scale-label-desc">Berniat</span></label>
+                            <label class="scale-btn"><input type="radio" name="q5" value="5"><span class="scale-number">5</span><span class="scale-label-desc">Sangat Bulat</span></label>
+                        </div>
+                    </div>
+
+                    <!-- CATCH ITEM -->
+                    <div class="catch-item-box">
+                        <label class="form-label mb-2 text-warning" style="color: var(--neon-gold) !important;">
+                            <i class="fas fa-exclamation-triangle me-1"></i> <strong>Attention Check:</strong> Untuk membuktikan konsentrasi, wajib pilih angka <strong>3</strong>.
+                        </label>
+                        <div class="scale-group" data-q="q8">
+                            <label class="scale-btn"><input type="radio" name="q8" value="1" required><span class="scale-number">1</span><span class="scale-label-desc">1</span></label>
+                            <label class="scale-btn"><input type="radio" name="q8" value="2"><span class="scale-number">2</span><span class="scale-label-desc">2</span></label>
+                            <label class="scale-btn" style="border-color: var(--neon-gold);"><input type="radio" name="q8" value="3"><span class="scale-number" style="color: var(--neon-gold);">3</span><span class="scale-label-desc" style="color: var(--neon-gold);">Target</span></label>
+                            <label class="scale-btn"><input type="radio" name="q8" value="4"><span class="scale-number">4</span><span class="scale-label-desc">4</span></label>
+                            <label class="scale-btn"><input type="radio" name="q8" value="5"><span class="scale-number">5</span><span class="scale-label-desc">5</span></label>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">6. Bolehkah tim konselor sekolah menghubungi Anda via WhatsApp?</label>
+                        <div class="choice-group" data-choice="q6">
+                            <label class="choice-label"><input type="radio" name="q6" value="Ya" required><i class="fas fa-check-circle text-success me-2"></i> Ya, Bersedia</label>
+                            <label class="choice-label"><input type="radio" name="q6" value="Tidak"><i class="fas fa-times-circle text-danger me-2"></i> Tidak</label>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">7. Seberapa sering Anda mendengar tentang kampus tujuan Anda sebelumnya?</label>
+                        <div class="choice-group" data-choice="q7">
+                            <label class="choice-label"><input type="radio" name="q7" value="Sering banget" required><i class="fas fa-fire text-warning me-2"></i> Sering Banget</label>
+                            <label class="choice-label"><input type="radio" name="q7" value="Pernah dengar"><i class="fas fa-volume-high text-info me-2"></i> Pernah Dengar</label>
+                            <label class="choice-label"><input type="radio" name="q7" value="Baru tahu"><i class="fas fa-seedling text-success me-2"></i> Baru Tahu</label>
+                        </div>
+                    </div>
+
+                    <div class="mt-5">
+                        <button type="submit" class="btn-launch">
+                            <i class="fas fa-bolt me-2"></i> Analisis & Luncurkan Hasil Diagnosa
+                        </button>
+                    </div>
+                </form>
+
+                <!-- RESULT AREA -->
+                <div id="resultArea" style="display:none; margin-top:2.5rem;">
+                    <div class="text-center p-4" style="background: rgba(3,7,18,0.95); border-radius: 24px; border: 2px solid var(--neon-gold);">
+                        <div id="badgeProfile" class="badge" style="font-size:1.4rem; padding: 10px 25px; border-radius: 30px; margin-bottom: 1rem;">-</div>
+                        <h3 id="profileTitleAction" class="fw-bold mb-2" style="font-family:'Rajdhani'; color:#fff; font-size: 1.8rem;">-</h3>
+                        <p id="profileSubDesc" class="text-muted mb-4" style="color: var(--text-sub) !important;">-</p>
+                        
+                        <div style="max-width:340px; margin:0 auto; background: rgba(3,7,18,0.7); border-radius: 20px; padding: 15px; border: 2px solid rgba(0,240,255,0.3);">
+                            <canvas id="radarChart"></canvas>
+                        </div>
+
+                        <div class="mt-4 p-4 text-start" style="background: rgba(0,240,255,0.06); border-left: 6px solid var(--neon-cyan); border-radius: 16px;">
+                            <h5 style="color:var(--neon-cyan); font-family:'Rajdhani'; font-size: 1.3rem;"><i class="fas fa-brain me-2"></i> Rekomendasi & Analisis Behavioral Science</h5>
+                            <div id="narrativeContent" style="color: var(--text-sub);"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= 2. DASHBOARD GURU BK ================= -->
+        <div id="panel-bk" class="app-panel">
+            <div class="game-hud-panel">
+                <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+                    <div>
+                        <h2 class="game-title" style="font-size: 2rem;"><i class="fas fa-chalkboard-teacher me-2"></i> Dashboard Guru BK (ABKIN 2026)</h2>
+                        <p class="text-sub mb-0" style="color: var(--text-sub);">Pantau rekapitulasi data siswa SMA/SMK/MA, validitas, ranking kampus, serta cetak laporan resmi sekolah.</p>
+                    </div>
+                    <div class="d-flex gap-2 flex-wrap align-items-center">
+                        <input type="text" id="bkCounselorName" class="form-control form-control-sm fw-bold" placeholder="Nama Guru BK / Konselor" value="Dr. Abdillah Arif, M.Pd" style="width: 250px; border-color: var(--neon-cyan);" readonly>
+                        <select id="bkSchoolSelector" class="form-select fw-bold" style="width: 280px; border-color: var(--neon-cyan);" onchange="onBKSchoolChange()">
+                            <!-- Dynamic tenants -->
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 5 KARTU PROFIL LENGKAP + KARTU VALIDITAS -->
+                <div class="row g-3 mb-4">
+                    <div class="col-lg col-md-4 col-6">
+                        <div class="stat-card-salience" style="border-color: #10b981;">
+                            <div class="salience-symbol">🚀</div>
+                            <div class="salience-number" id="bkStatSiap" style="color: #10b981;">0</div>
+                            <div class="salience-label">Siap Meluncur</div>
+                        </div>
+                    </div>
+                    <div class="col-lg col-md-4 col-6">
+                        <div class="stat-card-salience" style="border-color: #f59e0b;">
+                            <div class="salience-symbol">💰</div>
+                            <div class="salience-number" id="bkStatPotensial" style="color: #f59e0b;">0</div>
+                            <div class="salience-label">Pejuang Potensial</div>
+                        </div>
+                    </div>
+                    <div class="col-lg col-md-4 col-6">
+                        <div class="stat-card-salience" style="border-color: #06b6d4;">
+                            <div class="salience-symbol">👨‍👩‍👧‍👦</div>
+                            <div class="salience-number" id="bkStatRestu" style="color: #06b6d4;">0</div>
+                            <div class="salience-label">Pejuang Restu</div>
+                        </div>
+                    </div>
+                    <div class="col-lg col-md-4 col-6">
+                        <div class="stat-card-salience" style="border-color: #8b5cf6;">
+                            <div class="salience-symbol">🔍</div>
+                            <div class="salience-number" id="bkStatPemilih" style="color: #8b5cf6;">0</div>
+                            <div class="salience-label">Pemilih Berkualitas</div>
+                        </div>
+                    </div>
+                    <div class="col-lg col-md-4 col-6">
+                        <div class="stat-card-salience" style="border-color: #64748b;">
+                            <div class="salience-symbol">🌊</div>
+                            <div class="salience-number" id="bkStatDrifter" style="color: #cbd5e1;">0</div>
+                            <div class="salience-label">Masih Eksplorasi</div>
+                        </div>
+                    </div>
+                    <div class="col-lg col-md-4 col-12">
+                        <div class="stat-card-salience" style="border-color: var(--neon-gold); background: rgba(255,199,0,0.06);">
+                            <div class="salience-symbol">🎯</div>
+                            <div class="salience-number" id="bkValidPercent" style="color: var(--neon-gold);">0%</div>
+                            <div class="salience-label">Persentase Valid (Teliti)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Multi Visualisasi Guru BK -->
+                <div class="row g-4 mb-4">
+                    <div class="col-lg-4">
+                        <div style="background: rgba(3,7,18,0.9); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 20px; text-align: center; height: 100%;">
+                            <h6 class="text-warning mb-2" style="font-family:'Rajdhani';"><i class="fas fa-chart-pie me-1"></i> Proporsi 5 Profil Perilaku</h6>
+                            <div style="max-width: 170px; margin: 0 auto; height: 160px;">
+                                <canvas id="bkPieChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div style="background: rgba(3,7,18,0.9); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 20px; text-align: center; height: 100%;">
+                            <h6 class="text-cyan mb-2" style="font-family:'Rajdhani'; color: var(--neon-cyan);"><i class="fas fa-chart-bar me-1"></i> Rata-rata Komponen TPB</h6>
+                            <div style="height: 160px;">
+                                <canvas id="bkComponentBarChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div style="background: rgba(3,7,18,0.9); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 20px; height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
+                            <div>
+                                <h6 class="text-white mb-2" style="font-family:'Rajdhani';"><i class="fas fa-file-medical-alt me-1"></i> Catatan Kualitatif Guru BK</h6>
+                                <textarea id="bkQualitativeNote" class="form-control form-control-sm mb-2" rows="2" placeholder="Catatan khusus untuk laporan PDF sekolah..."></textarea>
+                            </div>
+                            <div class="d-flex gap-2 flex-wrap">
+                                <button class="btn btn-sm btn-outline-info py-1 fw-bold flex-1" onclick="previewPDFReport()"><i class="fas fa-file-pdf me-1"></i> Cetak PDF</button>
+                                <button class="btn btn-sm btn-outline-success py-1 fw-bold flex-1" onclick="downloadSchoolCSV()"><i class="fas fa-file-csv me-1"></i> CSV</button>
+                                <button class="btn btn-sm btn-outline-warning py-1 fw-bold flex-1" onclick="openSniperModal()"><i class="fas fa-paper-plane me-1"></i> WA</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RANKING KAMPUS & CITA-CITA DENGAN EASTER EGG -->
+                <div class="row g-4 mb-4">
+                    <div class="col-md-6">
+                        <div style="background: rgba(3,7,18,0.9); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 20px; height: 100%; display: flex; flex-direction: column;">
+                            <h6 class="text-gold mb-3" style="font-family:'Rajdhani'; color: var(--neon-gold);"><i class="fas fa-university me-1"></i> Ranking Kampus Tujuan Sekolah Ini</h6>
+                            <div id="bkSchoolKampusList" class="space-y-2 text-sm" style="max-height: 220px; overflow-y: auto; padding-right: 5px; color: var(--text-sub);"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div style="background: rgba(3,7,18,0.9); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 20px; height: 100%; display: flex; flex-direction: column;">
+                            <h6 class="text-success mb-3" style="font-family:'Rajdhani';"><i class="fas fa-star me-1"></i> Ranking Cita-cita Siswa Sekolah Ini</h6>
+                            <div id="bkSchoolCitaList" class="space-y-2 text-sm" style="max-height: 160px; overflow-y: auto; padding-right: 5px; color: var(--text-sub);"></div>
+                            
+                            <!-- EASTER EGG: JOKE GURU BK -->
+                            <div class="mt-3 p-3 rounded" style="background: rgba(255, 0, 127, 0.12); border: 1px dashed var(--neon-magenta);">
+                                <small class="text-magenta fw-bold" style="color: var(--neon-magenta) !important;"><i class="fas fa-laugh-wink me-1"></i> Cita-cita Tertinggi Guru BK ABKIN:</small>
+                                <div class="text-white small fw-bold mt-1">"Tagihan Shopee PayLater Lunas & Pensiun Santai Tanpa Beban di Hari Tua!" 😌☕</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabel Data Siswa Sekolah -->
+                <div class="table-responsive">
+                    <table class="table table-dark-gaming table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="selectAllSim" onclick="toggleAllSim(this)"></th>
+                                <th>Nama Siswa</th>
+                                <th>Cita-cita</th>
+                                <th>Kampus Tujuan</th>
+                                <th>Profil Perilaku</th>
+                                <th>Status Catch Item</th>
+                                <th>No WhatsApp</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bkTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= 3. DASHBOARD ADMIN ================= -->
+        <div id="panel-admin" class="app-panel">
+            <div class="game-hud-panel">
+                <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+                    <div>
+                        <h2 class="game-title" style="font-size: 2rem;"><i class="fas fa-user-shield me-2"></i> Dashboard Admin & Policy Maker ABKIN</h2>
+                        <p class="text-sub mb-0" style="color: var(--text-sub);">Analisis makro lintas sekolah/madrasah tingkat lanjut, pengelolaan multi-tenant, dan laporan APK.</p>
+                    </div>
+                    <div class="d-flex gap-2 flex-wrap">
+                        <button class="btn btn-sm btn-outline-danger fw-bold py-2 px-3" onclick="previewPolicyMakerPDF()"><i class="fas fa-file-pdf me-1"></i> Cetak Laporan Policy Maker (PDF)</button>
+                        <button class="btn btn-sm btn-outline-info fw-bold py-2 px-3" onclick="openTenantModal()"><i class="fas fa-building me-1"></i> Kelola Tenant Sekolah</button>
+                        <button class="btn btn-sm btn-success fw-bold py-2 px-3" onclick="downloadGlobalCSV()"><i class="fas fa-file-csv me-1"></i> Download CSV Riset Global</button>
+                    </div>
+                </div>
+
+                <!-- Executive Summary Cards -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-3 col-6">
+                        <div class="stat-card-salience">
+                            <div class="salience-symbol">🏫</div>
+                            <div class="salience-number" id="adminTotalSchools">0</div>
+                            <div class="salience-label">Sekolah SMA/SMK/MA</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6">
+                        <div class="stat-card-salience" style="border-color: #00f0ff;">
+                            <div class="salience-symbol">📊</div>
+                            <div class="salience-number" id="adminTotalResponden" style="color: var(--neon-cyan); text-shadow: 0 0 15px rgba(0, 240, 255, 0.4);">0</div>
+                            <div class="salience-label">Total Responden</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6">
+                        <div class="stat-card-salience" style="border-color: #10b981;">
+                            <div class="salience-symbol">✨</div>
+                            <div class="salience-number" id="adminAvgNiat" style="color: #10b981; text-shadow: 0 0 15px rgba(16, 185, 129, 0.4);">0.0</div>
+                            <div class="salience-label">Rata-rata Niat (1-5)</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6">
+                        <div class="stat-card-salience" style="border-color: #f59e0b;">
+                            <div class="salience-symbol">🎯</div>
+                            <div class="salience-number" id="adminGlobalValid" style="color: #f59e0b; text-shadow: 0 0 15px rgba(245, 158, 11, 0.4);">0%</div>
+                            <div class="salience-label">Validitas Data Global</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FILTER ADMIN -->
+                <div class="p-3 mb-4 rounded-xl" style="background: rgba(0,240,255,0.06); border: 1.5px solid rgba(0,240,255,0.3);">
+                    <div class="row g-3 align-items-center">
+                        <div class="col-md-6">
+                            <label class="form-label small text-cyan mb-1"><i class="fas fa-filter me-1"></i> Filter Berdasarkan Sekolah Tertentu</label>
+                            <select id="adminFilterSpecificSchool" class="form-select form-select-sm" onchange="applyAdminFilters()">
+                                <option value="all">🌐 Semua Sekolah & Madrasah (Global)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 text-end d-flex align-items-end">
+                            <button class="btn btn-sm btn-outline-warning w-100 fw-bold py-2" onclick="resetAdminFilters()"><i class="fas fa-sync-alt me-1"></i> Reset Filter Admin</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Admin Visualizations -->
+                <div class="row g-4 mb-4">
+                    <div class="col-lg-4">
+                        <div style="background: rgba(3,7,18,0.9); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 20px; text-align: center; height: 100%;">
+                            <h6 class="text-warning mb-2" style="font-family:'Rajdhani';"><i class="fas fa-chart-pie me-1"></i> Sebaran Profil Siswa</h6>
+                            <div style="max-width: 180px; margin: 0 auto; height: 190px;">
+                                <canvas id="adminProfileDonutChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div style="background: rgba(3,7,18,0.9); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 20px; text-align: center; height: 100%;">
+                            <h6 class="text-cyan mb-2" style="font-family:'Rajdhani'; color: var(--neon-cyan);"><i class="fas fa-chart-bar me-1"></i> Komponen TPB (Filtered)</h6>
+                            <div style="height: 190px;">
+                                <canvas id="adminComponentBarChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div style="background: rgba(3,7,18,0.9); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 20px; text-align: center; height: 100%;">
+                            <h6 class="text-magenta mb-2" style="font-family:'Rajdhani'; color: var(--neon-magenta);"><i class="fas fa-school me-1"></i> Partisipasi Sekolah</h6>
+                            <div style="height: 190px;">
+                                <canvas id="adminSchoolBarChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RANKING KAMPUS & CITA-CITA -->
+                <div class="row g-4 mb-4">
+                    <div class="col-lg-6">
+                        <div style="background: rgba(3,7,18,0.9); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 20px; height: 100%; display: flex; flex-direction: column;">
+                            <h6 class="text-gold mb-3" style="font-family:'Rajdhani'; color: var(--neon-gold);"><i class="fas fa-list-ol me-1"></i> Peringkat Seluruh Kampus Tujuan</h6>
+                            <div id="fullKampusList" class="space-y-2 text-sm" style="max-height: 270px; overflow-y: auto; padding-right: 5px; color: var(--text-sub);"></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div style="background: rgba(3,7,18,0.9); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 20px; height: 100%; display: flex; flex-direction: column;">
+                            <h6 class="text-success mb-3" style="font-family:'Rajdhani';"><i class="fas fa-fire me-1"></i> Top Cita-cita Teratas</h6>
+                            <div id="topCitaList" class="space-y-2 text-sm" style="max-height: 270px; overflow-y: auto; padding-right: 5px; color: var(--text-sub);"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Master Data Tabel -->
+                <div style="background: rgba(3,7,18,0.9); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 20px;">
+                    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                        <h6 class="text-white mb-0" style="font-family:'Rajdhani';"><i class="fas fa-database me-1"></i> Master Tabel Responden (<span id="adminTotalCount">0</span> Siswa)</h6>
+                    </div>
+                    <div class="table-responsive" style="max-height: 350px; overflow-y: auto;">
+                        <table class="table table-dark-gaming table-hover align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Nama Siswa</th>
+                                    <th>Sekolah / Madrasah ABKIN</th>
+                                    <th>Cita-cita</th>
+                                    <th>Kampus Tujuan</th>
+                                    <th>Profil</th>
+                                    <th>Catch Item</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminMasterTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= 4. BUKU SAKU & PANDUAN MANUAL (DENGAN SIMULATOR INTERAKTIF) ================= -->
+        <div id="panel-manual" class="app-panel">
+            <div class="game-hud-panel space-y-8" style="color: var(--text-sub);">
+                <div class="text-center mb-4">
+                    <h2 class="game-title" style="font-size: 2.2rem;"><i class="fas fa-book-reader me-2"></i> Buku Saku & Panduan Guru BK ABKIN 2026</h2>
+                    <p class="text-sub">Algoritma rekomendasi otomatis berbasis sains perilaku, norma ilmiah TPB, serta Simulator Interaktif Profil Perilaku.</p>
+                </div>
+
+                <!-- SIMULATOR INTERAKTIF PROFIL TPB -->
+                <div class="p-4 rounded-2xl mb-4" style="background: rgba(0,240,255,0.06); border: 1.5px solid rgba(0,240,255,0.4);">
+                    <h4 class="text-cyan mb-3" style="font-family:'Rajdhani'; color: var(--neon-cyan);"><i class="fas fa-sliders-h me-2"></i> Simulator Interaktif Profil TPB (Theory of Planned Behavior)</h4>
+                    <p class="text-sub small mb-4">Geser komponen di bawah untuk mensimulasikan perubahan hasil profil kesiapan kuliah secara real-time:</p>
+                    
+                    <div class="row g-4 align-items-center">
+                        <div class="col-md-6 space-y-3">
+                            <div class="mb-2">
+                                <label class="form-label small mb-1">Sikap (Attitude): <span id="lblSikap" class="text-warning">4.0</span></label>
+                                <input type="range" id="simSikap" min="1" max="5" step="0.1" value="4" class="form-range" oninput="runSliderSimulation()">
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label small mb-1">Norma Subjektif: <span id="lblNorma" class="text-warning">4.0</span></label>
+                                <input type="range" id="simNorma" min="1" max="5" step="0.1" value="4" class="form-range" oninput="runSliderSimulation()">
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label small mb-1">Kendali Perilaku (PBC / Biaya): <span id="lblPbc" class="text-warning">4.0</span></label>
+                                <input type="range" id="simPbc" min="1" max="5" step="0.1" value="4" class="form-range" oninput="runSliderSimulation()">
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label small mb-1">Niat (Intention): <span id="lblNiat" class="text-warning">4.0</span></label>
+                                <input type="range" id="simNiat" min="1" max="5" step="0.1" value="4" class="form-range" oninput="runSliderSimulation()">
+                            </div>
+                        </div>
+                        <div class="col-md-6 text-center">
+                            <div class="p-4 rounded-xl" style="background: rgba(3,7,18,0.95); border: 2px solid var(--neon-gold);">
+                                <small class="text-muted uppercase tracking-wider d-block mb-1">Hasil Diagnosa Simulasi</small>
+                                <div id="simResultBadge" class="badge bg-success fs-5 px-4 py-2 mb-2">Siap Meluncur</div>
+                                <p id="simResultDesc" class="small text-sub mb-0">Kesiapan mental, dukungan sosial, dan kendali dirimu optimal!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 1. TUJUAN DAN MANFAAT TOOLS -->
+                <div class="p-4 rounded-2xl mb-4" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.15);">
+                    <h4 class="text-cyan mb-3" style="font-family:'Rajdhani'; color: var(--neon-cyan);"><i class="fas fa-bullseye me-2"></i> Tujuan dan Manfaat Kompas Kampus ABKIN</h4>
+                    <div class="row g-3 text-sm">
+                        <div class="col-md-6">
+                            <div class="p-3 bg-dark rounded-xl h-100 border border-secondary text-white">
+                                <strong class="text-warning">Tujuan Utama</strong>
+                                <p class="text-sub small mb-0 mt-1">Mengukur secara presisi faktor psikologis dan perilaku siswa SMA/SMK/MA dalam menentukan keputusan melanjutkan studi ke Perguruan Tinggi, serta menyediakan instrumen asesmen khusus jenjang pendidikan menengah.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 bg-dark rounded-xl h-100 border border-secondary text-white">
+                                <strong class="text-success">Manfaat Praktis</strong>
+                                <p class="text-sub small mb-0 mt-1">Membantu Guru BK memetakan kluster hambatan siswa secara cepat, mengotomatisasi laporan resmi sekolah berbentuk PDF, melakukan WhatsApp Blast intervensi, dan memberi data makro bagi pengurus ABKIN wilayah.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. BLUEPRINT TPB EXTENDED & RUMUSAN 5 PROFIL SISWA -->
+                <div class="p-4 rounded-2xl mb-4" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.15);">
+                    <h4 class="text-gold mb-3" style="font-family:'Rajdhani'; color: var(--neon-gold);"><i class="fas fa-atom me-2"></i> Blueprint TPB Extended & Formulasi 5 Profil Siswa</h4>
+                    <p class="text-sub small" style="line-height: 1.7;">
+                        Kerangka kerja ini dikembangkan dari Theory of Planned Behavior (Ajzen, 1991) dengan perluasan variabel psikososial lokal. Rumusan matematis pembentukan kluster profil perilaku didasarkan pada skor komponen (skala 1 - 5):
+                    </p>
+                    
+                    <div class="row g-3 mt-2 text-sm">
+                        <div class="col-md-4">
+                            <div class="p-3 bg-dark rounded-xl h-100 border border-secondary text-white">
+                                <strong class="text-success">1. Siap Meluncur</strong>
+                                <p class="text-sub small mb-0 mt-1"><strong>Kondisi:</strong> Niat > 3, PBC >= 3, dan Dukungan Sosial optimal. Siswa siap bertindak tanpa hambatan berarti.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 bg-dark rounded-xl h-100 border border-secondary text-white">
+                                <strong class="text-warning">2. Pejuang Potensial</strong>
+                                <p class="text-sub small mb-0 mt-1"><strong>Kondisi:</strong> Niat tinggi > 3, namun terkendala finansial/jarak PBC < 3. Memerlukan intervensi beasiswa/KIP-K.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 bg-dark rounded-xl h-100 border border-secondary text-white">
+                                <strong class="text-info">3. Pejuang Restu</strong>
+                                <p class="text-sub small mb-0 mt-1"><strong>Kondisi:</strong> Niat bulat > 3, namun dukungan keluarga/orang terdekat rendah Norma < 3. Memerlukan mediasi orang tua.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 bg-dark rounded-xl h-100 border border-secondary text-white">
+                                <strong class="text-purple">4. Pemilih Berkualitas</strong>
+                                <p class="text-sub small mb-0 mt-1"><strong>Kondisi:</strong> Sikap kritis sangat tinggi Sikap > 4 dan kendali memadai PBC > 3.5. Selektif terhadap kualitas kampus.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-3 bg-dark rounded-xl h-100 border border-secondary text-white">
+                                <strong class="text-secondary">5. Masih Eksplorasi (Drifter)</strong>
+                                <p class="text-sub small mb-0 mt-1"><strong>Kondisi:</strong> Niat masih rendah atau ragu-ragu Niat <= 3. Membutuhkan konseling karier intensif pemetaan minat bakat.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. REKOMENDASI PENGEMBANGAN ABKIN WILAYAH (DIBATASI POIN 1 DAN 2 SESUAI PERMINTAAN) -->
+                <div class="p-4 rounded-2xl" style="background: rgba(255,199,0,0.06); border: 1.5px dashed var(--neon-gold);">
+                    <h4 class="text-gold mb-3" style="font-family:'Rajdhani'; color: var(--neon-gold);"><i class="fas fa-network-wired me-2"></i> Rekomendasi Pengembangan oleh Asosiasi ABKIN Wilayah</h4>
+                    <p class="text-sub small" style="line-height: 1.7;">
+                        Apabila platform Kompas Kampus diadopsi secara resmi oleh pengurus ABKIN Bangka Belitung, berikut adalah rekomendasi strategis skala makro:
+                    </p>
+                    <ul class="text-sub small space-y-2 mt-2">
+                        <li><strong>1. Integrasi Database Provinsi / Kabupaten:</strong> Menghubungkan seluruh sekolah jenjang SMA/SMK/MA peserta workshop ke dalam satu server terpusat untuk memonitor APK (Angka Partisipasi Kasar) secara real-time.</li>
+                        <li><strong>2. Standarisasi Layanan Bimbingan Karir (Evidence-Based Guidance):</strong> Menjadikan instrumen TPB ini sebagai asesmen wajib tahunan bagi seluruh konselor sekolah anggota ABKIN Babel.</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ================= MODAL TENTANG APLIKASI ================= -->
+    <div id="aboutModal" class="custom-modal">
+        <div class="modal-box">
+            <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom border-secondary">
+                <h4 class="text-cyan mb-0" style="font-family:'Rajdhani'; color: var(--neon-cyan);"><i class="fas fa-compass me-2"></i> Tentang Kompas Kampus 2026</h4>
+                <button class="btn-close btn-close-white" onclick="closeAboutModal()"></button>
+            </div>
+            <div class="space-y-3" style="font-size: 0.95rem; line-height: 1.7; color: #e2e8f0;">
+                <p>
+                    Kompas Kampus adalah alat diagnosa kesiapan kuliah saintifik yang dikembangkan oleh 
+                    Psychosophia Behavioral Lab, Program Studi Psikologi Islam bekerja sama dengan 
+                    Prodi Bimbingan dan Konseling Pendidikan Islam (BKPI) IAIN SAS Bangka Belitung, serta disosialisasikan khusus bersama peserta Konverda ABKIN & Workshop Guru BK.
+                </p>
+                <p>
+                    Alat ini diadaptasi dari Theory of Planned Behavior (TPB) oleh Icek Ajzen (1991).
+                </p>
+            </div>
+            <div class="mt-4 text-end">
+                <button class="btn btn-sm px-4 py-2 fw-bold" style="background: var(--neon-gold); color: #030712; border-radius: 10px;" onclick="closeAboutModal()">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL PDF LAPORAN GURU BK ================= -->
+    <div id="pdfModal" class="custom-modal">
+        <div class="pdf-preview-box">
+            <div class="d-flex justify-content-between align-items-center pb-3 mb-4 border-bottom">
+                <div>
+                    <h3 class="fw-black text-dark mb-0"><i class="fas fa-file-pdf text-danger me-2"></i> Laporan Resmi Diagnosa Bimbingan BK</h3>
+                    <p class="text-muted small mb-0">Psychosophia Behavioral Lab — IAIN SAS Bangka Belitung & ABKIN 2026</p>
+                </div>
+                <button class="btn-close" onclick="closePDFModal()"></button>
+            </div>
+            
+            <div id="pdfReportContent" class="space-y-4 text-sm" style="line-height: 1.7; color: #374151;"></div>
+
+            <div class="mt-5 pt-3 border-top d-flex justify-content-end gap-2">
+                <button class="btn btn-sm btn-secondary fw-bold" onclick="closePDFModal()">Tutup</button>
+                <button class="btn btn-sm btn-danger fw-bold" onclick="window.print()"><i class="fas fa-print me-1"></i> Cetak / Simpan PDF</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL PDF POLICY MAKER ================= -->
+    <div id="policyModal" class="custom-modal">
+        <div class="pdf-preview-box">
+            <div class="d-flex justify-content-between align-items-center pb-3 mb-4 border-bottom">
+                <div>
+                    <h3 class="fw-black text-dark mb-0"><i class="fas fa-file-pdf text-danger me-2"></i> Laporan Kebijakan Makro (Policy Maker Analytics)</h3>
+                    <p class="text-muted small mb-0">Strategi Peningkatan Angka Partisipasi Kasar (APK) Perguruan Tinggi Babel Bersama ABKIN</p>
+                </div>
+                <button class="btn-close" onclick="closePolicyModal()"></button>
+            </div>
+            
+            <div id="policyReportContent" class="space-y-4 text-sm" style="line-height: 1.7; color: #374151;"></div>
+
+            <div class="mt-5 pt-3 border-top d-flex justify-content-end gap-2">
+                <button class="btn btn-sm btn-secondary fw-bold" onclick="closePolicyModal()">Tutup</button>
+                <button class="btn btn-sm btn-danger fw-bold" onclick="window.print()"><i class="fas fa-print me-1"></i> Cetak / Simpan Laporan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL TENANT MANAGEMENT ================= -->
+    <div id="tenantModal" class="custom-modal">
+        <div class="modal-box">
+            <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom border-secondary">
+                <h4 class="text-cyan mb-0" style="font-family:'Rajdhani'; color: var(--neon-cyan);"><i class="fas fa-building me-2"></i> Kelola Tenant Sekolah SMA/SMK/MA ABKIN</h4>
+                <button class="btn-close btn-close-white" onclick="closeTenantModal()"></button>
+            </div>
+            <div class="space-y-3">
+                <p class="text-sub small">Daftar tenant sekolah/madrasah jenjang menengah dan penanggung jawab Guru BK ABKIN:</p>
+                
+                <div id="tenantListContainer" class="space-y-2 mb-3" style="max-height: 180px; overflow-y: auto;"></div>
+
+                <hr style="border-color: rgba(255,255,255,0.2);">
+
+                <div class="p-3 rounded" style="background: rgba(0,240,255,0.06); border: 1px solid rgba(0,240,255,0.3);">
+                    <h6 class="text-cyan mb-2" id="tenantFormTitle" style="font-family:'Rajdhani';"><i class="fas fa-plus-circle me-1"></i> Tambah Tenant Sekolah Baru</h6>
+                    <input type="hidden" id="editTenantIndex" value="-1">
+                    <div class="mb-2">
+                        <label class="form-label small mb-1">Nama SMA / SMK / MA</label>
+                        <input type="text" id="tenantNameInput" class="form-control form-control-sm" placeholder="Contoh: SMAN 1 Merawang">
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label small mb-1">Nama Guru BK / Konselor</label>
+                        <input type="text" id="tenantCounselorInput" class="form-control form-control-sm" placeholder="Contoh: Dr. Abdillah Arif, M.Pd">
+                    </div>
+                    <div class="text-end mt-2">
+                        <button class="btn btn-sm btn-outline-warning me-2" onclick="resetTenantForm()" id="cancelEditTenantBtn" style="display:none;">Batal Edit</button>
+                        <button class="btn btn-sm btn-success fw-bold px-3" onclick="saveTenantData()"><i class="fas fa-save me-1"></i> Simpan Tenant</button>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4 text-end">
+                <button class="btn btn-sm px-4 py-2 fw-bold btn-secondary" onclick="closeTenantModal()">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL SNIPER MODE WA ================= -->
+    <div id="sniperModal" class="custom-modal">
+        <div class="modal-box">
+            <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom border-secondary">
+                <h4 class="text-warning mb-0" style="font-family:'Rajdhani'; color: var(--neon-gold);"><i class="fas fa-paper-plane me-2"></i> Sniper Mode WA Massal (ABKIN)</h4>
+                <button class="btn-close btn-close-white" onclick="closeSniperModal()"></button>
+            </div>
+            <div class="space-y-3">
+                <p class="text-sub small">Kirim pesan naskah bimbingan otomatis via WhatsApp Gateway ke siswa di sekolah terpilih yang menyatakan bersedia.</p>
+                <div class="mb-3">
+                    <label class="form-label small">Pilih Gateway WhatsApp</label>
+                    <select id="waGatewaySelect" class="form-select form-select-sm">
+                        <option value="fonnte">Fonnte API (Freemium)</option>
+                        <option value="wablas">Wablas Gateway</option>
+                        <option value="baileys">Baileys / Self-Hosted (Gratis)</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label small">Naskah Pesan (Gunakan <code>{nama}</code>)</label>
+                    <textarea id="sniperMessage" class="form-control" rows="4">Halo {nama}, mari lanjutkan persiapan kuliah impianmu bersama Guru BK ABKIN! 📚</textarea>
+                </div>
+            </div>
+            <div class="mt-4 d-flex justify-content-end gap-2">
+                <button class="btn btn-sm btn-outline-secondary" onclick="closeSniperModal()">Batal</button>
+                <button class="btn btn-sm px-4 fw-bold" style="background: var(--neon-gold); color: #030712;" onclick="sendSniperBroadcast()">🚀 Kirim Pesan Sekarang</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <p class="fw-bold mb-1" style="color: var(--text-main);">Psychosophia Behavioral Lab &amp; Konverda ABKIN Bangka Belitung — 2026</p>
+            <p class="small italic text-sub mb-0" style="color: var(--text-sub);">"bridging data to behavior"</p>
+        </div>
+    </footer>
+
+    <!-- Script Platform Utama -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let tenantSchools = JSON.parse(localStorage.getItem('kompas_tenants_abkin_v5')) || [
+            { name: "SMAN 1 Merawang", counselor: "Dr. Abdillah Arif, M.Pd" },
+            { name: "SMAN 2 Puding Besar", counselor: "Imroatul Qiroah, S.Pd" },
+            { name: "SMKN 1 Sungailiat", counselor: "Muhammad Farisuddin Syafiq, S.Pd" },
+            { name: "SMAN 1 Mendobarat", counselor: "Ihsan Firmansyah, S.Kom.I" },
+            { name: "SMAN 2 Mendobarat", counselor: "Andri, S.Pd" },
+            { name: "SMKN 1 Mendobarat", counselor: "Citra, S.Pd" },
+            { name: "SMAN 1 Puding Besar", counselor: "Meilia Sari, S.Pd" },
+            { name: "MAN 1 Pangkalpinang", counselor: "Rima Cahyaning Palupi, S.Pd" },
+            { name: "MAN 1 Bangka", counselor: "Mika Injeli, S.Pd" },
+            { name: "MAN 1 Bangka Barat", counselor: "Restini Harjanti, S.Pd" },
+            { name: "MAN Insan Cendekia Bangka Tengah", counselor: "Rini Damayanti, S.Pd." },
+            { name: "SMA Negeri 1 Bakam", counselor: "Yesi Lestia, S.Pd" },
+            { name: "SMK Negeri 1 Bakam", counselor: "Maisyaroh, S.Pd" },
+            { name: "SMA Negeri 1 Belinyu", counselor: "Anang Rujito, S.Pd" },
+            { name: "SMA Negeri 1 Pemali", counselor: "Septianingrum, S.Pd" },
+            { name: "SMA Negeri 1 Riau Silip", counselor: "Ardi Binarsa, S.Pd" },
+            { name: "SMA Negeri 1 Sungailiat", counselor: "Eka Putri Utami, M.Pd" },
+            { name: "SMA Negeri 2 Sungailiat", counselor: "Riskie Relica, S.Pd" },
+            { name: "SMA Bahrul Ulum Sungailiat", counselor: "Noni Eko, S.Pd" },
+            { name: "MAS Nurul Ihsan Baturusa", counselor: "Muhammad Fadillah Prayogie, S.Pd" },
+            { name: "MAN 2 Bangka (Jada Bahrin)", counselor: "Rima Risma, S.Pd" },
+            { name: "SMA Muhammadiyah Sungailiat", counselor: "Noveya Larasati, S.Pd" },
+            { name: "SMK Muhammadiyah Sungailiat", counselor: "Firna, S.PdI" },
+            { name: "MA NU Ta'limul Mutaa'allim Bangka Barat", counselor: "Rika Rukmana, S.Pd" },
+            { name: "MAS Zaid Bin Tsabit Bangka Tengah", counselor: "Indri Kusumawardani, S.Pd" },
+            { name: "SMAN 1 Pangkalpinang", counselor: "Fauzan Rishadi, S.Pd" },
+            { name: "SMAN 4 Pangkalpinang", counselor: "Nasrullah, S.Pd" },
+            { name: "SMKN 3 Pangkalpinang", counselor: "Efriyanto, S.Pd" },
+            { name: "SMKN 5 Pangkalpinang", counselor: "Haning Nikita Sari, S.Pd" },
+            { name: "SMAN 1 Simpang Teritip", counselor: "Kristina Pinaryati, S.Psi" },
+            { name: "SMKN 1 Mentok", counselor: "Ermi, S.Pd,I" },
+            { name: "SMAN 1 Kelapa", counselor: "Mardiana, S.Pd" },
+            { name: "SMAN 1 Mentok", counselor: "Emi Wahyunita, S.Pd" },
+            { name: "SMAN 1 Koba", counselor: "Marizka Adi Winarni, S.Pd" },
+            { name: "SMAN 1 Lubuk Besar", counselor: "Ihsan Fernando, S.Pd" },
+            { name: "MAS Terpadu Bina Insan Cendikia", counselor: "Feby Anggraini, S.Pd" },
+            { name: "SMAN 1 Toboali", counselor: "Nidya Juni Parti, M.Pd" },
+            { name: "SMAN 2 Toboali", counselor: "Endro Putra Alpino, S.Pd" },
+            { name: "SMA Muhammadiyah Toboali", counselor: "Evi Susanti, S.Pd" },
+            { name: "SMKN 1 Tukak Sadai", counselor: "Ahmad Mughni, S.Pd" },
+            { name: "SMKN 1 Air Gegas", counselor: "Intan Sweno, S.Pd" },
+            { name: "SMKN 2 Pangkalpinang", counselor: "Fely Pratiwi, S.Pd" },
+            { name: "SMA Muhammadiyah Pangkalpinang", counselor: "Nurul, S.Pd" }
+        ];
+
+        function saveTenantsToStorage() {
+            localStorage.setItem('kompas_tenants_abkin_v5', JSON.stringify(tenantSchools));
+            updateSchoolSelectDropdowns();
+        }
+
+        function updateSchoolSelectDropdowns(filterText = '') {
+            const dropdownIds = ['sekolah', 'bkSchoolSelector', 'adminFilterSpecificSchool'];
+            dropdownIds.forEach(id => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                const currentVal = el.value;
+                let html = '';
+                if(id === 'sekolah') html = '<option value="">-- Pilih Asal Sekolah SMA/SMK/MA --</option>';
+                if(id === 'adminFilterSpecificSchool') html = '<option value="all">🌐 Semua Sekolah & Madrasah (Global)</option>';
+                
+                const query = filterText.toLowerCase();
+                tenantSchools.forEach(t => {
+                    if(!query || t.name.toLowerCase().includes(query)) {
+                        html += `<option value="${t.name}">${t.name} (BK: ${t.counselor})</option>`;
+                    }
+                });
+                el.innerHTML = html;
+                if(id !== 'sekolah' || !filterText) el.value = currentVal;
+            });
+            document.getElementById('adminTotalSchools').innerText = tenantSchools.length;
+        }
+
+        function filterSchoolDropdown() {
+            const query = document.getElementById('schoolSearchInput').value;
+            updateSchoolSelectDropdowns(query);
+        }
+
+        function clearSchoolSearch() {
+            document.getElementById('schoolSearchInput').value = '';
+            updateSchoolSelectDropdowns('');
+        }
+
+        function generateDummySubmissions() {
+            const listNamaDepan = ["Ahmad", "Siti", "Raka", "Zaskia", "Fauzi", "Dewi", "Rian", "Putri", "Bayu", "Annisa", "Dimas", "Nabila", "Ilham", "Fitri", "Reza"];
+            const listNamaBelakang = ["Pratama", "Aulia", "Ramadhan", "Kurniawan", "Salsabila", "Hidayat", "Wahyudi", "Safitri", "Nugroho", "Zahra"];
+            const listCita = ["Guru BK Profesional", "Software Engineer", "Dokter", "Pengusaha", "Arsitek", "Ahli Hukum", "Psikolog", "Data Scientist", "Akuntan", "Jurnalis"];
+            const listKampus = ["IAIN SAS Bangka Belitung", "Universitas Indonesia", "UGM", "ITB", "Universitas Diponegoro", "UPI Bandung", "Universitas Brawijaya", "UNAIR", "Universitas Sriwijaya"];
+            
+            const profilesData = [
+                { id: "SIAP_MELUNCUR", label: "Siap Meluncur" },
+                { id: "PEJUANG_POTENSIAL", label: "Pejuang Potensial" },
+                { id: "PEJUANG_RESTU", label: "Pejuang Restu" },
+                { id: "PEMILIH_BERKUALITAS", label: "Pemilih Berkualitas" },
+                { id: "THE_DRIFTER", label: "Masih Eksplorasi" }
+            ];
+
+            let dummy = [];
+            tenantSchools.forEach(schoolObj => {
+                const countPerSchool = Math.floor(Math.random() * 5) + 21; 
+                for (let i = 1; i <= countPerSchool; i++) {
+                    const fName = listNamaDepan[Math.floor(Math.random() * listNamaDepan.length)];
+                    const lName = listNamaBelakang[Math.floor(Math.random() * listNamaBelakang.length)];
+                    
+                    const sikap = parseFloat((3 + Math.random() * 2).toFixed(1));
+                    const norma = parseFloat((2.5 + Math.random() * 2.5).toFixed(1));
+                    const pbc = parseFloat((2 + Math.random() * 3).toFixed(1));
+                    const niat = parseFloat((2.5 + Math.random() * 2.5).toFixed(1));
+
+                    let prof = profilesData[0];
+                    if (niat > 3 && pbc < 3) {
+                        prof = profilesData[1];
+                    } else if (niat > 3 && norma < 3) {
+                        prof = profilesData[2];
+                    } else if (sikap > 4 && pbc > 3.5) {
+                        prof = profilesData[3];
+                    } else if (niat <= 3) {
+                        prof = profilesData[4];
+                    }
+
+                    const isTeliti = Math.random() > 0.15;
+                    const catchVal = isTeliti ? 3 : Math.floor(Math.random() * 5) + 1;
+                    
+                    dummy.push({
+                        nama: `${fName} ${lName} ${i}`,
+                        sekolah: schoolObj.name,
+                        jenjang: schoolObj.name.includes('MAN') || schoolObj.name.includes('MA') ? 'Madrasah' : schoolObj.name.includes('SMK') ? 'SMK' : 'SMA',
+                        wa: `081${Math.floor(100000000 + Math.random() * 900000000)}`,
+                        cita: listCita[Math.floor(Math.random() * listCita.length)],
+                        kampus: listKampus[Math.floor(Math.random() * listKampus.length)],
+                        sikap: sikap,
+                        norma: norma,
+                        pbc: pbc,
+                        niat: niat,
+                        profileId: prof.id,
+                        profileLabel: prof.label,
+                        q8: catchVal,
+                        q6: Math.random() > 0.3 ? "Ya" : "Tidak"
+                    });
+                }
+            });
+            return dummy;
+        }
+
+        let submissions = JSON.parse(localStorage.getItem('kompas_submissions_abkin_v5')) || generateDummySubmissions();
+        localStorage.setItem('kompas_submissions_abkin_v5', JSON.stringify(submissions));
+
+        let bkPieChartInstance = null;
+        let bkComponentBarChartInstance = null;
+        let adminComponentBarChartInstance = null;
+        let adminProfileDonutChartInstance = null;
+        let adminSchoolBarChartInstance = null;
+
+        function switchRole(role) {
+            document.querySelectorAll('.app-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.btn-role').forEach(b => { if(!b.getAttribute('onclick')?.includes('About')) b.classList.remove('active'); });
+            
+            if(role === 'student') {
+                document.getElementById('panel-student').classList.add('active');
+                event.target.classList.add('active');
+            } else if(role === 'bk') {
+                document.getElementById('panel-bk').classList.add('active');
+                event.target.classList.add('active');
+                loadBKDashboard();
+            } else if(role === 'admin') {
+                document.getElementById('panel-admin').classList.add('active');
+                event.target.classList.add('active');
+                loadAdminDashboard();
+            } else if(role === 'manual') {
+                document.getElementById('panel-manual').classList.add('active');
+                event.target.classList.add('active');
+                runSliderSimulation();
+            }
+        }
+
+        function openAboutModal() { document.getElementById('aboutModal').classList.add('active'); }
+        function closeAboutModal() { document.getElementById('aboutModal').classList.remove('active'); }
+
+        function openTenantModal() {
+            renderTenantListModal();
+            document.getElementById('tenantModal').classList.add('active');
+        }
+        function closeTenantModal() { document.getElementById('tenantModal').classList.remove('active'); }
+
+        function renderTenantListModal() {
+            const container = document.getElementById('tenantListContainer');
+            container.innerHTML = '';
+            tenantSchools.forEach((t, idx) => {
+                container.innerHTML += `
+                    <div class="d-flex justify-content-between align-items-center p-2 rounded bg-dark border border-secondary mb-1">
+                        <div>
+                            <strong class="text-white small">${t.name}</strong><br>
+                            <span class="text-muted" style="font-size: 11px;"><i class="fas fa-chalkboard-teacher me-1"></i> BK: ${t.counselor}</span>
+                        </div>
+                        <div class="d-flex gap-1">
+                            <button class="btn btn-sm btn-outline-info py-0 px-2" style="font-size: 11px;" onclick="editTenant(${idx})"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-sm btn-outline-danger py-0 px-2" style="font-size: 11px;" onclick="deleteTenant(${idx})"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function saveTenantData() {
+            const name = document.getElementById('tenantNameInput').value.trim();
+            const counselor = document.getElementById('tenantCounselorInput').value.trim();
+            const editIdx = parseInt(document.getElementById('editTenantIndex').value);
+
+            if(!name || !counselor) { alert('Nama sekolah dan nama guru BK wajib diisi.'); return; }
+
+            if(editIdx >= 0) {
+                tenantSchools[editIdx].name = name;
+                tenantSchools[editIdx].counselor = counselor;
+            } else {
+                tenantSchools.push({ name, counselor });
+            }
+
+            saveTenantsToStorage();
+            resetTenantForm();
+            renderTenantListModal();
+            if(document.getElementById('panel-bk').classList.contains('active')) loadBKDashboard();
+        }
+
+        function editTenant(idx) {
+            const t = tenantSchools[idx];
+            document.getElementById('tenantNameInput').value = t.name;
+            document.getElementById('tenantCounselorInput').value = t.counselor;
+            document.getElementById('editTenantIndex').value = idx;
+            document.getElementById('tenantFormTitle').innerHTML = `<i class="fas fa-edit me-1"></i> Edit Tenant #${idx+1}`;
+            document.getElementById('cancelEditTenantBtn').style.display = 'inline-block';
+        }
+
+        function deleteTenant(idx) {
+            if(confirm(`Yakin ingin menghapus ${tenantSchools[idx].name}?`)) {
+                tenantSchools.splice(idx, 1);
+                saveTenantsToStorage();
+                renderTenantListModal();
+                if(document.getElementById('panel-bk').classList.contains('active')) loadBKDashboard();
+            }
+        }
+
+        function resetTenantForm() {
+            document.getElementById('tenantNameInput').value = '';
+            document.getElementById('tenantCounselorInput').value = '';
+            document.getElementById('editTenantIndex').value = '-1';
+            document.getElementById('tenantFormTitle').innerHTML = `<i class="fas fa-plus-circle me-1"></i> Tambah Tenant Sekolah Baru`;
+            document.getElementById('cancelEditTenantBtn').style.display = 'none';
+        }
+
+        function openSniperModal() { document.getElementById('sniperModal').classList.add('active'); }
+        function closeSniperModal() { document.getElementById('sniperModal').classList.remove('active'); }
+        function sendSniperBroadcast() {
+            const gateway = document.getElementById('waGatewaySelect').value;
+            alert(`Pesan bimbingan ABKIN berhasil disebarkan secara massal via WhatsApp Gateway: ${gateway.toUpperCase()}!`);
+            closeSniperModal();
+        }
+
+        document.querySelectorAll('.scale-group').forEach(group => {
+            const buttons = group.querySelectorAll('.scale-btn');
+            buttons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    buttons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    const radio = this.querySelector('input');
+                    if(radio) radio.checked = true;
+                });
+            });
+        });
+
+        document.querySelectorAll('.choice-group').forEach(group => {
+            const labels = group.querySelectorAll('.choice-label');
+            labels.forEach(lbl => {
+                lbl.addEventListener('click', function() {
+                    labels.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                    const radio = this.querySelector('input');
+                    if(radio) radio.checked = true;
+                });
+            });
+        });
+
+        document.getElementById('diagnosticForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const nama = document.getElementById('nama').value.trim();
+            const sekolah = document.getElementById('sekolah').value;
+            const wa = document.getElementById('wa').value.trim();
+            const cita = document.getElementById('cita').value.trim();
+            const kampus = document.getElementById('kampusTujuan').value.trim();
+            const q8Checked = document.querySelector('input[name="q8"]:checked');
+            const q6Checked = document.querySelector('input[name="q6"]:checked');
+
+            if(!nama || !sekolah || !wa || !cita || !kampus || !q8Checked || q8Checked.value !== '3' || !q6Checked) {
+                alert('Mohon lengkapi semua data dan pastikan menjawab Attention Check (angka 3).');
+                return;
+            }
+
+            const valQ1 = parseInt(document.querySelector('input[name="q1"]:checked').value);
+            const valQ2 = parseInt(document.querySelector('input[name="q2"]:checked').value);
+            const valQ3 = parseInt(document.querySelector('input[name="q3"]:checked').value);
+            const valQ4 = parseInt(document.querySelector('input[name="q4"]:checked').value);
+            const valQ5 = parseInt(document.querySelector('input[name="q5"]:checked').value);
+
+            const sikap = valQ1;
+            const norma = valQ2;
+            const pbc = (valQ3 + (6 - valQ4)) / 2;
+            const niat = valQ5;
+
+            let profileLabel = 'Siap Meluncur';
+            let profileId = 'SIAP_MELUNCUR';
+            let actionText = 'Kesiapan mental, dukungan sosial, dan kendali dirimu optimal!';
+            let narrative = '<ul><li><strong>Analisis Sikap:</strong> Relevansi kuliah tinggi terhadap cita-cita Anda.</li><li><strong>Dukungan Sosial:</strong> Lingkungan memberi validasi positif.</li><li><strong>Rekomendasi Nudge:</strong> Segera lakukan registrasi online!</li></ul>';
+
+            if (niat > 3 && pbc < 3) {
+                profileLabel = 'Pejuang Potensial';
+                profileId = 'PEJUANG_POTENSIAL';
+                actionText = 'Semangat membara, namun terdapat tantangan finansial atau jarak!';
+                narrative = '<ul><li><strong>Dinamika Niat vs Kendali:</strong> Niat kuat namun persepsi hambatan eksternal (biaya) perlu dijembatani.</li><li><strong>Rekomendasi Nudge:</strong> Manfaatkan program KIP Kuliah dan beasiswa ABKIN.</li></ul>';
+            } else if (niat > 3 && norma < 3) {
+                profileLabel = 'Pejuang Restu';
+                profileId = 'PEJUANG_RESTU';
+                actionText = 'Niat kuliahmu bulat, namun memerlukan penyelarasan restu keluarga!';
+                narrative = '<ul><li><strong>Analisis Norma:</strong> Dukungan keluarga rendah karena kekhawatiran masa depan.</li><li><strong>Rekomendasi Nudge:</strong> Libatkan Guru BK dalam konsultasi orang tua.</li></ul>';
+            } else if (sikap > 4 && pbc > 3.5) {
+                profileLabel = 'Pemilih Berkualitas';
+                profileId = 'PEMILIH_BERKUALITAS';
+                actionText = 'Evaluasi matang dan pertimbangan mendalam terhadap kualitas institusi.';
+                narrative = '<ul><li><strong>Analisis Kritis:</strong> Memiliki standar kriteria perguruan tinggi yang sangat selektif.</li></ul>';
+            } else if (niat <= 3) {
+                profileLabel = 'Masih Eksplorasi';
+                profileId = 'THE_DRIFTER';
+                actionText = 'Masih menimbang berbagai opsi jalur karier masa depan.';
+                narrative = '<ul><li><strong>Analisis Eksplorasi:</strong> Membutuhkan bimbingan intensif pemetaan minat bakat oleh Guru BK.</li></ul>';
+            }
+
+            submissions.push({ nama, sekolah, wa, cita, kampus, sikap, norma, pbc, niat, profileId, profileLabel, q8: 3, q6: q6Checked.value });
+            localStorage.setItem('kompas_submissions_abkin_v5', JSON.stringify(submissions));
+
+            document.getElementById('badgeProfile').innerText = profileLabel;
+            document.getElementById('badgeProfile').style.background = profileId === 'SIAP_MELUNCUR' ? '#10b981' : '#f59e0b';
+            document.getElementById('badgeProfile').style.color = '#fff';
+            document.getElementById('profileTitleAction').innerText = actionText;
+            document.getElementById('profileSubDesc').innerText = `Asal Sekolah: ${sekolah} | Tujuan: ${kampus}`;
+            document.getElementById('narrativeContent').innerHTML = narrative;
+            document.getElementById('resultArea').style.display = 'block';
+
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            if(window._myRadar) window._myRadar.destroy();
+            window._myRadar = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Sikap', 'Norma', 'Kendali (PBC)', 'Niat'],
+                    datasets: [{
+                        label: 'Skor Anda (1-5)',
+                        data: [sikap, norma, pbc, niat],
+                        backgroundColor: 'rgba(0, 240, 255, 0.3)',
+                        borderColor: '#00f0ff',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#ffc700',
+                        pointRadius: 6,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        r: {
+                            min: 0, max: 5,
+                            ticks: { display: false },
+                            grid: { color: 'rgba(255, 255, 255, 0.2)' },
+                            pointLabels: { color: '#ffffff', font: { family: 'Rajdhani', size: 12, weight: '700' } }
+                        }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            document.getElementById('resultArea').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        function loadBKDashboard() {
+            const selectedSchool = document.getElementById('bkSchoolSelector').value;
+            const tenantMatch = tenantSchools.find(t => t.name === selectedSchool);
+            if(tenantMatch) {
+                document.getElementById('bkCounselorName').value = tenantMatch.counselor;
+            }
+
+            const filtered = submissions.filter(s => s.sekolah === selectedSchool);
+
+            document.getElementById('bkStatSiap').innerText = filtered.filter(s => s.profileId === 'SIAP_MELUNCUR').length;
+            document.getElementById('bkStatPotensial').innerText = filtered.filter(s => s.profileId === 'PEJUANG_POTENSIAL').length;
+            document.getElementById('bkStatRestu').innerText = filtered.filter(s => s.profileId === 'PEJUANG_RESTU').length;
+            document.getElementById('bkStatPemilih').innerText = filtered.filter(s => s.profileId === 'PEMILIH_BERKUALITAS').length;
+            document.getElementById('bkStatDrifter').innerText = filtered.filter(s => s.profileId === 'THE_DRIFTER').length;
+
+            const validCount = filtered.filter(s => s.q8 === 3).length;
+            const validPercent = filtered.length ? Math.round((validCount / filtered.length) * 100) : 0;
+            document.getElementById('bkValidPercent').innerText = `${validPercent}%`;
+
+            const kampusCount = {};
+            const citaCount = {};
+            filtered.forEach(s => {
+                kampusCount[s.kampus.trim()] = (kampusCount[s.kampus.trim()] || 0) + 1;
+                citaCount[s.cita.trim()] = (citaCount[s.cita.trim()] || 0) + 1;
+            });
+
+            const sortedKampus = Object.entries(kampusCount).sort((a,b) => b[1] - a[1]);
+            const bkKampusEl = document.getElementById('bkSchoolKampusList');
+            bkKampusEl.innerHTML = '';
+            if(sortedKampus.length === 0) {
+                bkKampusEl.innerHTML = `<span class="text-muted small">Belum ada data kampus.</span>`;
+            } else {
+                sortedKampus.forEach(([kampusName, count], idx) => {
+                    bkKampusEl.innerHTML += `
+                        <div class="d-flex justify-content-between align-items-center p-2 rounded mb-1" style="background: rgba(255,255,255,0.04);">
+                            <span><span class="badge bg-warning text-dark me-2">#${idx+1}</span> ${kampusName}</span>
+                            <span class="badge bg-cyan text-dark fw-bold">${count} Peminat</span>
+                        </div>
+                    `;
+                });
+            }
+
+            const sortedCita = Object.entries(citaCount).sort((a,b) => b[1] - a[1]).slice(0, 5);
+            const bkCitaEl = document.getElementById('bkSchoolCitaList');
+            bkCitaEl.innerHTML = '';
+            if(sortedCita.length === 0) {
+                bkCitaEl.innerHTML = `<span class="text-muted small">Belum ada data cita-cita.</span>`;
+            } else {
+                sortedCita.forEach(([citaName, count], idx) => {
+                    bkCitaEl.innerHTML += `
+                        <div class="d-flex justify-content-between align-items-center p-2 rounded mb-1" style="background: rgba(16,185,129,0.06); border-left: 3px solid #10b981;">
+                            <span><strong class="text-success me-1">${idx+1}.</strong> ${citaName}</span>
+                            <span class="badge bg-success" style="font-size:10px;">${count} Siswa</span>
+                        </div>
+                    `;
+                });
+            }
+
+            const tbody = document.getElementById('bkTableBody');
+            tbody.innerHTML = '';
+            if(filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center text-muted py-4">Belum ada data responden dari ${selectedSchool}.</td></tr>`;
+            } else {
+                filtered.forEach(item => {
+                    const isTeliti = item.q8 === 3;
+                    const catchStatusBadge = isTeliti ? 
+                        `<span class="badge bg-success" style="font-size:10px;">Teliti (Valid)</span>` : 
+                        `<span class="badge bg-danger" style="font-size:10px;">Gambling (${item.q8})</span>`;
+
+                    tbody.innerHTML += `
+                        <tr>
+                            <td><input type="checkbox" class="row-chk"></td>
+                            <td class="fw-bold">${item.nama}</td>
+                            <td>${item.cita}</td>
+                            <td>${item.kampus}</td>
+                            <td><span class="badge bg-secondary" style="font-size:11px;">${item.profileLabel}</span></td>
+                            <td>${catchStatusBadge}</td>
+                            <td>${item.wa}</td>
+                        </tr>
+                    `;
+                });
+            }
+
+            const pieCtx = document.getElementById('bkPieChart').getContext('2d');
+            if(bkPieChartInstance) bkPieChartInstance.destroy();
+            
+            bkPieChartInstance = new Chart(pieCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Siap', 'Potensial', 'Restu', 'Pemilih', 'Eksplorasi'],
+                    datasets: [{
+                        data: [
+                            filtered.filter(s => s.profileId === 'SIAP_MELUNCUR').length,
+                            filtered.filter(s => s.profileId === 'PEJUANG_POTENSIAL').length,
+                            filtered.filter(s => s.profileId === 'PEJUANG_RESTU').length,
+                            filtered.filter(s => s.profileId === 'PEMILIH_BERKUALITAS').length,
+                            filtered.filter(s => s.profileId === 'THE_DRIFTER').length
+                        ],
+                        backgroundColor: ['#10b981', '#f59e0b', '#06b6d4', '#8b5cf6', '#64748b'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom', labels: { color: '#fff', font: { size: 9 } } } }
+                }
+            });
+
+            const compCtx = document.getElementById('bkComponentBarChart').getContext('2d');
+            if(bkComponentBarChartInstance) bkComponentBarChartInstance.destroy();
+
+            bkComponentBarChartInstance = new Chart(compCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Sikap', 'Norma', 'PBC', 'Niat'],
+                    datasets: [{
+                        data: [
+                            filtered.length ? (filtered.reduce((a,b)=>a+b.sikap,0)/filtered.length).toFixed(1) : 0,
+                            filtered.length ? (filtered.reduce((a,b)=>a+b.norma,0)/filtered.length).toFixed(1) : 0,
+                            filtered.length ? (filtered.reduce((a,b)=>a+b.pbc,0)/filtered.length).toFixed(1) : 0,
+                            filtered.length ? (filtered.reduce((a,b)=>a+b.niat,0)/filtered.length).toFixed(1) : 0
+                        ],
+                        backgroundColor: ['#00f0ff', '#ffc700', '#ff007f', '#10b981'],
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { min: 0, max: 5, ticks: { color: '#e2e8f0', font: { size: 9 } } },
+                        x: { ticks: { color: '#e2e8f0', font: { size: 9 } } }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        function onBKSchoolChange() { loadBKDashboard(); }
+        function toggleAllSim(source) { document.querySelectorAll('.row-chk').forEach(c => c.checked = source.checked); }
+
+        function downloadSchoolCSV() {
+            const selectedSchool = document.getElementById('bkSchoolSelector').value;
+            const filtered = submissions.filter(s => s.sekolah === selectedSchool);
+            if(filtered.length === 0) return alert('Tidak ada data.');
+            let csv = "Nama,Sekolah,WhatsApp,Cita-Cita,Kampus Tujuan,Sikap,Norma,PBC,Niat,Profil\n";
+            filtered.forEach(s => {
+                csv += `"${s.nama}","${s.sekolah}","${s.wa}","${s.cita}","${s.kampus}",${s.sikap},${s.norma},${s.pbc},${s.niat},"${s.profileLabel}"\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url; a.download = `laporan_bk_${selectedSchool}.csv`;
+            document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        }
+
+        function previewPDFReport() {
+            const selectedSchool = document.getElementById('bkSchoolSelector').value;
+            const counselorName = document.getElementById('bkCounselorName').value.trim() || "Tim Konselor BK";
+            const filtered = submissions.filter(s => s.sekolah === selectedSchool);
+            const customNote = document.getElementById('bkQualitativeNote').value.trim();
+
+            const total = filtered.length;
+            const validCount = filtered.filter(s => s.q8 === 3).length;
+            const validPct = total ? Math.round((validCount / total) * 100) : 0;
+            const siap = filtered.filter(s => s.profileId === 'SIAP_MELUNCUR').length;
+            const potensial = filtered.filter(s => s.profileId === 'PEJUANG_POTENSIAL').length;
+            const restu = filtered.filter(s => s.profileId === 'PEJUANG_RESTU').length;
+            const pemilih = filtered.filter(s => s.profileId === 'PEMILIH_BERKUALITAS').length;
+            const drifter = filtered.filter(s => s.profileId === 'THE_DRIFTER').length;
+
+            const avgSikap = total ? (filtered.reduce((a,b)=>a+b.sikap,0)/total).toFixed(1) : 0;
+            const avgNorma = total ? (filtered.reduce((a,b)=>a+b.norma,0)/total).toFixed(1) : 0;
+            const avgPbc = total ? (filtered.reduce((a,b)=>a+b.pbc,0)/total).toFixed(1) : 0;
+            const avgNiat = total ? (filtered.reduce((a,b)=>a+b.niat,0)/total).toFixed(1) : 0;
+
+            let tableHtml = `<table class="table table-bordered table-sm mt-2" style="font-size:0.75rem;"><thead><tr class="table-dark"><th>No</th><th>Nama Siswa</th><th>No. WhatsApp</th><th>Cita-cita</th><th>Kampus Tujuan</th><th>Profil Perilaku</th><th>Status Validitas</th></tr></thead><tbody>`;
+            if(filtered.length === 0) {
+                tableHtml += `<tr><td colspan="7" class="text-center text-muted">Belum ada data responden.</td></tr>`;
+            } else {
+                filtered.forEach((s, idx) => {
+                    const validBadge = s.q8 === 3 ? `<span class="text-success fw-bold">Valid (3)</span>` : `<span class="text-danger fw-bold">Gambling (${s.q8})</span>`;
+                    tableHtml += `<tr><td>${idx+1}</td><td><b>${s.nama}</b></td><td>${s.wa}</td><td>${s.cita}</td><td>${s.kampus}</td><td><span class="badge bg-secondary">${s.profileLabel}</span></td><td>${validBadge}</td></tr>`;
+                });
+            }
+            tableHtml += `</tbody></table>`;
+
+            const pdfContent = `
+                <div class="space-y-4">
+                    <div class="border-bottom pb-3">
+                        <h4 class="text-primary fw-bold mb-1">LAPORAN RESMI DIAGNOSA KESIAPAN KULIAH ABKIN 2026</h4>
+                        <p class="text-muted small mb-0">Sekolah/Madrasah: <strong>${selectedSchool}</strong> | Guru BK: <strong>${counselorName}</strong> | Tanggal: ${new Date().toLocaleDateString('id-ID')}</p>
+                    </div>
+
+                    <div>
+                        <h6 class="fw-bold text-dark"><i class="fas fa-info-circle me-1"></i> 1. Pengantar & Landasan Teori (TPB)</h6>
+                        <p class="text-muted small">Laporan ini disusun oleh <strong>${counselorName}</strong> dalam rangkaian Konverda ABKIN & Workshop Guru BK bersama <em>Psychosophia Behavioral Lab</em> IAIN SAS Bangka Belitung.</p>
+                    </div>
+
+                    <div>
+                        <h6 class="fw-bold text-dark"><i class="fas fa-chart-pie me-1"></i> 2. Rekapitulasi Profil Siswa (${total} Responden)</h6>
+                        <div class="row g-2 text-center text-xs">
+                            <div class="col-3 p-2 bg-light rounded text-dark">Total: <b>${total}</b></div>
+                            <div class="col-3 p-2 bg-success text-white rounded">Valid: <b>${validCount} (${validPct}%)</b></div>
+                            <div class="col-3 p-2 bg-warning text-dark rounded">Siap: <b>${siap}</b></div>
+                            <div class="col-3 p-2 bg-info text-dark rounded">Potensial: <b>${potensial}</b></div>
+                            <div class="col-3 p-2 bg-secondary text-white rounded">Restu: <b>${restu}</b></div>
+                            <div class="col-3 p-2 bg-purple text-white rounded" style="background:#8b5cf6;">Pemilih: <b>${pemilih}</b></div>
+                            <div class="col-6 p-2 bg-dark text-white rounded">Eksplorasi (Drifter): <b>${drifter}</b></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h6 class="fw-bold text-dark mt-3"><i class="fas fa-chart-bar me-1"></i> 3. Analisis Statistik Komponen TPB</h6>
+                        <ul class="text-muted small mb-0">
+                            <li><strong>Sikap:</strong> ${avgSikap} / 5.0 | <strong>Norma:</strong> ${avgNorma} / 5.0 | <strong>PBC:</strong> ${avgPbc} / 5.0 | <strong>Niat:</strong> ${avgNiat} / 5.0</li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h6 class="fw-bold text-dark mt-3"><i class="fas fa-tasks me-1"></i> 4. Tindakan Bimbingan & Konseling</h6>
+                        <p class="text-muted small">
+                            ${potensial > 0 ? `• Fasilitasi beasiswa dan KIP-Kuliah untuk <strong>${potensial} Pejuang Potensial</strong>.<br>` : ''}
+                            ${restu > 0 ? `• Pendampingan komunikasi orang tua untuk <strong>${restu} Pejuang Restu</strong>.<br>` : ''}
+                            • Pengingat tenggat waktu bagi kluster Siap Meluncur.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h6 class="fw-bold text-dark mt-3"><i class="fas fa-table me-1"></i> 5. Daftar Lengkap Responden</h6>
+                        ${tableHtml}
+                    </div>
+
+                    ${customNote ? `
+                    <div class="p-3 bg-light rounded border-start border-4 border-primary mt-3">
+                        <h6 class="fw-bold text-primary mb-1"><i class="fas fa-pen-nib me-1"></i> Catatan Kualitatif Guru BK (${counselorName}):</h6>
+                        <p class="text-dark small mb-0 italic">"${customNote}"</p>
+                    </div>` : ''}
+
+                    <div class="mt-4 pt-3 border-top d-flex justify-content-between align-items-center small text-muted">
+                        <p class="mb-0">Dokumen Bimbingan Konseling ABKIN Babel</p>
+                        <p class="mb-0">Disahkan oleh: <strong>${counselorName}</strong></p>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('pdfReportContent').innerHTML = pdfContent;
+            document.getElementById('pdfModal').classList.add('active');
+        }
+
+        function closePDFModal() { document.getElementById('pdfModal').classList.remove('active'); }
+
+        function previewPolicyMakerPDF() {
+            const total = submissions.length;
+            const avgNiatGlobal = total ? (submissions.reduce((a,b)=>a+b.niat,0)/total).toFixed(1) : 0;
+            const siapGlobal = submissions.filter(s => s.profileId === 'SIAP_MELUNCUR').length;
+            const potensialGlobal = submissions.filter(s => s.profileId === 'PEJUANG_POTENSIAL').length;
+            const validGlobal = total ? Math.round((submissions.filter(s=>s.q8===3).length/total)*100) : 0;
+
+            const policyContent = `
+                <div class="space-y-4">
+                    <div class="border-bottom pb-3">
+                        <h4 class="text-primary fw-bold mb-1">LAPORAN KEBIJAKAN MAKSIMAL: ABKIN & PENINGKATAN APK PT 2026</h4>
+                        <p class="text-muted small mb-0">Psychosophia Behavioral Lab & ABKIN Bangka Belitung</p>
+                    </div>
+
+                    <div>
+                        <h6 class="fw-bold text-dark"><i class="fas fa-globe me-1"></i> 1. Executive Summary Makro</h6>
+                        <p class="text-muted small">Analisis data dari <strong>${total} responden</strong> di sekolah/madrasah jenjang menengah peserta workshop ABKIN menunjukkan tingkat validitas global mencapai <strong>${validGlobal}%</strong>. Niat siswa rata-rata di angka ${avgNiatGlobal}/5.0.</p>
+                    </div>
+
+                    <div>
+                        <h6 class="fw-bold text-dark"><i class="fas fa-lightbulb me-1"></i> 2. Rekomendasi Kebijakan untuk ABKIN & Dinas Pendidikan</h6>
+                        <p class="text-muted small">
+                            1. <strong>Sinergi Sekolah Menengah ABKIN:</strong> Membangun jejaring konseling karir terpadu antar kabupaten/kota se-Babel.<br>
+                            2. <strong>Intervensi Subsidi Biaya:</strong> Mengatasi hambatan finansial Pejuang Potensial melalui alokasi beasiswa tepat sasaran.<br>
+                            3. <strong>Adopsi Asesmen TPB Digital:</strong> Menjadikan instrumen ini standar bimbingan karir daerah.
+                        </p>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-top text-end small text-muted">
+                        <p class="mb-0">Dikeluarkan oleh: <strong>Psychosophia Behavioral Lab & Pengurus ABKIN Babel</strong></p>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('policyReportContent').innerHTML = policyContent;
+            document.getElementById('policyModal').classList.add('active');
+        }
+
+        function closePolicyModal() { document.getElementById('policyModal').classList.remove('active'); }
+
+        function loadAdminDashboard() { applyAdminFilters(); }
+        function resetAdminFilters() {
+            document.getElementById('adminFilterSpecificSchool').value = 'all';
+            applyAdminFilters();
+        }
+
+        function applyAdminFilters() {
+            const specificSchool = document.getElementById('adminFilterSpecificSchool').value;
+            let filtered = submissions;
+            if (specificSchool !== 'all') {
+                filtered = filtered.filter(s => s.sekolah === specificSchool);
+            }
+
+            document.getElementById('adminTotalResponden').innerText = filtered.length;
+            document.getElementById('adminTotalCount').innerText = filtered.length;
+            document.getElementById('adminAvgNiat').innerText = filtered.length ? (filtered.reduce((a,b)=>a+b.niat,0)/filtered.length).toFixed(1) : 0;
+            document.getElementById('adminGlobalValid').innerText = filtered.length ? `${Math.round((filtered.filter(s=>s.q8===3).length/filtered.length)*100)}%` : '0%';
+
+            renderAdminCharts(filtered);
+            renderAdminRankings(filtered);
+            renderAdminTable(filtered);
+        }
+
+        function renderAdminCharts(filtered) {
+            const donutCtx = document.getElementById('adminProfileDonutChart').getContext('2d');
+            if(adminProfileDonutChartInstance) adminProfileDonutChartInstance.destroy();
+            adminProfileDonutChartInstance = new Chart(donutCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Siap', 'Potensial', 'Restu', 'Pemilih', 'Drifter'],
+                    datasets: [{
+                        data: [
+                            filtered.filter(s => s.profileId === 'SIAP_MELUNCUR').length,
+                            filtered.filter(s => s.profileId === 'PEJUANG_POTENSIAL').length,
+                            filtered.filter(s => s.profileId === 'PEJUANG_RESTU').length,
+                            filtered.filter(s => s.profileId === 'PEMILIH_BERKUALITAS').length,
+                            filtered.filter(s => s.profileId === 'THE_DRIFTER').length
+                        ],
+                        backgroundColor: ['#10b981', '#f59e0b', '#06b6d4', '#8b5cf6', '#64748b'],
+                        borderWidth: 0
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#fff', font: { size: 9 } } } } }
+            });
+
+            const barCtx = document.getElementById('adminComponentBarChart').getContext('2d');
+            if(adminComponentBarChartInstance) adminComponentBarChartInstance.destroy();
+            adminComponentBarChartInstance = new Chart(barCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Sikap', 'Norma', 'PBC', 'Niat'],
+                    datasets: [{
+                        data: [
+                            filtered.length ? (filtered.reduce((a,b)=>a+b.sikap,0)/filtered.length).toFixed(1) : 0,
+                            filtered.length ? (filtered.reduce((a,b)=>a+b.norma,0)/filtered.length).toFixed(1) : 0,
+                            filtered.length ? (filtered.reduce((a,b)=>a+b.pbc,0)/filtered.length).toFixed(1) : 0,
+                            filtered.length ? (filtered.reduce((a,b)=>a+b.niat,0)/filtered.length).toFixed(1) : 0
+                        ],
+                        backgroundColor: ['#00f0ff', '#ffc700', '#ff007f', '#10b981'],
+                        borderRadius: 6
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { min: 0, max: 5, ticks: { color: '#e2e8f0' } }, x: { ticks: { color: '#e2e8f0' } } }, plugins: { legend: { display: false } } }
+            });
+
+            const schoolCtx = document.getElementById('adminSchoolBarChart').getContext('2d');
+            if(adminSchoolBarChartInstance) adminSchoolBarChartInstance.destroy();
+            
+            const topSchools = tenantSchools.slice(0, 10);
+            const schoolNames = topSchools.map(t => t.name.length > 12 ? t.name.substring(0, 10) + '..' : t.name);
+            adminSchoolBarChartInstance = new Chart(schoolCtx, {
+                type: 'bar',
+                data: {
+                    labels: schoolNames,
+                    datasets: [{
+                        data: topSchools.map(t => filtered.filter(s => s.sekolah === t.name).length),
+                        backgroundColor: '#00f0ff',
+                        borderRadius: 6
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { ticks: { color: '#e2e8f0' } }, x: { ticks: { color: '#e2e8f0', font: { size: 8 } } } }, plugins: { legend: { display: false } } }
+            });
+        }
+
+        function renderAdminRankings(filtered) {
+            const kampusCount = {};
+            const citaCount = {};
+            filtered.forEach(s => {
+                kampusCount[s.kampus.trim()] = (kampusCount[s.kampus.trim()] || 0) + 1;
+                citaCount[s.cita.trim()] = (citaCount[s.cita.trim()] || 0) + 1;
+            });
+
+            const sortedKampus = Object.entries(kampusCount).sort((a,b) => b[1] - a[1]);
+            const fkEl = document.getElementById('fullKampusList');
+            fkEl.innerHTML = '';
+            sortedKampus.forEach(([k, c], idx) => {
+                fkEl.innerHTML += `<div class="d-flex justify-content-between align-items-center p-2 rounded mb-1 bg-dark"><span><span class="badge bg-warning text-dark me-2">#${idx+1}</span> ${k}</span><span class="badge bg-cyan text-dark fw-bold">${c} Peminat</span></div>`;
+            });
+
+            const sortedCita = Object.entries(citaCount).sort((a,b) => b[1] - a[1]).slice(0, 5);
+            const tcEl = document.getElementById('topCitaList');
+            tcEl.innerHTML = '';
+            sortedCita.forEach(([k, c], idx) => {
+                tcEl.innerHTML += `<div class="d-flex justify-content-between align-items-center p-2 rounded mb-1 bg-dark"><span><strong class="text-success me-1">${idx+1}.</strong> ${k}</span><span class="badge bg-success">${c} Siswa</span></div>`;
+            });
+        }
+
+        function renderAdminTable(filtered) {
+            const tbody = document.getElementById('adminMasterTableBody');
+            tbody.innerHTML = '';
+            filtered.forEach(s => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="fw-bold">${s.nama}</td>
+                        <td>${s.sekolah}</td>
+                        <td>${s.cita}</td>
+                        <td>${s.kampus}</td>
+                        <td><span class="badge bg-info text-dark">${s.profileLabel}</span></td>
+                        <td>${s.q8 === 3 ? 'Valid' : 'Gambling'}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function downloadGlobalCSV() {
+            let csv = "Nama,Sekolah,WhatsApp,Cita-Cita,Kampus,Profil\n";
+            submissions.forEach(s => csv += `"${s.nama}","${s.sekolah}","${s.wa}","${s.cita}","${s.kampus}","${s.profileLabel}"\n`);
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url; a.download = 'riset_abkin_babel_2026.csv';
+            document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        }
+
+        function runSliderSimulation() {
+            const sikap = parseFloat(document.getElementById('simSikap').value);
+            const norma = parseFloat(document.getElementById('simNorma').value);
+            const pbc = parseFloat(document.getElementById('simPbc').value);
+            const niat = parseFloat(document.getElementById('simNiat').value);
+
+            document.getElementById('lblSikap').innerText = sikap.toFixed(1);
+            document.getElementById('lblNorma').innerText = norma.toFixed(1);
+            document.getElementById('lblPbc').innerText = pbc.toFixed(1);
+            document.getElementById('lblNiat').innerText = niat.toFixed(1);
+
+            let res = "Siap Meluncur";
+            let desc = "Kesiapan mental, dukungan sosial, dan kendali dirimu optimal!";
+            let bg = "#10b981";
+
+            if (niat > 3 && pbc < 3) {
+                res = "Pejuang Potensial";
+                desc = "Niat kuat, namun terkendala finansial atau jarak tempuh.";
+                bg = "#f59e0b";
+            } else if (niat > 3 && norma < 3) {
+                res = "Pejuang Restu";
+                desc = "Niat bulat, namun memerlukan restu keluarga.";
+                bg = "#06b6d4";
+            } else if (niat <= 3) {
+                res = "Masih Eksplorasi";
+                desc = "Masih menimbang berbagai opsi jalur karier masa depan.";
+                bg = "#64748b";
+            }
+
+            const badge = document.getElementById('simResultBadge');
+            badge.innerText = res;
+            badge.style.backgroundColor = bg;
+            document.getElementById('simResultDesc').innerText = desc;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateSchoolSelectDropdowns();
+            runSliderSimulation();
+        });
+    </script>
+</body>
+</html>
+
