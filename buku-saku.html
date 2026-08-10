@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buku Saku & Dashboard Guru BK - Kompas Kampus 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: #FDFBF7; 
+            color: #3A3A3A; 
+            scroll-behavior: smooth; 
+        }
+        .page-container { max-width: 1050px; margin: 0 auto; }
+        .chart-container { position: relative; width: 100%; height: 300px; }
+        .nav-shadow { box-shadow: 0 -4px 20px rgba(126, 140, 105, 0.1); }
+        .glass-nav { background: rgba(253, 251, 247, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid #F1EFEA; }
+        .card-cozy { background-color: #FFFFFF; border: 1px solid #F1EFEA; box-shadow: 0 4px 20px rgba(0,0,0,0.01); border-radius: 2rem; transition: all 0.3s ease; }
+        .card-cozy:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(126, 140, 105, 0.05); }
+        .badge-sage { background-color: #F7F9F5; border: 1px solid #E8EEE3; color: #7E8C69; }
+        .badge-terracotta { background-color: #FEF9F6; border: 1px solid #FBE9E0; color: #D97757; }
+        .btn-sage { background-color: #7E8C69; color: #FFFFFF; border-radius: 1.5rem; transition: all 0.2s; }
+        .btn-sage:hover { background-color: #6C7A59; transform: scale(1.02); }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #FDFBF7; }
+        ::-webkit-scrollbar-thumb { background: #E2E2E2; border-radius: 10px; }
+    </style>
+</head>
+<body class="pb-28">
+
+    <header class="glass-nav sticky top-0 z-50 py-4 px-6">
+        <div class="page-container flex justify-between items-center">
+            <div>
+                <h1 class="text-base md:text-lg font-extrabold text-[#7E8C69] tracking-tight flex items-center gap-2">
+                    <span>🧭</span> KOMPAS KAMPUS 2026
+                </h1>
+                <p class="text-[9px] uppercase tracking-[0.25em] text-stone-400 font-extrabold">Psychosophia Behavioral Lab — IAIN SAS Babel</p>
+            </div>
+            <div id="active-indicator" class="hidden sm:block text-[10px] font-extrabold px-4 py-1.5 badge-sage rounded-full uppercase tracking-wider">
+                Pengantar
+            </div>
+        </div>
+    </header>
+
+    <main class="page-container p-4 md:p-6 space-y-12">
+        
+        <!-- ============================================== -->
+        <!-- SECTION: PENGANTAR -->
+        <!-- ============================================== -->
+        <section id="content-intro" class="section-content space-y-8">
+            <div class="bg-[#7E8C69] rounded-[2.5rem] p-8 md:p-12 text-white shadow-xl shadow-sage-900/10 relative overflow-hidden">
+                <div class="relative z-10 max-w-3xl">
+                    <span class="inline-block px-4 py-1 bg-white/20 rounded-full text-xs font-bold mb-6 uppercase tracking-widest italic">Buku Saku Guru BK</span>
+                    <h2 class="text-3xl md:text-5xl font-black mb-6 leading-tight">Selamat Datang, Guru BK Hebat! 👨‍🏫</h2>
+                    <p class="text-base md:text-lg opacity-90 leading-relaxed mb-8 text-stone-100">
+                        Buku saku ini adalah teman setia Anda dalam menjalankan peran sebagai <strong>Guru BK</strong>—pembimbing utama sekaligus arsitek keputusan bagi siswa-siswi SMA/MA/SMK demi meraih masa depan gemilang.
+                    </p>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="bg-white/10 p-5 rounded-2xl border border-white/20">
+                            <p class="text-sm font-bold mb-2">💡 Fokus Utama Bapak/Ibu:</p>
+                            <p class="text-xs leading-relaxed opacity-80 italic">Membaca data, memahami hambatan psikologis & sosial siswa, serta melancarkan intervensi bimbingan yang tepat sasaran.</p>
+                        </div>
+                        <div class="bg-white/10 p-5 rounded-2xl border border-white/20">
+                            <p class="text-sm font-bold mb-2">🎉 Kabar Baiknya:</p>
+                            <p class="text-xs leading-relaxed opacity-80 italic">Teknis coding, server, dan database adalah urusan kami di lab. Bapak/Ibu cukup fokus pada empati dan bimbingan psikologis.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="absolute -bottom-10 -right-10 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="md:col-span-2 card-cozy p-8">
+                    <h3 class="font-extrabold text-xl mb-6 flex items-center gap-3 text-stone-800">
+                        <span class="text-2xl">📋</span> Apa yang akan Anda dapatkan?
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div class="flex gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-stone-50 flex items-center justify-center text-xl shrink-0">🧠</div>
+                            <div>
+                                <p class="font-bold text-sm text-stone-700">Teori Diagnosa</p>
+                                <p class="text-xs text-stone-500 mt-1">Sains perilaku di balik logika pengukuran kesiapan kuliah.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-stone-50 flex items-center justify-center text-xl shrink-0">👥</div>
+                            <div>
+                                <p class="font-bold text-sm text-stone-700">Profil Perilaku</p>
+                                <p class="text-xs text-stone-500 mt-1">Mengenali 5 tipe siswa & strategi khusus mendekatinya.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-stone-50 flex items-center justify-center text-xl shrink-0">💻</div>
+                            <div>
+                                <p class="font-bold text-sm text-stone-700">Akses Live Dashboard</p>
+                                <p class="text-xs text-stone-500 mt-1">Simulator mengelola data siswa & kirim WA massal.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-stone-50 flex items-center justify-center text-xl shrink-0">💬</div>
+                            <div>
+                                <p class="font-bold text-sm text-stone-700">Pesan WA Nudge</p>
+                                <p class="text-xs text-stone-500 mt-1">Template pesan efektif yang mendorong keputusan siswa.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-[#FDFBF7] border-2 border-dashed border-stone-200 p-8 rounded-[2rem] flex flex-col justify-center items-center text-center">
+                    <p class="text-4xl mb-4">🏫</p>
+                    <p class="text-xs font-bold uppercase tracking-widest text-stone-400 mb-2">Afiliasi Program</p>
+                    <p class="text-sm font-extrabold text-stone-700">IAIN SAS Bangka Belitung</p>
+                    <p class="text-[10px] text-stone-500 mt-1 italic">Psychosophia Behavioral Lab</p>
+                    <p class="text-[9px] text-stone-400 mt-2 font-semibold">Prodi Psikologi Islam & Prodi BKPI</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- SECTION: LANDASAN TEORI -->
+        <!-- ============================================== -->
+        <section id="content-teori" class="section-content hidden space-y-8">
+            <div>
+                <h2 class="text-2xl font-black text-stone-800">Bagian 1: Landasan Teori & Model Perilaku</h2>
+                <p class="text-stone-500 text-sm italic">Mari memahami dinamika psikologi di balik keputusan siswa.</p>
+            </div>
+
+            <!-- Intention-Behavior Gap visual -->
+            <div class="card-cozy p-6 md:p-8">
+                <div class="flex flex-col md:flex-row gap-8 items-center">
+                    <div class="flex-1 space-y-4">
+                        <span class="text-xs font-extrabold text-[#D97757] uppercase tracking-wider">1.1 Mengapa Kompas Kampus?</span>
+                        <h3 class="font-extrabold text-lg text-stone-800 leading-snug">Fenomena "Intention-Behavior Gap"</h3>
+                        <p class="text-xs text-stone-600 leading-relaxed">
+                            Hasil audit mendalam terhadap <strong>66 responden</strong> di Bangka Belitung menguak fakta mengejutkan:
+                        </p>
+                        <div class="p-4 bg-orange-50/70 rounded-2xl border border-orange-100/60">
+                            <p class="text-xs text-orange-900 font-medium leading-relaxed italic">
+                                "Ada 42,8% siswa yang sesungguhnya berniat kuliah, namun kenyataannya hanya 1,1% saja yang berhasil mendaftar ke perguruan tinggi."
+                            </p>
+                        </div>
+                        <p class="text-xs text-stone-500 leading-relaxed">
+                            Jurang pemisah inilah yang disebut <strong>Intention-Behavior Gap</strong>. Kompas Kampus hadir bukan sebagai survei minat belaka, melainkan instrumen diagnostik untuk mendeteksi sumbatan keputusan siswa.
+                        </p>
+                    </div>
+                    <div class="flex-1 w-full bg-stone-50 p-4 rounded-2xl">
+                        <div class="chart-container">
+                            <canvas id="auditChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Theory Table and Theory explanation -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="card-cozy p-6 md:p-8 space-y-6">
+                    <div>
+                        <span class="text-xs font-extrabold text-[#7E8C69] uppercase tracking-wider">1.2 Theory of Planned Behavior (TPB)</span>
+                        <h4 class="font-extrabold text-base text-stone-800 mt-1">Tiga Pilar Keputusan Siswa</h4>
+                    </div>
+                    <p class="text-xs text-stone-600 leading-relaxed">
+                        Merujuk pada mahakarya teori psikologi sosial Icek Ajzen (1991), niat mendaftar siswa digerakkan oleh tiga faktor penentu:
+                    </p>
+                    <div class="space-y-3">
+                        <div class="p-3 bg-stone-50 rounded-xl hover:bg-stone-100/50 transition-all">
+                            <p class="text-xs font-bold text-stone-700 flex items-center gap-2"><span>🧠</span> Sikap (Attitude)</p>
+                            <p class="text-[11px] text-stone-500 mt-0.5">Seberapa besar siswa menilai kuliah bermanfaat bagi masa depannya.</p>
+                            <p class="text-[10px] text-orange-800 font-semibold italic mt-1">"Apakah kuliah itu menguntungkan untukku?"</p>
+                        </div>
+                        <div class="p-3 bg-stone-50 rounded-xl hover:bg-stone-100/50 transition-all">
+                            <p class="text-xs font-bold text-stone-700 flex items-center gap-2"><span>🤝</span> Norma Subjektif (Subjective Norm)</p>
+                            <p class="text-[11px] text-stone-500 mt-0.5">Dukungan sosial atau persetujuan dari orang-orang terdekat.</p>
+                            <p class="text-[10px] text-orange-800 font-semibold italic mt-1">"Apakah orang tua atau temanku setuju jika aku kuliah?"</p>
+                        </div>
+                        <div class="p-3 bg-stone-50 rounded-xl hover:bg-stone-100/50 transition-all">
+                            <p class="text-xs font-bold text-stone-700 flex items-center gap-2"><span>⚙️</span> Persepsi Kendali Perilaku (PBC)</p>
+                            <p class="text-[11px] text-stone-500 mt-0.5">Tingkat kemudahan akses serta persepsi hambatan (biaya/jarak).</p>
+                            <p class="text-[10px] text-orange-800 font-semibold italic mt-1">"Apakah aku mampu melewati prosedur dan membiayainya?"</p>
+                        </div>
+                    </div>
+                    <p class="text-[11px] bg-amber-50 text-amber-800 p-3 rounded-lg font-medium">
+                        💡 <strong>Inti Teori:</strong> Niat lahir dari bertemunya tiga sinyal di atas. Bila salah satu sinyal padam (lemah), maka rencana kuliah terancam batal.
+                    </p>
+                </div>
+
+                <div class="card-cozy p-6 md:p-8 bg-stone-900 text-white flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <span class="text-xs font-extrabold text-[#7E8C69] uppercase tracking-wider">1.3 Extended TPB & Brand Awareness</span>
+                        <h4 class="font-extrabold text-lg">Pintu Gerbang Utama: Brand Awareness</h4>
+                        <p class="text-xs text-stone-300 leading-relaxed">
+                            Kami menambahkan faktor <strong>Brand Awareness</strong> (kesadaran merek kampus tujuan) sebagai variabel hulu. Semakin siswa mengenal kampus, semakin terbangun pula sikap positif serta persepsi kemudahan akses mereka.
+                        </p>
+                        
+                        <!-- Visual flow -->
+                        <div class="p-4 bg-white/5 rounded-2xl border border-white/10 font-mono text-center flex flex-wrap gap-2 items-center justify-center text-[10px] tracking-tight text-[#7E8C69]">
+                            <span class="text-white">Awareness</span>
+                            <span class="text-stone-500">→</span>
+                            <span class="text-white">TPB (Sikap, Norma, PBC)</span>
+                            <span class="text-stone-500">→</span>
+                            <span class="text-amber-400 font-bold">Niat (Intention)</span>
+                            <span class="text-stone-500">→</span>
+                            <span class="bg-[#7E8C69] text-white px-1.5 py-0.5 rounded font-extrabold">Aksi (Action)</span>
+                        </div>
+                    </div>
+                    <div class="pt-6 border-t border-white/10 text-[11px] text-stone-300 italic">
+                        💡 <strong>Mengapa ini penting?</strong> Apabila kesadaran akan kampus tujuan masih minim, siswa tidak memiliki landasan informasi untuk bersikap optimis. Tugas perdana Guru BK adalah menyajikan wawasan kampus yang menarik minat mereka.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- SECTION: PROFIL SISWA -->
+        <!-- ============================================== -->
+        <section id="content-profil" class="section-content hidden space-y-8">
+            <div>
+                <h2 class="text-2xl font-black text-stone-800">Bagian 1.4 & 1.5: Geng Profil Perilaku Siswa</h2>
+                <p class="text-stone-500 text-sm italic">Klik tombol profil di bawah untuk membuka kartu intervensi khusus.</p>
+            </div>
+
+            <!-- Dynamic Profiles Tabs -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3" id="profile-tabs-container">
+                <!-- Injected by JavaScript -->
+            </div>
+
+            <!-- Profile Detail Showcase -->
+            <div id="profile-showcase" class="card-cozy p-6 md:p-10 min-h-[400px] bg-white relative">
+                <div class="flex flex-col items-center justify-center text-center text-stone-400 py-16 space-y-3">
+                    <p class="text-5xl">👥</p>
+                    <p class="text-sm italic font-medium">Silakan pilih salah satu profil di atas untuk mulai membaca strategi intervensinya.</p>
+                </div>
+            </div>
+
+            <!-- 1.6 Understanding Lab Reports -->
+            <div class="card-cozy p-6 md:p-8 space-y-6">
+                <span class="text-xs font-extrabold text-[#7E8C69] uppercase tracking-wider">1.6 Memahami Jenis Laporan dari Lab</span>
+                <p class="text-xs text-stone-600 leading-relaxed">
+                    Setiap periode (mingguan atau bulanan), tim peneliti dari <em>Psychosophia Behavioral Lab</em> akan mengirimkan tiga dokumen utama untuk memfasilitasi kerja bimbingan Anda:
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                    <div class="p-4 rounded-2xl bg-[#F7F9F5] border border-[#E8EEE3] space-y-2">
+                        <p class="font-bold text-[#7E8C69]">1. Dokumen CSV Mentah</p>
+                        <p class="text-stone-500 text-[11px]">Memuat tabulasi data mentah jawaban seluruh responden sekolah. Berguna jika Bapak/Ibu ingin mengolah mandiri di Microsoft Excel atau program analisis SPSS.</p>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-[#FEF9F6] border border-[#FBE9E0] space-y-2">
+                        <p class="font-bold text-[#D97757]">2. PDF Laporan Per Sekolah</p>
+                        <p class="text-stone-500 text-[11px]">Berupa dokumen ringkasan sekolah, diagram profil siswa, serta catatan rekomendasi tertulis yang siap diprint untuk bahan pelaporan atau rapat manajemen.</p>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-stone-50 border border-stone-200/50 space-y-2">
+                        <p class="font-bold text-stone-700">3. Laporan Kinerja Guru BK</p>
+                        <p class="text-stone-500 text-[11px]">Rangkuman rekam jejak bimbingan, rasio keterbacaan pesan (nudge) yang dikirim, serta tingkat konversi siswa yang tergerak mengikuti pendaftaran.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- SECTION: PANDUAN PRAKTIS -->
+        <!-- ============================================== -->
+        <section id="content-panduan" class="section-content hidden space-y-8">
+            <div>
+                <h2 class="text-2xl font-black text-stone-800">Bagian 2: Panduan Operasional Dashboard</h2>
+                <p class="text-stone-500 text-sm italic">Langkah-langkah taktis memaksimalkan sistem intervensi otomatis dan manual.</p>
+            </div>
+
+            <div class="space-y-12 max-w-4xl">
+                <!-- Langkah 2.1 & 2.2 -->
+                <div class="flex gap-6 items-start">
+                    <div class="w-10 h-10 rounded-full bg-[#7E8C69] text-white flex items-center justify-center font-extrabold shrink-0">1</div>
+                    <div class="space-y-4 flex-1">
+                        <h3 class="font-extrabold text-lg text-stone-800">2.1 & 2.2 Akses Masuk & Membaca Data</h3>
+                        <p class="text-xs text-stone-600 leading-relaxed">
+                            Silakan membuka tautan sistem di <code class="bg-stone-100 text-red-600 px-1.5 py-0.5 rounded font-mono text-[11px]">/dashboard.html</code> dan masukkan sandi rahasia dari lab. Dashboard menyajikan:
+                        </p>
+                        <ul class="list-disc pl-5 text-xs text-stone-500 space-y-1.5">
+                            <li><strong>Kartu Statistik Utama:</strong> Menghitung kumulatif total responden serta distribusi profil secara langsung (*realtime*).</li>
+                            <li><strong>Tabel Respon Siswa:</strong> Kolom nama, sekolah, profil utama, serta persetujuan bersedia dihubungi (✅/❌).</li>
+                        </ul>
+                        <div class="p-3.5 bg-stone-50 rounded-xl border border-stone-100 flex items-center gap-2">
+                            <span class="text-lg">💡</span>
+                            <p class="text-[11px] text-stone-600 italic font-medium"><strong>Tips Guru BK:</strong> Klik ikon saringan/corong di baris tabel "Profil" untuk menampilkan siswa tertentu saja, misalnya menyaring khusus geng "Pejuang Restu".</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Langkah 2.3 & 2.4 -->
+                <div class="flex gap-6 items-start">
+                    <div class="w-10 h-10 rounded-full bg-[#7E8C69] text-white flex items-center justify-center font-extrabold shrink-0">2</div>
+                    <div class="space-y-4 flex-1">
+                        <h3 class="font-extrabold text-lg text-stone-800">2.3, 2.4 & 2.7 Operasi Sniper Mode (Kirim WA)</h3>
+                        <p class="text-xs text-stone-600 leading-relaxed">
+                            Fasilitas **Sniper Mode** memungkinkan Anda mengirim pesan yang dipersonalisasi khusus hanya untuk kluster siswa yang memiliki hambatan serupa tanpa salah sasaran.
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="p-4 rounded-2xl bg-white border border-stone-200/60 shadow-sm space-y-3">
+                                <p class="text-xs font-bold text-[#7E8C69]">📋 Langkah Manual Dashboard:</p>
+                                <ol class="list-decimal pl-4 text-[11px] text-stone-500 space-y-1.5">
+                                    <li>Centang kotak (checkbox) di baris nama siswa terpilih.</li>
+                                    <li>Ketik pesan Anda. Sisipkan tag <code class="bg-stone-100 text-stone-800 px-1 rounded font-mono font-bold">{nama}</code> agar sistem menyapa siswa secara akrab sesuai nama masing-masing.</li>
+                                    <li>Tekan tombol "Kirim WA Massal".</li>
+                                </ol>
+                            </div>
+                            <!-- Mockup WA -->
+                            <div class="p-4 rounded-2xl bg-[#E6F3E6] border border-green-200/60 space-y-3">
+                                <div class="flex justify-between items-center pb-2 border-b border-green-100 text-[10px] font-bold text-green-700">
+                                    <span>SIMULATOR SNIPER MODE</span>
+                                    <span class="text-green-500">🟢 Fonnte OK</span>
+                                </div>
+                                <div class="bg-white p-3 rounded-xl shadow-sm text-[10px] space-y-1.5 font-mono">
+                                    <p class="text-stone-400">Penerima: <span class="text-stone-700 font-bold">Rian (Pejuang Restu)</span></p>
+                                    <p class="text-stone-800 italic">"Halo Rian, kami tahu kamu ingin kuliah tapi orang tua khawatir ya? Mari diskusi santai di ruang BK besok..."</p>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-[10px] text-red-600 font-bold">⚠️ Syarat Mutlak: Sistem secara ketat hanya akan mengirimkan pesan kepada siswa yang telah memberikan tanda persetujuan bersedia dihubungi (✅).</p>
+                    </div>
+                </div>
+
+                <!-- Langkah 2.5 & 2.6 -->
+                <div class="flex gap-6 items-start">
+                    <div class="w-10 h-10 rounded-full bg-[#7E8C69] text-white flex items-center justify-center font-extrabold shrink-0">3</div>
+                    <div class="space-y-4 flex-1">
+                        <h3 class="font-extrabold text-lg text-stone-800">2.5 & 2.6 Jadwal & Waktu Keemasan (Timing is Key)</h3>
+                        <p class="text-xs text-stone-600 leading-relaxed">
+                            Jangan sembarangan mengirim pesan bimbingan! Perhatikan ritme hidup anak-anak sekolah agar pesan Anda dibaca:
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                            <div class="p-4 rounded-2xl bg-[#F7F9F5] border border-[#E8EEE3] space-y-2">
+                                <p class="font-bold text-[#7E8C69] flex items-center gap-1"><span>🤖</span> Otomasi WA Instan</p>
+                                <p class="text-[11px] text-stone-500">Sesaat setelah pengisian form, server lab akan otomatis mengirimkan pesan diagnostik dini ke siswa tersebut jika ia menyetujui.</p>
+                            </div>
+                            <div class="p-4 rounded-2xl bg-amber-50/50 border border-amber-100 space-y-2">
+                                <p class="font-bold text-amber-800 flex items-center gap-1"><span>⏰</span> Jam Emas Pengiriman</p>
+                                <ul class="list-disc pl-4 text-[10px] text-stone-600 space-y-1">
+                                    <li><strong>08.00 - 09.00:</strong> Pikiran segar di awal hari.</li>
+                                    <li><strong>12.00 - 13.00:</strong> Jam istirahat makan siang.</li>
+                                    <li><strong>15.00 - 16.00:</strong> Santai setelah jam pulang sekolah.</li>
+                                    <li class="text-red-600 font-bold"><strong>Di atas 21.00:</strong> Hindari! Mengganggu istirahat siswa.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Langkah 2.8, 2.9, 2.10 -->
+                <div class="flex gap-6 items-start">
+                    <div class="w-10 h-10 rounded-full bg-[#7E8C69] text-white flex items-center justify-center font-extrabold shrink-0">4</div>
+                    <div class="space-y-4 flex-1">
+                        <h3 class="font-extrabold text-lg text-stone-800">2.8, 2.9 & 2.10 Monitoring, Pengujian & Ekspor</h3>
+                        <p class="text-xs text-stone-600 leading-relaxed">
+                            Lakukan monitoring pengiriman melalui panel Fonnte.com untuk memantau status pesan: <span class="bg-stone-100 text-stone-600 px-1 rounded font-bold">Sent</span> (Terkirim dari server), <span class="bg-stone-100 text-stone-600 px-1 rounded font-bold">Delivered</span> (Masuk ke gawai siswa), atau <span class="bg-stone-100 text-stone-600 px-1 rounded font-bold">Read</span> (Pesan dibaca).
+                        </p>
+                        <p class="text-xs text-stone-600 leading-relaxed">
+                            Bila ingin melangkah lebih jauh, tekan tombol **"Download CSV"** pada dashboard. Bapak/Ibu dapat menuangkan data tersebut ke dalam program statistika atau Microsoft Excel guna membuat grafik tren bimbingan internal.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- SECTION: DASHBOARD GURU BK (LIVE SIMULATOR) -->
+        <!-- ============================================== -->
+        <section id="content-dashboard" class="section-content hidden space-y-8">
+            <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+                <div>
+                    <h2 class="text-2xl font-black text-stone-800 flex items-center gap-2">
+                        <span>📊</span> Simulator Dashboard Guru BK
+                    </h2>
+                    <p class="text-stone-500 text-sm italic">Uji coba interaktif pengelolaan data murid & sistem Sniper Mode.</p>
+                </div>
+                <div id="dash-status-badge" class="hidden text-xs font-bold px-4 py-1.5 bg-emerald-50 border border-emerald-200 rounded-full text-emerald-700 self-start">
+                    🔓 Sesi Masuk Aktif
+                </div>
+            </div>
+
+            <!-- Dashboard Password Gate -->
+            <div id="dashboard-gate" class="card-cozy p-8 max-w-md mx-auto text-center space-y-6">
+                <p class="text-5xl">🔒</p>
+                <div class="space-y-2">
+                    <h4 class="font-extrabold text-lg text-stone-800">Masukkan Sandi Guru BK</h4>
+                    <p class="text-xs text-stone-400">Gunakan kata sandi bimbingan resmi dari tim lab untuk mengunci akses data anak didik.</p>
+                </div>
+                <div class="space-y-3 text-left">
+                    <label class="text-[10px] font-bold text-stone-400 uppercase tracking-wider">Kata Sandi Simulator</label>
+                    <input type="password" id="sim-password" class="w-full px-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-[#7E8C69] text-sm" placeholder="Sandi resmi (Ketik: kompas2026)">
+                    <p id="gate-error" class="text-red-500 text-[10px] font-bold hidden">❌ Sandi salah, silakan coba lagi!</p>
+                </div>
+                <button onclick="tryLoginDashboard()" class="w-full py-3 btn-sage text-sm font-bold shadow-md">Buka Dashboard</button>
+            </div>
+
+            <!-- Main Dashboard Panel (Initially Hidden) -->
+            <div id="dashboard-main-panel" class="hidden space-y-8">
+                <!-- Dashboard Statistics Cards -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="p-5 bg-white border border-stone-100 rounded-2xl flex justify-between items-center shadow-sm">
+                        <div>
+                            <p class="text-[10px] font-bold text-stone-400 uppercase">Responden</p>
+                            <p class="text-2xl font-black text-stone-800 mt-1" id="db-stat-total">0</p>
+                        </div>
+                        <span class="text-2xl">👥</span>
+                    </div>
+                    <div class="p-5 bg-[#F7F9F5] border border-[#E8EEE3] rounded-2xl flex justify-between items-center shadow-sm">
+                        <div>
+                            <p class="text-[10px] font-bold text-[#7E8C69] uppercase">Siap Meluncur</p>
+                            <p class="text-2xl font-black text-[#7E8C69] mt-1" id="db-stat-siap">0</p>
+                        </div>
+                        <span class="text-2xl">🚀</span>
+                    </div>
+                    <div class="p-5 bg-[#FEF9F6] border border-[#FBE9E0] rounded-2xl flex justify-between items-center shadow-sm">
+                        <div>
+                            <p class="text-[10px] font-bold text-[#D97757] uppercase">Pejuang Potensial</p>
+                            <p class="text-2xl font-black text-[#D97757] mt-1" id="db-stat-potensial">0</p>
+                        </div>
+                        <span class="text-2xl">💰</span>
+                    </div>
+                    <div class="p-5 bg-stone-50 border border-stone-100 rounded-2xl flex justify-between items-center shadow-sm">
+                        <div>
+                            <p class="text-[10px] font-bold text-stone-500 uppercase">Eksplorasi</p>
+                            <p class="text-2xl font-black text-stone-700 mt-1" id="db-stat-eksplorasi">0</p>
+                        </div>
+                        <span class="text-2xl">🌊</span>
+                    </div>
+                </div>
+
+                <!-- Dashboard Control and Table Panel -->
+                <div class="card-cozy p-6 md:p-8 space-y-6">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-stone-100 pb-4">
+                        <div>
+                            <h3 class="font-extrabold text-base text-stone-800">Daftar Hasil Responden Siswa</h3>
+                            <p class="text-[11px] text-stone-400">Data simulator menampilkan representasi 4 responden dari laporan lab terkini.</p>
+                        </div>
+                        
+                        <!-- Dashboard Controls -->
+                        <div class="flex flex-wrap gap-2 w-full md:w-auto">
+                            <button onclick="triggerDownloadCSV()" class="px-4 py-2 border border-stone-200 hover:bg-stone-50 rounded-xl text-xs font-bold text-stone-600 transition-colors flex items-center gap-1">
+                                <span>📥</span> Download CSV
+                            </button>
+                            <button onclick="openSniperModal()" class="px-4 py-2 bg-[#7E8C69] hover:bg-[#6C7A59] text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1 shadow-sm">
+                                <span>🎯</span> Sniper Mode WA
+                            </button>
+                            <button onclick="resetDashboardSession()" class="px-4 py-2 border border-red-200 hover:bg-red-50 text-red-600 rounded-xl text-xs font-bold transition-colors">
+                                Keluar Sesi
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Client-side Filters -->
+                    <div class="flex flex-wrap gap-2 items-center text-xs">
+                        <span class="font-bold text-stone-400">Saring Profil:</span>
+                        <button onclick="filterSimTable('all')" class="px-3 py-1 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-full font-semibold" id="btn-f-all">Semua</button>
+                        <button onclick="filterSimTable('🚀 Siap Meluncur')" class="px-3 py-1 bg-green-50 text-green-700 border border-green-200 rounded-full font-semibold" id="btn-f-siap">🚀 Siap</button>
+                        <button onclick="filterSimTable('💰 Pejuang Potensial')" class="px-3 py-1 bg-amber-50 text-amber-700 border border-amber-200 rounded-full font-semibold" id="btn-f-potensial">💰 Potensial</button>
+                        <button onclick="filterSimTable('🌊 Masih Eksplorasi')" class="px-3 py-1 bg-stone-50 text-stone-600 border border-stone-200 rounded-full font-semibold" id="btn-f-eksplorasi">🌊 Eksplorasi</button>
+                    </div>
+
+                    <!-- Responsive Sim Table -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead>
+                                <tr class="bg-stone-50 border-b border-stone-100 text-stone-500 font-extrabold">
+                                    <th class="p-3 text-center"><input type="checkbox" id="sim-select-all" onclick="toggleAllSimCheckboxes(this)" class="w-4 h-4 text-[#7E8C69] border-stone-300 rounded focus:ring-[#7E8C69]"></th>
+                                    <th class="p-3">Nama Siswa</th>
+                                    <th class="p-3">Sekolah</th>
+                                    <th class="p-3">Profil Diagnosa</th>
+                                    <th class="p-3">Sikap</th>
+                                    <th class="p-3">Norma</th>
+                                    <th class="p-3">PBC</th>
+                                    <th class="p-3">Niat</th>
+                                    <th class="p-3 text-center">Bersedia</th>
+                                </tr>
+                            </thead>
+                            <tbody id="sim-table-body" class="divide-y divide-stone-50">
+                                <!-- Injected via JavaScript from mock data -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sniper Mode Modal Simulator -->
+            <div id="sniper-modal" class="fixed inset-0 bg-stone-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+                <div class="bg-white rounded-3xl p-6 max-w-md w-full border border-stone-100 space-y-6 shadow-2xl">
+                    <div class="flex justify-between items-center border-b border-stone-50 pb-3">
+                        <h4 class="font-extrabold text-stone-800 text-sm flex items-center gap-1.5">
+                            <span>🎯</span> Sniper Mode WA Simulator
+                        </h4>
+                        <button onclick="closeSniperModal()" class="text-stone-400 hover:text-stone-600 font-bold text-lg">×</button>
+                    </div>
+                    <div class="space-y-4 text-xs">
+                        <div>
+                            <p class="font-bold text-stone-600 mb-1">Penerima Pesan Terpilih:</p>
+                            <p id="modal-targets-summary" class="p-3 bg-stone-50 rounded-xl italic text-stone-500">Memilih 0 siswa...</p>
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="font-bold text-stone-600">Pilih Template Nudge Otomatis:</label>
+                            <select id="modal-template-select" onchange="applyTemplateToModal()" class="w-full px-3 py-2 border border-stone-200 rounded-xl focus:ring-1 focus:ring-[#7E8C69]">
+                                <option value="custom">-- Tulis Pesan Kustom --</option>
+                                <option value="🚀 Siap Meluncur">🚀 Siap Meluncur</option>
+                                <option value="💰 Pejuang Potensial">💰 Pejuang Potensial</option>
+                                <option value="🌊 Masih Eksplorasi">🌊 Masih Eksplorasi</option>
+                            </select>
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="font-bold text-stone-600">Isi Naskah Pesan WA:</label>
+                            <textarea id="modal-message-body" rows="4" class="w-full p-3 border border-stone-200 rounded-xl font-mono text-[11px] focus:ring-1 focus:ring-[#7E8C69]"></textarea>
+                        </div>
+                    </div>
+                    <div class="flex justify-end gap-2 text-xs">
+                        <button onclick="closeSniperModal()" class="px-4 py-2 border border-stone-200 text-stone-600 rounded-xl font-bold">Batal</button>
+                        <button onclick="executeSimulatedBulkSend()" class="px-4 py-2 bg-[#7E8C69] text-white rounded-xl font-bold">Kirim WA Massal</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Custom Notification Toast -->
+            <div id="sim-toast" class="fixed top-20 right-6 bg-stone-900 text-white px-5 py-3 rounded-2xl text-xs font-bold shadow-xl hidden z-50 flex items-center gap-2 border border-white/10">
+                <span id="sim-toast-icon">✅</span>
+                <span id="sim-toast-msg">Notifikasi simulator...</span>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- SECTION: LAPORAN LAB (NEW TAB) -->
+        <!-- ============================================== -->
+        <section id="content-laporan" class="section-content hidden space-y-8">
+            <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+                <div>
+                    <h2 class="text-2xl font-black text-stone-800 flex items-center gap-2">
+                        <span>📄</span> Laporan Hasil Diagnosa Lab
+                    </h2>
+                    <p class="text-stone-500 text-sm italic">Replika digital resmi dokumen laporan tanggal 18 Juni 2026.</p>
+                </div>
+                <div class="text-[10px] font-bold px-4 py-1.5 badge-terracotta rounded-full uppercase tracking-wider self-start">
+                    Periode: 18 Juni 2026
+                </div>
+            </div>
+
+            <!-- Cover Card Laporan -->
+            <div class="bg-gradient-to-r from-[#7E8C69] to-[#8E9C79] text-white rounded-[2.5rem] p-8 md:p-10 shadow-xl space-y-4">
+                <span class="text-[10px] font-bold tracking-widest uppercase bg-white/20 px-3 py-1 rounded-full">PRODI PSIKOLOGI ISLAM & BKPI</span>
+                <h3 class="text-2xl md:text-3xl font-black leading-tight">Laporan Diagnosa Kesiapan Kuliah per Sekolah</h3>
+                <p class="text-xs text-stone-100 max-w-2xl leading-relaxed">
+                    Diterbitkan oleh <strong>Psychosophia Behavioral Lab, IAIN SAS Bangka Belitung</strong> guna mendiagnosa hambatan psikososial siswa dalam menembus jenjang perguruan tinggi.
+                </p>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs pt-4 border-t border-white/10">
+                    <div>
+                        <p class="text-white/60">Total Responden</p>
+                        <p class="text-lg font-bold">4 Siswa</p>
+                    </div>
+                    <div>
+                        <p class="text-white/60">Cakupan Sekolah</p>
+                        <p class="text-lg font-bold">3 Sekolah</p>
+                    </div>
+                    <div>
+                        <p class="text-white/60">Data Valid</p>
+                        <p class="text-lg font-bold">3 (75%)</p>
+                    </div>
+                    <div>
+                        <p class="text-white/60">Bersedia Hubungi</p>
+                        <p class="text-lg font-bold">2 (50%)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PDF Report Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Column 1 & 2: School summary & profiles -->
+                <div class="md:col-span-2 space-y-8">
+                    <!-- Ringkasan per Sekolah Table -->
+                    <div class="card-cozy p-6 md:p-8 space-y-4">
+                        <h4 class="font-extrabold text-stone-800 text-sm flex items-center gap-1.5">
+                            <span>🏫</span> Ringkasan Data Kolektif per Sekolah
+                        </h4>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-[11px] border-collapse">
+                                <thead>
+                                    <tr class="bg-stone-50 border-b border-stone-100 text-stone-500 font-extrabold">
+                                        <th class="p-3">Asal Sekolah</th>
+                                        <th class="p-3 text-center">Total</th>
+                                        <th class="p-3 text-center">🚀 Siap</th>
+                                        <th class="p-3 text-center">💰 Potensial</th>
+                                        <th class="p-3 text-center">🌊 Drifter</th>
+                                        <th class="p-3 text-center">✅ Valid</th>
+                                        <th class="p-3 text-center">📞 Bersedia</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-stone-50 text-stone-600">
+                                    <tr class="hover:bg-stone-50">
+                                        <td class="p-3 font-bold text-stone-800">SMA N 1 Belinyu</td>
+                                        <td class="p-3 text-center">2</td>
+                                        <td class="p-3 text-center">1</td>
+                                        <td class="p-3 text-center">0</td>
+                                        <td class="p-3 text-center">1</td>
+                                        <td class="p-3 text-center">1 (50%)</td>
+                                        <td class="p-3 text-center">0 (0%)</td>
+                                    </tr>
+                                    <tr class="hover:bg-stone-50">
+                                        <td class="p-3 font-bold text-stone-800">SMA 1 Pangkalpinang</td>
+                                        <td class="p-3 text-center">1</td>
+                                        <td class="p-3 text-center">0</td>
+                                        <td class="p-3 text-center">1</td>
+                                        <td class="p-3 text-center">0</td>
+                                        <td class="p-3 text-center">1 (100%)</td>
+                                        <td class="p-3 text-center">1 (100%)</td>
+                                    </tr>
+                                    <tr class="hover:bg-stone-50">
+                                        <td class="p-3 font-bold text-stone-800">SMA N 1 sungailiat</td>
+                                        <td class="p-3 text-center">1</td>
+                                        <td class="p-3 text-center">0</td>
+                                        <td class="p-3 text-center">1</td>
+                                        <td class="p-3 text-center">0</td>
+                                        <td class="p-3 text-center">1 (100%)</td>
+                                        <td class="p-3 text-center">1 (100%)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- School detailed breakdown -->
+                    <div class="card-cozy p-6 md:p-8 space-y-6">
+                        <h4 class="font-extrabold text-stone-800 text-sm">📍 Laporan Rinci Per Sekolah</h4>
+                        <div class="space-y-4 divide-y divide-stone-100">
+                            <!-- Belinyu -->
+                            <div class="pt-4 space-y-2 first:pt-0">
+                                <h5 class="font-extrabold text-xs text-stone-700">SMA N 1 Belinyu</h5>
+                                <div class="grid grid-cols-3 gap-2 text-[10px] text-stone-500">
+                                    <p>Siswa: <strong>2 Orang</strong></p>
+                                    <p>Valid: <strong class="text-orange-600">50% (1)</strong></p>
+                                    <p>Bersedia: <strong class="text-red-600">0%</strong></p>
+                                </div>
+                                <div class="p-3 bg-stone-50 rounded-xl text-[11px] text-stone-600">
+                                    <strong>Distribusi Profil:</strong> 🌊 Masih Eksplorasi (50% / 1 siswa), 🚀 Siap Meluncur (50% / 1 siswa).
+                                </div>
+                            </div>
+                            <!-- Pangkalpinang -->
+                            <div class="pt-4 space-y-2">
+                                <h5 class="font-extrabold text-xs text-stone-700">SMA 1 Pangkalpinang</h5>
+                                <div class="grid grid-cols-3 gap-2 text-[10px] text-stone-500">
+                                    <p>Siswa: <strong>1 Orang</strong></p>
+                                    <p>Valid: <strong class="text-green-600">100%</strong></p>
+                                    <p>Bersedia: <strong class="text-green-600">100% (1)</strong></p>
+                                </div>
+                                <div class="p-3 bg-stone-50 rounded-xl text-[11px] text-stone-600">
+                                    <strong>Distribusi Profil:</strong> 💰 Pejuang Potensial (100% / 1 siswa).
+                                </div>
+                            </div>
+                            <!-- Sungailiat -->
+                            <div class="pt-4 space-y-2">
+                                <h5 class="font-extrabold text-xs text-stone-700">SMA N 1 Sungailiat</h5>
+                                <div class="grid grid-cols-3 gap-2 text-[10px] text-stone-500">
+                                    <p>Siswa: <strong>1 Orang</strong></p>
+                                    <p>Valid: <strong class="text-green-600">100%</strong></p>
+                                    <p>Bersedia: <strong class="text-green-600">100% (1)</strong></p>
+                                </div>
+                                <div class="p-3 bg-stone-50 rounded-xl text-[11px] text-stone-600">
+                                    <strong>Distribusi Profil:</strong> 💰 Pejuang Potensial (100% / 1 siswa).
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Column 3: Recommendations based on behavioral science -->
+                <div class="space-y-8">
+                    <div class="card-cozy p-6 md:p-8 bg-[#FEF9F6] border border-[#FBE9E0] space-y-4">
+                        <h4 class="font-extrabold text-stone-800 text-sm flex items-center gap-1">
+                            <span>🧠</span> Rekomendasi Intervensi Berbasis Sains Perilaku
+                        </h4>
+                        <div class="space-y-4 text-xs divide-y divide-[#FBE9E0]/50">
+                            <div class="pt-3 first:pt-0 space-y-1">
+                                <p class="font-bold text-stone-700">SMA 1 Pangkalpinang</p>
+                                <p class="text-[#D97757] font-semibold text-[10px] uppercase">Dominan: Pejuang Potensial (💰)</p>
+                                <p class="text-stone-500 leading-relaxed text-[11px]">Tawarkan KIP-Kuliah dan skema beasiswa prestasi secara gamblang. Dorong motivasi finansial siswa agar tidak mundur.</p>
+                            </div>
+                            <div class="pt-3 space-y-1">
+                                <p class="font-bold text-stone-700">SMA N 1 Belinyu</p>
+                                <p class="text-stone-500 font-semibold text-[10px] uppercase">Dominan: Masih Eksplorasi (🌊)</p>
+                                <p class="text-stone-500 leading-relaxed text-[11px]">Gunakan teknik masa depan terbayang (future-self visualization). Berikan konten bimbingan karir yang kasual tanpa kesan memaksakan.</p>
+                            </div>
+                            <div class="pt-3 space-y-1">
+                                <p class="font-bold text-stone-700">SMA N 1 Sungailiat</p>
+                                <p class="text-[#D97757] font-semibold text-[10px] uppercase">Dominan: Pejuang Potensial (💰)</p>
+                                <p class="text-stone-500 leading-relaxed text-[11px]">Dekati siswa secara personal untuk mendiskusikan KIP-K. Minimalkan birokrasi pendaftaran beasiswa agar tidak memicu gesekan psikologis.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Source Verification -->
+                    <div class="p-6 bg-stone-100 rounded-3xl border border-stone-200/50 space-y-2 text-center text-[11px] text-stone-500">
+                        <p class="font-bold text-stone-700">📄 Sistem Otomasi Laporan</p>
+                        <p>Dokumen ini disinkronisasikan secara otomatis dari skrip analisis statistik R berdasarkan basis data hasil survei nasional.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================== -->
+        <!-- SECTION: PENUTUP / CHECKLIST -->
+        <!-- ============================================== -->
+        <section id="content-penutup" class="section-content hidden space-y-8">
+            <div class="text-center space-y-4 max-w-xl mx-auto">
+                <p class="text-6xl">🎉</p>
+                <h2 class="text-3xl font-black text-stone-800">Selesai Membaca!</h2>
+                <p class="text-stone-500 text-sm italic">Mari kita konfirmasi pemahaman Bapak/Ibu demi memaksimalkan kinerja bimbingan di sekolah.</p>
+            </div>
+
+            <!-- Checklist Area -->
+            <div class="max-w-xl mx-auto card-cozy p-6 md:p-8 space-y-6 bg-white">
+                <h4 class="font-extrabold text-base text-stone-800 border-b border-stone-100 pb-3 text-center">Daftar Kesiapan Guru BK</h4>
+                <div id="final-checklist-container" class="space-y-3">
+                    <!-- Injected by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Warm Final Footer Box -->
+            <div class="bg-[#7E8C69] text-white p-8 md:p-12 rounded-[3rem] text-center shadow-xl relative overflow-hidden">
+                <div class="relative z-10 space-y-6 max-w-2xl mx-auto">
+                    <p class="text-xl md:text-2xl font-bold italic leading-relaxed">
+                        "Data bukanlah sekadar barisan angka bisu di atas spreadsheet. Data adalah suara halus para siswa yang meminta uluran bimbingan untuk membuka gerbang masa depan mereka."
+                    </p>
+                    <p class="text-[10px] font-extrabold uppercase tracking-[0.3em] opacity-80">Selamat Bertugas untuk Bangsa, Guru BK!</p>
+                    
+                    <div class="pt-6 border-t border-white/20 text-xs text-stone-200 space-y-1">
+                        <p class="font-bold">Hubungi Tim Layanan Lab:</p>
+                        <p class="italic">Psychosophia Behavioral Lab — IAIN SAS Bangka Belitung</p>
+                        <p class="text-[10px] opacity-70">Sistem Informasi Kompas Kampus Ver. 2026.1</p>
+                    </div>
+                </div>
+                <div class="absolute -top-24 -left-24 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Mobile/Desktop Navigation Bar -->
+    <nav class="fixed bottom-0 left-0 right-0 glass-nav p-3 nav-shadow z-40">
+        <div class="max-w-xl mx-auto flex justify-between items-center text-[9px] font-extrabold uppercase tracking-tight text-stone-400">
+            <button onclick="navigate('intro')" id="btn-intro" class="flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all">
+                <span class="text-xl">🏠</span><span>Utama</span>
+            </button>
+            <button onclick="navigate('teori')" id="btn-teori" class="flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all">
+                <span class="text-xl">🧠</span><span>Teori</span>
+            </button>
+            <button onclick="navigate('profil')" id="btn-profil" class="flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all">
+                <span class="text-xl">👥</span><span>Profil</span>
+            </button>
+            <button onclick="navigate('panduan')" id="btn-panduan" class="flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all">
+                <span class="text-xl">📱</span><span>Panduan</span>
+            </button>
+            <button onclick="navigate('dashboard')" id="btn-dashboard" class="flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all">
+                <span class="text-xl">📊</span><span>Dash BK</span>
+            </button>
+            <button onclick="navigate('laporan')" id="btn-laporan" class="flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all">
+                <span class="text-xl">📄</span><span>Lap Lab</span>
+            </button>
+            <button onclick="navigate('penutup')" id="btn-penutup" class="flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all">
+                <span class="text-xl">✅</span><span>Selesai</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ============================================== -->
+    <!-- JAVASCRIPT STATE & DATA LOGIC -->
+    <!-- ============================================== -->
+    <script>
+        // Configuration & Database representation
+        const profiles = [
+            { 
+                id: 'siap', 
+                icon: '🚀', 
+                name: 'Siap Meluncur', 
+                char: 'Mantap, mandiri, siap daftar.', 
+                color: '#7E8C69', 
+                scores: { a: 'Tinggi', n: 'Tinggi', p: 'Tinggi', i: 'Tinggi' }, 
+                screening: '“Lah siap semue berkas e, tinggal nunggu buka pendaftaran ge.”', 
+                strategy: 'Closing & Reminders. Jangan membuang energi menyajikan terlalu banyak teori. Fokus bimbingan dititikberatkan langsung untuk mengamankan kursi dengan menyuplai pengingat tenggat waktu (deadline) secara berkala.', 
+                insight: 'Implementation Intention — ajak mereka mengisi formulir pendaftaran langsung di tempat saat sesi bimbingan tatap muka, alih-alih sekadar memberikan tautan.', 
+                template: '“Halo {nama}, Bapak/Ibu lihat kamu sudah mantap! Yuk langsung daftar, kami bantu dampingi prosesnya sampai dapat NIM. Klik link ini [link].”' 
+            },
+            { 
+                id: 'pejuang_potensial', 
+                icon: '💰', 
+                name: 'Pejuang Potensial', 
+                char: 'Mau kuliah, tapi terkendala biaya/jarak.', 
+                color: '#D97757', 
+                scores: { a: 'Tinggi', n: 'Bervariasi', p: 'Rendah (Hambatan Tinggi)', i: 'Tinggi' }, 
+                screening: '“Nak kuliah pak, tapi dak padek bayar e...”', 
+                strategy: 'Friction Reduction. Tawarkan KIP-K/beasiswa resmi, bantu runtut tata cara pemberkasan, dan dampingi pengisian dokumen beasiswa. Hadirlah sebagai mediator solusi finansial.', 
+                insight: 'Loss Aversion Framing — tekankan potensi kerugian psikososial ("kehilangan peluang emas seumur hidup") apabila mengabaikan beasiswa KIP-K yang tersedia.', 
+                template: '“Halo {nama}, semangatmu tinggi sekali! Cek info program beasiswa KIP-Kuliah di sini [link]. Siapkan berkasnya, kita susun bareng di ruang BK ya!”' 
+            },
+            { 
+                id: 'pejuang_restu', 
+                icon: '👨‍👩‍👧', 
+                name: 'Pejuang Restu', 
+                char: 'Mau kuliah, tapi orang tua belum setuju.', 
+                color: '#607D8B', 
+                scores: { a: 'Tinggi', n: 'Rendah', p: 'Bervariasi', i: 'Tinggi' }, 
+                screening: '“Mak suruh nambang bae habis sekolah ni.”', 
+                strategy: 'Social Proof. Libatkan peran aktif orang tua melalui surat resmi, lakukan kunjungan/dialog, serta tunjukkan rekam jejak alumni sukses berlatar belakang ekonomi serupa.', 
+                insight: 'Messenger Effect — pesan akan jauh lebih kredibel di mata orang tua murid apabila disuarakan langsung oleh representasi Guru BK sebagai otoritas akademik terpercaya.', 
+                template: '“Halo {nama}, bapak/ibu siap bantu meyakinkan orang tuamu. Coba tunjukkan brosur peluang kuliah ini ke ayah/ibu. Nanti kita jadwalkan ngobrol bersama ya.”' 
+            },
+            { 
+                id: 'pemilih', 
+                icon: '🔍', 
+                name: 'Pemilih Kualitas', 
+                char: 'Mampu, tapi ragu dengan nilai kampus.', 
+                color: '#9C27B0', 
+                scores: { a: 'Sedang (Ragu)', n: 'Bervariasi', p: 'Tinggi', i: 'Sedang' }, 
+                screening: '“Bagus dak kampus e? Ade prodi X dak?”', 
+                strategy: 'Value Proposition. Fokus memaparkan fasilitas kampus, keabsahan akreditasi program studi, serta peluang kerja dan prestasi mahasiswa secara konkret.', 
+                insight: 'Gain Framing — sajikan pencapaian masa depan dalam data kuantitatif menarik (misal: "Lebih dari 90% lulusan berhasil terserap pasar kerja dalam 6 bulan").', 
+                template: '“Halo {nama}, ketelitianmu keren! Mari intip daftar fasilitas modern dan prospek cerah alumni kami di link ini [link]. Ditunggu kehadirannya ya!”' 
+            },
+            { 
+                id: 'eksplorasi', 
+                icon: '🌊', 
+                name: 'Masih Eksplorasi', 
+                char: 'Belum punya minat dan pandangan ke depan.', 
+                color: '#795548', 
+                scores: { a: 'Rendah', n: 'Rendah', p: 'Rendah', i: 'Rendah' }, 
+                screening: '“Kerje bae lah pak, cari duit langsung.”', 
+                strategy: 'Future Self Visualization. Giring mereka untuk merenungkan proyeksi diri dalam rentang waktu 5 tahun ke depan. Masukkan ke basis data pemantauan berkala tanpa memaksa secara membabi buta.', 
+                insight: 'Mere Exposure Effect — kirimkan fakta menarik atau video serunya atmosfer kampus secara kasual dan berkala guna memantik rasa penasaran dari bawah sadar.', 
+                template: '“Halo {nama}, belum punya rencana setelah lulus? Santai, yuk main-main dulu mencari tahu potensi dirimu di sini [link]. Ruang BK selalu terbuka buat ngobrol santai!”' 
+            }
+        ];
+
+        // 18 June 2026 Audit/Report Data representation for simulator
+        const mockStudents = [
+            { id: 1, nama: 'Adit Pratama', sekolah: 'SMA N 1 Belinyu', profil: '🚀 Siap Meluncur', sikap: 5, norma: 5, pbc: 4.8, niat: 5, bersedia: '❌ Tidak' },
+            { id: 2, nama: 'Siti Rahma', sekolah: 'SMA N 1 Belinyu', profil: '🌊 Masih Eksplorasi', sikap: 2, norma: 2, pbc: 1.5, niat: 1.8, bersedia: '❌ Tidak' },
+            { id: 3, nama: 'Budi Santoso', sekolah: 'SMA 1 Pangkalpinang', profil: '💰 Pejuang Potensial', sikap: 4.8, norma: 3.5, pbc: 2.1, niat: 4.5, bersedia: '✅ Ya' },
+            { id: 4, nama: 'Lestari Indah', sekolah: 'SMA N 1 sungailiat', profil: '💰 Pejuang Potensial', sikap: 4.9, norma: 4.0, pbc: 2.3, niat: 4.7, bersedia: '✅ Ya' }
+        ];
+
+        const checkItems = [
+            "Memahami 3 sinyal Theory of Planned Behavior (Sikap, Norma, dan PBC) serta signifikansi Brand Awareness.",
+            "Mengidentifikasi 5 karakteristik profil siswa berserta rincian taktik komunikasinya.",
+            "Dapat masuk (login) ke Dashboard Kompas Kampus dengan sandi rahasia.",
+            "Bisa memfilter basis data siswa berdasarkan kluster hambatan.",
+            "Menguasai cara mengirimkan pesan WhatsApp manual dari panel dashboard.",
+            "Memahami mekanisme pesan otomatis yang langsung terkirim sesaat setelah siswa submit data.",
+            "Mampu mengidentifikasi hasil analisis yang tertera pada berkas laporan PDF.",
+            "Dapat mengunduh file CSV bimbingan untuk kebutuhan pengarsipan sekolah."
+        ];
+
+        let auditChart = null;
+        let currentFilter = 'all';
+
+        function navigate(sectionId) {
+            // Hide all sections smoothly
+            document.querySelectorAll('.section-content').forEach(el => {
+                el.classList.add('hidden');
+            });
+            // Show the active one
+            document.getElementById(`content-${sectionId}`).classList.remove('hidden');
+
+            // Switch active states on navigation buttons
+            document.querySelectorAll('nav button').forEach(btn => {
+                btn.classList.remove('text-[#7E8C69]', 'bg-[#F7F9F5]');
+                btn.classList.add('text-stone-400');
+            });
+
+            const activeBtn = document.getElementById(`btn-${sectionId}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-stone-400');
+                activeBtn.classList.add('text-[#7E8C69]', 'bg-[#F7F9F5]');
+            }
+
+            // Update top header badge text
+            const labels = {
+                intro: 'Pengantar',
+                teori: 'Landasan Teori',
+                profil: 'Profil Siswa',
+                panduan: 'Panduan Praktis',
+                dashboard: 'Live Dashboard',
+                laporan: 'Laporan Lab',
+                penutup: 'Ceklis Kesiapan'
+            };
+            document.getElementById('active-indicator').innerText = labels[sectionId] || '';
+
+            // Render specific components if visible
+            window.scrollTo(0, 0);
+            if (sectionId === 'teori') {
+                initAuditChart();
+            }
+        }
+
+        function initAuditChart() {
+            if (auditChart) return; // Already instantiated
+            const ctx = document.getElementById('auditChart').getContext('2d');
+            auditChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Siswa Punya Niat', 'Realisasi Mendaftar'],
+                    datasets: [{
+                        data: [42.8, 1.1],
+                        backgroundColor: ['#7E8C69', '#D97757'],
+                        borderRadius: 12,
+                        barThickness: 45
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 50,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Render profile explorer tab buttons
+        function renderProfileTabs() {
+            const container = document.getElementById('profile-tabs-container');
+            container.innerHTML = '';
+            profiles.forEach(p => {
+                const btn = document.createElement('button');
+                btn.onclick = () => showProfileDetail(p.id);
+                btn.className = "flex flex-col items-center justify-center p-4 bg-white border border-stone-100 rounded-2xl hover:shadow-md transition-all text-center";
+                btn.innerHTML = `
+                    <span class="text-2xl mb-1">${p.icon}</span>
+                    <span class="text-[10px] font-extrabold text-stone-600 leading-tight uppercase tracking-tight">${p.name.split(' ')[0]}</span>
+                `;
+                container.appendChild(btn);
+            });
+        }
+
+        // Display individual profile content
+        function showProfileDetail(profileId) {
+            const p = profiles.find(item => item.id === profileId);
+            const showcase = document.getElementById('profile-showcase');
+            if (!p) return;
+
+            showcase.innerHTML = `
+                <div class="space-y-8">
+                    <!-- Top Info header -->
+                    <div class="flex items-center gap-4 border-b border-stone-50 pb-6">
+                        <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl" style="background-color: ${p.color}15; color: ${p.color}">
+                            ${p.icon}
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-extrabold uppercase tracking-widest text-[#D97757]">Profil Keputusan</span>
+                            <h3 class="text-xl font-black text-stone-800 leading-none mt-1">${p.name}</h3>
+                            <p class="text-xs text-stone-400 mt-1 font-semibold">${p.char}</p>
+                        </div>
+                    </div>
+
+                    <!-- Scores indicators -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <div class="p-3 bg-stone-50 rounded-xl text-center">
+                            <p class="text-[9px] font-bold text-stone-400 uppercase">Sikap (Attitude)</p>
+                            <p class="text-xs font-black text-stone-700 mt-1">${p.scores.a}</p>
+                        </div>
+                        <div class="p-3 bg-stone-50 rounded-xl text-center">
+                            <p class="text-[9px] font-bold text-stone-400 uppercase">Norma (Social)</p>
+                            <p class="text-xs font-black text-stone-700 mt-1">${p.scores.n}</p>
+                        </div>
+                        <div class="p-3 bg-stone-50 rounded-xl text-center">
+                            <p class="text-[9px] font-bold text-stone-400 uppercase">Kendali (PBC)</p>
+                            <p class="text-xs font-black text-stone-700 mt-1">${p.scores.p}</p>
+                        </div>
+                        <div class="p-3 bg-stone-50 rounded-xl text-center">
+                            <p class="text-[9px] font-bold text-stone-400 uppercase">Sinyal Niat</p>
+                            <p class="text-xs font-black text-[#7E8C69] mt-1">${p.scores.i}</p>
+                        </div>
+                    </div>
+
+                    <!-- Main body details -->
+                    <div class="space-y-6">
+                        <div>
+                            <p class="text-[10px] font-extrabold text-[#D97757] uppercase tracking-wider mb-2">💬 Screening Intuitif Siswa</p>
+                            <p class="text-xs font-medium italic p-4 bg-[#FEF9F6] border-l-4 border-[#D97757] rounded-r-xl text-stone-700">
+                                ${p.screening}
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-1.5">
+                                <p class="text-[10px] font-extrabold text-[#7E8C69] uppercase tracking-wider">🛠️ Strategi Intervensi BK</p>
+                                <p class="text-xs text-stone-600 leading-relaxed">${p.strategy}</p>
+                            </div>
+                            <div class="space-y-1.5">
+                                <p class="text-[10px] font-extrabold text-[#7E8C69] uppercase tracking-wider">💡 Behavioral Insight</p>
+                                <p class="text-xs text-stone-600 leading-relaxed">${p.insight}</p>
+                            </div>
+                        </div>
+
+                        <div class="pt-6 border-t border-stone-50 space-y-2">
+                            <p class="text-[10px] font-extrabold text-stone-400 uppercase tracking-widest flex items-center gap-1">
+                                <span>📱</span> Template Pesan Nudge WhatsApp
+                            </p>
+                            <div class="p-4 bg-stone-50 rounded-2xl border border-stone-100 text-xs text-stone-700 font-mono italic leading-relaxed select-all">
+                                ${p.template}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            showcase.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Dashboard Simulator sandi gate logic
+        function tryLoginDashboard() {
+            const pwdInput = document.getElementById('sim-password');
+            const errorText = document.getElementById('gate-error');
+            
+            if (pwdInput.value === 'kompas2026') {
+                errorText.classList.add('hidden');
+                document.getElementById('dashboard-gate').classList.add('hidden');
+                document.getElementById('dashboard-main-panel').classList.remove('hidden');
+                document.getElementById('dash-status-badge').classList.remove('hidden');
+                initDashboardData();
+            } else {
+                errorText.classList.remove('hidden');
+            }
+        }
+
+        function resetDashboardSession() {
+            document.getElementById('sim-password').value = '';
+            document.getElementById('dashboard-gate').classList.remove('hidden');
+            document.getElementById('dashboard-main-panel').classList.add('hidden');
+            document.getElementById('dash-status-badge').classList.add('hidden');
+        }
+
+        // Initialize and fill the mock database tables inside the dashboard
+        function initDashboardData() {
+            // Update statistic counters
+            document.getElementById('db-stat-total').innerText = mockStudents.length;
+            document.getElementById('db-stat-siap').innerText = mockStudents.filter(s => s.profil === '🚀 Siap Meluncur').length;
+            document.getElementById('db-stat-potensial').innerText = mockStudents.filter(s => s.profil === '💰 Pejuang Potensial').length;
+            document.getElementById('db-stat-eksplorasi').innerText = mockStudents.filter(s => s.profil === '🌊 Masih Eksplorasi').length;
+
+            renderSimTable('all');
+        }
+
+        // Filter and display the simulation table rows
+        function renderSimTable(profileFilter) {
+            currentFilter = profileFilter;
+            const tbody = document.getElementById('sim-table-body');
+            tbody.innerHTML = '';
+
+            // Update button styles
+            const filterBtns = {
+                all: 'btn-f-all',
+                '🚀 Siap Meluncur': 'btn-f-siap',
+                '💰 Pejuang Potensial': 'btn-f-potensial',
+                '🌊 Masih Eksplorasi': 'btn-f-eksplorasi'
+            };
+
+            Object.keys(filterBtns).forEach(key => {
+                const btn = document.getElementById(filterBtns[key]);
+                if (btn) {
+                    if (key === profileFilter) {
+                        btn.classList.add('ring-2', 'ring-offset-1', 'ring-[#7E8C69]');
+                    } else {
+                        btn.classList.remove('ring-2', 'ring-offset-1', 'ring-[#7E8C69]');
+                    }
+                }
+            });
+
+            // Filter logical records
+            const filtered = mockStudents.filter(s => {
+                if (profileFilter === 'all') return true;
+                return s.profil === profileFilter;
+            });
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="9" class="p-6 text-center text-stone-400 italic">Tidak ada siswa dengan profil ini.</td></tr>`;
+                return;
+            }
+
+            filtered.forEach(s => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-stone-50/50 transition-colors";
+                
+                // Color map for tags
+                let badgeClass = "badge-sage";
+                if (s.profil.includes('💰')) badgeClass = "badge-terracotta";
+                if (s.profil.includes('🌊')) badgeClass = "bg-stone-100 border-stone-200 text-stone-600";
+
+                const isWilling = s.bersedia.includes('✅');
+
+                tr.innerHTML = `
+                    <td class="p-3 text-center">
+                        <input type="checkbox" class="sim-row-checkbox w-4 h-4 text-[#7E8C69] border-stone-300 rounded focus:ring-[#7E8C69]" data-id="${s.id}">
+                    </td>
+                    <td class="p-3 font-bold text-stone-800">${s.nama}</td>
+                    <td class="p-3 text-stone-500">${s.sekolah}</td>
+                    <td class="p-3">
+                        <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold ${badgeClass}">
+                            ${s.profil}
+                        </span>
+                    </td>
+                    <td class="p-3 text-stone-600 font-mono">${s.sikap}</td>
+                    <td class="p-3 text-stone-600 font-mono">${s.norma}</td>
+                    <td class="p-3 text-stone-600 font-mono">${s.pbc}</td>
+                    <td class="p-3 text-stone-600 font-mono">${s.niat}</td>
+                    <td class="p-3 text-center text-xs">${s.bersedia}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Toggle select all records in the table simulation
+        function toggleAllSimCheckboxes(source) {
+            const checkboxes = document.querySelectorAll('.sim-row-checkbox');
+            checkboxes.forEach(cb => {
+                cb.checked = source.checked;
+            });
+        }
+
+        // Toast Helper
+        function showSimToast(icon, message) {
+            const toast = document.getElementById('sim-toast');
+            document.getElementById('sim-toast-icon').innerText = icon;
+            document.getElementById('sim-toast-msg').innerText = message;
+            toast.classList.remove('hidden');
+
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3000);
+        }
+
+        // Export simulated data to mock CSV
+        function triggerDownloadCSV() {
+            // Generate standard CSV content
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "ID,Nama,Sekolah,Profil,Sikap,Norma,PBC,Niat,Bersedia\n";
+            
+            mockStudents.forEach(s => {
+                csvContent += `${s.id},"${s.nama}","${s.sekolah}","${s.profil}",${s.sikap},${s.norma},${s.pbc},${s.niat},"${s.bersedia}"\n`;
+            });
+
+            // Trigger click simulation
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "laporan_simulasi_guru_bk.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            showSimToast('📥', 'Simulator: Unduhan data CSV berhasil dijalankan!');
+        }
+
+        // Bulk Sniper WA logic simulator
+        function openSniperModal() {
+            const checkedBoxes = document.querySelectorAll('.sim-row-checkbox:checked');
+            const targetIds = Array.from(checkedBoxes).map(cb => parseInt(cb.dataset.id));
+            const selectedStudents = mockStudents.filter(s => targetIds.includes(s.id));
+
+            if (selectedStudents.length === 0) {
+                alert('Silakan pilih minimal satu siswa terlebih dahulu pada tabel.');
+                return;
+            }
+
+            // Filter only the willing students
+            const willingStudents = selectedStudents.filter(s => s.bersedia.includes('✅'));
+            const unwillingCount = selectedStudents.length - willingStudents.length;
+
+            const summaryEl = document.getElementById('modal-targets-summary');
+            if (willingStudents.length === 0) {
+                summaryEl.innerHTML = `<span class="text-red-500 font-bold">🚫 Tidak Ada Sasaran Valid!</span><br>${selectedStudents.length} siswa terpilih semuanya menyatakan <strong class="text-red-600">❌ Tidak Bersedia</strong> dihubungi.`;
+                document.getElementById('modal-message-body').value = '';
+                document.getElementById('modal-template-select').value = 'custom';
+            } else {
+                let text = `🎯 Siap Mengirim ke <strong class="text-emerald-600 font-extrabold">${willingStudents.length} siswa</strong> bersedia.<br>`;
+                if (unwillingCount > 0) {
+                    text += `<span class="text-stone-400 text-[10px] font-medium">(${unwillingCount} siswa disaring otomatis karena menolak WA).</span>`;
+                }
+                summaryEl.innerHTML = text;
+
+                // Pre-fill modal message with templates automatically if we detected a homogeneous profile
+                const firstProfile = willingStudents[0].profil;
+                const isHomogeneous = willingStudents.every(s => s.profil === firstProfile);
+                if (isHomogeneous) {
+                    document.getElementById('modal-template-select').value = firstProfile;
+                    applyTemplateToModal();
+                } else {
+                    document.getElementById('modal-template-select').value = 'custom';
+                    document.getElementById('modal-message-body').value = "Halo {nama}, yuk bersiap melangkah ke jenjang kuliah!";
+                }
+            }
+
+            document.getElementById('sniper-modal').classList.remove('hidden');
+        }
+
+        function closeSniperModal() {
+            document.getElementById('sniper-modal').classList.add('hidden');
+        }
+
+        function applyTemplateToModal() {
+            const selectedVal = document.getElementById('modal-template-select').value;
+            const textBody = document.getElementById('modal-message-body');
+
+            if (selectedVal === 'custom') {
+                textBody.value = "Halo {nama}, yuk bersiap melangkah ke jenjang kuliah!";
+                return;
+            }
+
+            // Match value with system template database
+            const foundProfile = profiles.find(p => p.name === selectedVal.substring(2));
+            if (foundProfile) {
+                textBody.value = foundProfile.template;
+            }
+        }
+
+        function executeSimulatedBulkSend() {
+            const checkedBoxes = document.querySelectorAll('.sim-row-checkbox:checked');
+            const targetIds = Array.from(checkedBoxes).map(cb => parseInt(cb.dataset.id));
+            const selectedStudents = mockStudents.filter(s => targetIds.includes(s.id));
+            const willingStudents = selectedStudents.filter(s => s.bersedia.includes('✅'));
+
+            if (willingStudents.length === 0) {
+                alert('Gagal mengirim: Tidak ada siswa bersedia di dalam target.');
+                return;
+            }
+
+            const bodyNudge = document.getElementById('modal-message-body').value;
+            if (!bodyNudge.trim()) {
+                alert('Silakan tulis naskah pesan Anda.');
+                return;
+            }
+
+            closeSniperModal();
+            showSimToast('🚀', `Simulator: Berhasil menyebarkan nudge massal ke ${willingStudents.length} siswa via Fonnte!`);
+
+            // Clear checkboxes
+            document.getElementById('sim-select-all').checked = false;
+            toggleAllSimCheckboxes(document.getElementById('sim-select-all'));
+        }
+
+        // Render penutup checklist
+        function renderChecklist() {
+            const container = document.getElementById('final-checklist-container');
+            container.innerHTML = '';
+            checkItems.forEach((item, idx) => {
+                const wrap = document.createElement('div');
+                wrap.className = "flex items-start gap-3 p-4 bg-stone-50 hover:bg-stone-100/50 rounded-2xl border border-stone-100 cursor-pointer transition-colors";
+                wrap.innerHTML = `
+                    <input type="checkbox" id="check-${idx}" class="w-5 h-5 mt-0.5 rounded border-stone-300 text-[#7E8C69] focus:ring-[#7E8C69]">
+                    <label for="check-${idx}" class="text-xs text-stone-600 font-semibold cursor-pointer select-none leading-relaxed">${item}</label>
+                `;
+                container.appendChild(wrap);
+            });
+        }
+
+        // Initialize App on DOM Loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProfileTabs();
+            renderChecklist();
+            navigate('intro');
+        });
+    </script>
+</body>
+</html>
