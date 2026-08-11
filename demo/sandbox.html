@@ -2013,40 +2013,44 @@
         }
 
         function runSliderSimulation() {
-            const sikap = parseFloat(document.getElementById('simSikap').value);
-            const norma = parseFloat(document.getElementById('simNorma').value);
-            const pbc = parseFloat(document.getElementById('simPbc').value);
-            const niat = parseFloat(document.getElementById('simNiat').value);
+    const sikap = parseFloat(document.getElementById('simSikap').value);
+    const norma = parseFloat(document.getElementById('simNorma').value);
+    const pbc = parseFloat(document.getElementById('simPbc').value);
+    const niat = parseFloat(document.getElementById('simNiat').value);
 
-            document.getElementById('lblSikap').innerText = sikap.toFixed(1);
-            document.getElementById('lblNorma').innerText = norma.toFixed(1);
-            document.getElementById('lblPbc').innerText = pbc.toFixed(1);
-            document.getElementById('lblNiat').innerText = niat.toFixed(1);
+    document.getElementById('lblSikap').innerText = sikap.toFixed(1);
+    document.getElementById('lblNorma').innerText = norma.toFixed(1);
+    document.getElementById('lblPbc').innerText = pbc.toFixed(1);
+    document.getElementById('lblNiat').innerText = niat.toFixed(1);
 
-            let res = "🚀 Siap Meluncur";
-            let desc = "Kesiapan mental, dukungan sosial, dan kendali dirimu optimal!";
-            let bg = "#10b981";
+    let res = "🚀 Siap Meluncur";
+    let desc = "Kesiapan mental, dukungan sosial, dan kendali dirimu optimal!";
+    let bg = "#10b981";
 
-            if (niat > 3 && pbc < 3) {
-                res = "💰 Pejuang Potensial";
-                desc = "Niat kuat, namun terkendala finansial atau jarak tempuh.";
-                bg = "#f59e0b";
-            } else if (niat > 3 && norma < 3) {
-                res = "👨‍👩‍👧‍👦 Pejuang Restu";
-                desc = "Niat bulat, namun memerlukan restu keluarga.";
-                bg = "#06b6d4";
-            } else if (niat <= 3) {
-                res = "🌊 Masih Eksplorasi";
-                desc = "Masih menimbang berbagai opsi jalur karier masa depan.";
-                bg = "#64748b";
-            }
+    if (niat > 3 && pbc < 3) {
+        res = "💰 Pejuang Potensial";
+        desc = "Niat kuat, namun terkendala finansial atau jarak tempuh.";
+        bg = "#f59e0b";
+    } else if (niat > 3 && norma < 3) {
+        res = "👨‍👩‍👧‍👦 Pejuang Restu";
+        desc = "Niat bulat, namun memerlukan restu keluarga.";
+        bg = "#06b6d4";
+    } else if (sikap > 4 && pbc > 3.5) {
+        res = "🔍 Pemilih Berkualitas";
+        desc = "Evaluasi matang dan pertimbangan mendalam terhadap kualitas institusi.";
+        bg = "#8b5cf6";
+    } else if (niat <= 3) {
+        res = "🌊 Masih Eksplorasi";
+        desc = "Masih menimbang berbagai opsi jalur karier masa depan.";
+        bg = "#64748b";
+    }
+    // else → Siap Meluncur (fallback)
 
-            const badge = document.getElementById('simResultBadge');
-            badge.innerText = res;
-            badge.style.backgroundColor = bg;
-            document.getElementById('simResultDesc').innerText = desc;
-        }
-
+    const badge = document.getElementById('simResultBadge');
+    badge.innerText = res;
+    badge.style.backgroundColor = bg;
+    document.getElementById('simResultDesc').innerText = desc;
+}
         document.addEventListener('DOMContentLoaded', () => {
             updateSchoolSelectDropdowns();
             runSliderSimulation();
